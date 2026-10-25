@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>04 The Library</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.lb-a{color:#292925;text-decoration:none;border-bottom:1px solid rgba(125,95,40,.55);transition:color .2s,border-color .2s}
+.lb-a:hover,.lb-a:focus-visible{color:#7D5F28;border-color:#7D5F28;outline:none}
+.lb-art{display:flex;flex-direction:column;text-decoration:none;color:#292925;transition:transform .25s ease}
+.lb-art:hover,.lb-art:focus-visible{transform:translateY(-4px);outline:none}
+.lb-art:focus-visible .lb-thumb{box-shadow:0 0 0 3px #B28F4E}
+</style>
+</helmet>
+
+<div style="position:relative;min-height:900px;box-sizing:border-box;padding:clamp(88px,11vh,120px) clamp(20px,4.4vw,72px) 110px;background:radial-gradient(ellipse 70% 45% at 50% 0%,#F6F1E7 0%,rgba(246,241,231,0) 70%),linear-gradient(180deg,#E8E0CF,#DDD3BF);font-family:'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925">
+
+  <header style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 36px;border-bottom:1px solid rgba(125,95,40,.5);padding-bottom:26px">
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(56px,8vw,104px);line-height:.8;color:#7D5F28;font-weight:500">04</div>
+    <div style="flex:1 1 320px;min-width:0">
+      <h2 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(40px,5.4vw,68px);line-height:1;font-weight:500;letter-spacing:-.01em">The Library</h2>
+      <p style="margin:12px 0 0;font-size:16px;line-height:1.55;color:#4A463E;max-width:600px">What I write, and what I commit. Both load live from their sources.</p>
+    </div>
+  </header>
+
+  <div style="display:flex;flex-wrap:wrap;gap:56px 64px;margin-top:52px;align-items:flex-start">
+
+    <!-- Writing -->
+    <section aria-label="Writing" style="flex:3 1 520px;min-width:0">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 20px;margin-bottom:26px">
+        <h3 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:500;line-height:1">Writing</h3>
+        <a class="lb-a" href="https://medium.com/@joseph25rejo" target="_blank" rel="noopener" style="font-size:15px">All articles on Medium ↗</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:34px 28px">
+        <sc-for list="{{ articles }}" as="a" hint-placeholder-count="4">
+          <a class="lb-art" href="https://medium.com/@joseph25rejo" target="_blank" rel="noopener" aria-label="{{ a.aria }}">
+            <div class="lb-thumb" style="aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(135deg,rgba(41,41,37,.05) 0 9px,rgba(41,41,37,0) 9px 18px),linear-gradient(180deg,#EDE6D6,#DCD3C0);box-shadow:inset 0 0 0 1px rgba(41,41,37,.16),0 12px 18px -14px rgba(41,41,37,.5)"><span style="font-size:12.5px;color:#4A463E">Thumbnail from the feed</span></div>
+            <div style="margin-top:16px;font-family:'Cormorant Garamond',Georgia,serif;font-size:25px;line-height:1.15;font-weight:500">[Article title {{ a.n }}]</div>
+            <div style="margin-top:8px;font-size:14.5px;line-height:1.55;color:#4A463E">[Excerpt, first 150 characters of the post]</div>
+            <div style="margin-top:12px;font-size:14px;color:#7D5F28;font-weight:500">Read on Medium ↗</div>
+          </a>
+        </sc-for>
+      </div>
+      <p style="margin:30px 0 0;font-size:13.5px;line-height:1.55;color:#4A463E;max-width:560px">Slots only. The four latest posts load from the Medium feed; if the feed is down, these tiles fall back to links to the profile.</p>
+    </section>
+
+    <!-- Code -->
+    <section aria-label="Code" style="flex:2 1 400px;min-width:0;max-width:100%">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 20px;margin-bottom:26px">
+        <h3 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:500;line-height:1">Code</h3>
+        <a class="lb-a" href="https://github.com/Joseph25Rejo" target="_blank" rel="noopener" style="font-size:15px">Joseph25Rejo on GitHub ↗</a>
+      </div>
+
+      <div style="background:linear-gradient(180deg,#2F2E29,#262521);color:#EFE9DB;padding:24px 22px 26px;box-shadow:0 18px 26px -18px rgba(41,41,37,.6)">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div aria-hidden="true" style="width:54px;height:54px;border-radius:50%;flex:none;background:repeating-linear-gradient(135deg,rgba(255,255,255,.08) 0 6px,rgba(255,255,255,0) 6px 12px),#4A483F;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2)"></div>
+          <div style="min-width:0">
+            <div style="font-size:17px;font-weight:600">Joseph25Rejo</div>
+            <div style="font-size:13.5px;color:#CFC7B5;margin-top:3px">[N] contributions in the last year</div>
+          </div>
+        </div>
+
+        <div style="margin-top:22px;overflow-x:auto;padding-bottom:6px">
+          <div role="img" aria-label="Contribution calendar for the last year, loaded live from GitHub" style="display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,11px);grid-auto-columns:11px;gap:3px;width:max-content">
+            <sc-for list="{{ cells }}" as="c" hint-placeholder-count="0"><span style="width:11px;height:11px;border-radius:2px;background:#3D3B34"></span></sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 14px;margin-top:12px;font-size:12.5px;color:#CFC7B5"><span>Calendar slot, includes private contributions</span><span style="display:inline-flex;align-items:center;gap:4px">Less <i style="width:11px;height:11px;border-radius:2px;background:#3D3B34;display:inline-block"></i><i style="width:11px;height:11px;border-radius:2px;background:#5B6B4F;display:inline-block"></i><i style="width:11px;height:11px;border-radius:2px;background:#7C9468;display:inline-block"></i><i style="width:11px;height:11px;border-radius:2px;background:#A3BD8A;display:inline-block"></i><i style="width:11px;height:11px;border-radius:2px;background:#CBE0B2;display:inline-block"></i> More</span></div>
+      </div>
+
+      <h4 style="margin:34px 0 6px;font:500 13px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#7D5F28">Latest activity</h4>
+      <ul style="margin:0;padding:0;list-style:none">
+        <sc-for list="{{ commits }}" as="c" hint-placeholder-count="4">
+          <li style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid rgba(41,41,37,.18);font-size:15px">
+            <span style="display:flex;gap:12px;align-items:baseline;min-width:0"><i aria-hidden="true" style="flex:none;width:8px;height:8px;border-radius:50%;background:#B28F4E;display:inline-block"></i><span style="min-width:0">&lt;Commit message&gt;</span></span>
+            <span style="color:#4A463E;font-size:13.5px;white-space:nowrap">2 days ago</span>
+          </li>
+        </sc-for>
+      </ul>
+      <p style="margin:16px 0 0;font-size:13.5px;line-height:1.55;color:#4A463E">The four most recent commits load from the GitHub events feed, each linking to its commit.</p>
+    </section>
+  </div>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      articles: [1, 2, 3, 4].map((n) => ({ n, aria: 'Medium article slot ' + n + ', opens the Medium profile' })),
+      cells: Array.from({ length: 371 }, (_, i) => ({ i })),
+      commits: [1, 2, 3, 4]
+    };
+  }
+}
+</script>
+</body>
+</html>

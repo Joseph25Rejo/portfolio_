@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>01 The Workshop</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.wk-a{color:#292925;text-decoration:none}
+.wk-b{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 22px;box-sizing:border-box;border:1px solid rgba(41,41,37,.4);background:transparent;color:#292925;font:500 15px/1 'Instrument Sans',Arial,sans-serif;text-decoration:none;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.wk-b:hover,.wk-b:focus-visible{background:#292925;color:#F4F0E8;border-color:#292925;outline:none}
+.wk-b.solid{background:#292925;color:#F4F0E8;border-color:#292925}
+.wk-b.solid:hover,.wk-b.solid:focus-visible{background:#7D5F28;border-color:#7D5F28}
+.wk-x:focus-visible{outline:2px solid #B28F4E;outline-offset:2px}
+</style>
+</helmet>
+
+<div style="position:relative;min-height:900px;box-sizing:border-box;padding:clamp(88px,11vh,120px) clamp(20px,4.4vw,72px) 96px;background:radial-gradient(ellipse 80% 50% at 15% 0%,#F7F3EA 0%,rgba(247,243,234,0) 70%),linear-gradient(180deg,#EFE9DD,#E7DFCF);font-family:'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925">
+
+  <!-- plaque -->
+  <header style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 36px;border-bottom:1px solid rgba(125,95,40,.5);padding-bottom:26px">
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(56px,8vw,104px);line-height:.8;color:#7D5F28;font-weight:500">01</div>
+    <div style="flex:1 1 320px;min-width:0">
+      <h2 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(40px,5.4vw,68px);line-height:1;font-weight:500;letter-spacing:-.01em">The Workshop</h2>
+      <p style="margin:12px 0 0;font-size:16px;line-height:1.55;color:#4A463E;max-width:560px">Four things I have built, each laid out with its purpose, stack, architecture and links.</p>
+    </div>
+  </header>
+
+  <div style="display:flex;flex-wrap:wrap;gap:44px 56px;margin-top:44px;align-items:flex-start">
+
+    <!-- exhibit list -->
+    <nav aria-label="Projects" style="flex:1 1 230px;max-width:320px;min-width:0;display:flex;flex-direction:column">
+      <sc-for list="{{ list }}" as="p" hint-placeholder-count="4">
+        <button type="button" class="wk-x" aria-pressed="{{ p.on }}" onClick="{{ p.pick }}" style="{{ p.style }}">
+          <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;width:34px;flex:none;color:#7D5F28;font-weight:500">{{ p.n }}</span>
+          <span style="display:block;min-width:0">
+            <span style="display:block;font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;line-height:1.05;font-weight:500">{{ p.name }}</span>
+            <span style="display:block;margin-top:6px;font-size:13.5px;line-height:1.4;color:#4A463E">{{ p.kind }}</span>
+          </span>
+        </button>
+      </sc-for>
+    </nav>
+
+    <!-- display surface -->
+    <article style="flex:999 1 520px;min-width:0">
+
+      <!-- niche -->
+      <div style="padding:14px;background:linear-gradient(180deg,#D5CCB9,#E2DAC8);box-shadow:inset 0 6px 16px rgba(41,41,37,.18),inset 0 -1px 0 rgba(255,255,255,.6)">
+        <div style="aspect-ratio:16/9;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:0;box-sizing:border-box;background:repeating-linear-gradient(135deg,rgba(41,41,37,.045) 0 10px,rgba(41,41,37,0) 10px 20px),linear-gradient(180deg,#E9E2D2,#DCD3C0);box-shadow:inset 0 0 0 1px rgba(41,41,37,.16)">
+          <sc-if value="{{ coverImg }}" hint-placeholder-val="{{ true }}">
+            <img src="{{ cur.cover }}" alt="{{ cur.name }} screenshot" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;object-position:top center;display:block">
+          </sc-if>
+          <sc-if value="{{ archImg }}" hint-placeholder-val="{{ false }}">
+            <a href="{{ cur.arch }}" target="_blank" rel="noopener" aria-label="Open the {{ cur.name }} architecture diagram at full size" style="position:absolute;left:0;top:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:#F4F0E8;cursor:zoom-in"><img src="{{ cur.arch }}" alt="{{ cur.name }} system architecture diagram" style="max-width:100%;max-height:100%;object-fit:contain;display:block"></a>
+          </sc-if>
+          <sc-if value="{{ videoFrame }}" hint-placeholder-val="{{ false }}">
+            <iframe src="{{ cur.video }}" title="{{ cur.name }} demo video" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;left:0;top:0;width:100%;height:100%;border:0;background:#120F0A"></iframe>
+          </sc-if>
+          <sc-if value="{{ videoSoon }}" hint-placeholder-val="{{ false }}">
+            <div aria-hidden="true" style="width:64px;height:64px;border-radius:50%;border:1px solid rgba(41,41,37,.5);display:flex;align-items:center;justify-content:center"><div style="width:0;height:0;border-left:16px solid #292925;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:5px"></div></div>
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,2.6vw,32px);font-weight:500;line-height:1.1">Demo video coming soon</div>
+          </sc-if>
+        </div>
+      </div>
+
+      <!-- drawers -->
+      <div role="tablist" aria-label="Project views" style="display:flex;gap:6px 28px;flex-wrap:wrap;margin-top:22px;border-bottom:1px solid rgba(41,41,37,.2)">
+        <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+          <button type="button" role="tab" aria-selected="{{ t.on }}" class="wk-x" onClick="{{ t.pick }}" style="{{ t.style }}">{{ t.label }}</button>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ showCover }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex;flex-wrap:wrap;gap:36px 56px;margin-top:34px">
+          <div style="flex:3 1 340px;min-width:0">
+            <h3 style="margin:0 0 10px;font:500 13px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#7D5F28">Purpose</h3>
+            <p style="margin:0;font-size:18px;line-height:1.6;max-width:620px">{{ cur.purpose }}</p>
+
+            <h3 style="margin:34px 0 12px;font:500 13px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#7D5F28">Key features</h3>
+            <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;max-width:620px">
+              <sc-for list="{{ cur.features }}" as="f" hint-placeholder-count="4">
+                <li style="display:flex;gap:14px;font-size:16px;line-height:1.55"><span aria-hidden="true" style="flex:none;width:18px;height:1px;background:#B28F4E;margin-top:12px"></span><span>{{ f }}</span></li>
+              </sc-for>
+            </ul>
+
+            <h3 style="margin:34px 0 12px;font:500 13px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#7D5F28">My contribution</h3>
+            <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;max-width:620px">
+              <sc-for list="{{ cur.contrib }}" as="c" hint-placeholder-count="2">
+                <li style="display:flex;gap:14px;font-size:16px;line-height:1.55"><span aria-hidden="true" style="flex:none;width:18px;height:1px;background:#B28F4E;margin-top:12px"></span><span>{{ c }}</span></li>
+              </sc-for>
+            </ul>
+          </div>
+
+          <aside style="flex:2 1 260px;min-width:0">
+            <h3 style="margin:0 0 14px;font:500 13px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#7D5F28">Built with</h3>
+            <div style="display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ cur.stack }}" as="s" hint-placeholder-count="6">
+                <span style="display:inline-flex;align-items:center;min-height:34px;padding:0 14px;box-sizing:border-box;font-size:14px;background:linear-gradient(180deg,#F3EEE2,#E1D9C6);box-shadow:inset 0 0 0 1px rgba(41,41,37,.14),inset 0 1px 0 rgba(255,255,255,.7);border-radius:2px">{{ s }}</span>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:30px">
+              <sc-if value="{{ cur.hasLive }}" hint-placeholder-val="{{ true }}"><a class="wk-b solid" href="{{ cur.live }}" target="_blank" rel="noopener"><span>Live demo</span><span aria-hidden="true">↗</span></a></sc-if>
+              <sc-if value="{{ cur.hasRepo }}" hint-placeholder-val="{{ true }}"><a class="wk-b" href="{{ cur.repo }}" target="_blank" rel="noopener"><span>GitHub</span><span aria-hidden="true">↗</span></a></sc-if>
+            </div>
+            <sc-if value="{{ cur.noLinks }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:14.5px;line-height:1.55;color:#4A463E">No public demo or repository for this one. The patent application is shown in The Gallery.</p></sc-if>
+          </aside>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showArch }}" hint-placeholder-val="{{ false }}">
+        <p style="margin:30px 0 0;font-size:16px;line-height:1.6;max-width:620px;color:#4A463E">{{ cur.archCaption }}</p>
+      </sc-if>
+      <sc-if value="{{ showDemo }}" hint-placeholder-val="{{ false }}">
+        <p style="margin:30px 0 0;font-size:16px;line-height:1.6;max-width:620px;color:#4A463E">{{ cur.demoLong }}</p>
+      </sc-if>
+    </article>
+  </div>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1180}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { p: 0, tab: 'overview' }; }
+  data() {
+    return [
+      { n: 'I', name: 'QuarksFinance', kind: 'Stock analysis and strategy platform',
+        cover: './assets/projects/quarksfinance-cover.jpg', arch: './assets/projects/quarksfinance-arch.png', video: 'https://www.youtube.com/embed/pCVa_T0C6t4',
+        archCaption: 'How QuarksFinance fits together. Select the diagram to open it at full size.',
+        demoLong: 'A walkthrough of QuarksFinance: portfolio and watchlist, backtesting, live signals and sentiment.',
+        purpose: 'A stock analysis and strategy platform that brings backtesting, live signals and sentiment into one place.',
+        features: ['Real-time market data through the yFinance API', 'Sentiment analysis alongside the price data', 'Backtesting of trading algorithms on historical market data', 'Live signals from the same strategy pipelines'],
+        contrib: ['Integrated the yFinance API with a Flask and SQLite backend, with a React and Next.js frontend deployed on Vercel.', 'Designed modular strategy pipelines for comparative backtesting.'],
+        stack: ['Python', 'Flask', 'SQLite', 'React', 'Next.js', 'CPanel', 'Render', 'Vercel'],
+        live: 'https://quarks-nu.vercel.app', repo: 'https://github.com/Joseph25Rejo/QuarksFinance' },
+      { n: 'II', name: 'Hatch', kind: 'Hackathon management platform',
+        cover: './assets/projects/hatch-cover.png', arch: './assets/projects/hatch-arch.png', video: '',
+        archCaption: 'How Hatch fits together. Select the diagram to open it at full size.',
+        demoLong: 'A demo video for this project is on the way.',
+        purpose: 'Runs the whole life of a hackathon in one platform: events, teams, submissions and judging. It won WhiteHack 1.0, a national online web development hackathon, in August 2025.',
+        features: ['Event registration', 'Team formation', 'Project submissions', 'Evaluations and judging', 'Event management through admin panels'],
+        contrib: ['Delivered the full-stack platform with Flask and MongoDB across 5 workflows.', 'Built Flask APIs and admin panels that cut manual coordination effort by 40%.'],
+        stack: ['Next.js', 'TypeScript', 'Flask', 'MongoDB', 'Firebase Firestore', 'SQLite', 'CPanel'],
+        live: 'https://hatch-iota.vercel.app/', repo: 'https://github.com/AdityaKaushik295/Hatch' },
+      { n: 'III', name: 'ParkNGo', kind: 'Smart parking with dynamic pricing',
+        cover: './assets/projects/parkngo-cover.jpeg', arch: './assets/projects/parkngo-arch.png', video: '',
+        archCaption: 'How ParkNGo fits together. Select the diagram to open it at full size.',
+        demoLong: 'A demo video for this project is on the way.',
+        purpose: 'A smart parking platform covering booking, entry and exit, and billing, with prices that respond to demand.',
+        features: ['Real-time booking', 'QR-based entry and exit', 'Automated billing', 'Dynamic pricing with ML-based demand prediction', 'Role-based access for users, managers and owners'],
+        contrib: ['Engineered the platform across React Native, Express.js, FastAPI and MongoDB, with Cloudinary integration.', 'Implemented JWT authentication and role-based access control across 3 roles.'],
+        stack: ['React Native', 'Node.js', 'Express.js', 'FastAPI', 'MongoDB Atlas', 'Cloudinary', 'RazorPay', 'HuggingFace', 'Google Maps'],
+        live: '', repo: 'https://github.com/Joseph25Rejo/ParknGo-appln' },
+      { n: 'IV', name: 'ORION', kind: 'AI grocery management',
+        cover: './assets/projects/orion-cover.png', arch: './assets/projects/orion-arch.png', video: '',
+        archCaption: 'How ORION fits together. Select the diagram to open it at full size.',
+        demoLong: 'A demo video for this project is on the way.',
+        purpose: 'An AI grocery management system that links what people consume with live inventory, through demand forecasting, recommendations and anomaly detection.',
+        features: ['Demand forecasting', 'Recommendations', 'Anomaly detection', 'Role-specific alerts'],
+        contrib: ['Co-inventor on the patent application for ORION, filed in India in March 2026. Details are in The Gallery.'],
+        stack: ['HTML', 'CSS', 'JavaScript', 'FastAPI', 'Kubernetes', 'Scikit-learn', 'Pandas', 'MongoDB'],
+        live: '', repo: '' }
+    ];
+  }
+  renderVals() {
+    const s = this.state, d = this.data();
+    const cur = Object.assign({}, d[s.p], { hasLive: !!d[s.p].live, hasRepo: !!d[s.p].repo, noLinks: !d[s.p].live && !d[s.p].repo });
+    const list = d.map((p, i) => ({
+      n: p.n, name: p.name, kind: p.kind, on: i === s.p,
+      pick: () => this.setState({ p: i, tab: 'overview' }),
+      style: 'display:flex;gap:14px;align-items:flex-start;text-align:left;width:100%;box-sizing:border-box;min-height:44px;padding:20px 4px 20px 18px;border:0;border-top:1px solid rgba(41,41,37,.18);cursor:pointer;color:#292925;font-family:inherit;background:' + (i === s.p ? 'linear-gradient(90deg,rgba(178,143,78,.16),rgba(178,143,78,0))' : 'transparent') + ';box-shadow:' + (i === s.p ? 'inset 3px 0 0 #B28F4E' : 'none')
+    }));
+    const tabs = [['overview', 'Overview'], ['arch', 'Architecture'], ['demo', 'Demo']].map(([k, label]) => ({
+      label, on: s.tab === k, pick: () => this.setState({ tab: k }),
+      style: 'min-height:46px;padding:0 2px;border:0;background:none;cursor:pointer;font:' + (s.tab === k ? '600' : '500') + " 15px/1 'Instrument Sans',Arial,sans-serif;color:" + (s.tab === k ? '#292925' : '#4A463E') + ';border-bottom:2px solid ' + (s.tab === k ? '#B28F4E' : 'transparent') + ';margin-bottom:-1px'
+    }));
+    const showCover = s.tab === 'overview', showArch = s.tab === 'arch', showDemo = s.tab === 'demo';
+    return { list, cur, tabs, showCover, showArch, showDemo,
+      coverImg: showCover && !!cur.cover, archImg: showArch && !!cur.arch,
+      videoFrame: showDemo && !!cur.video, videoSoon: showDemo && !cur.video };
+  }
+}
+</script>
+</body>
+</html>

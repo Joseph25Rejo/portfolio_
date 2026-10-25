@@ -1,0 +1,54 @@
+{
+  "name": "Joseph Rejo Mathew",
+  "short": "Joseph R.M.",
+  "tagline": "Developer · Builder",
+  "concept": "JRM set in Cormorant Garamond, the site's own display face, with a gold staircase stroke rising beneath it: the house you climb, one step per room.",
+  "colors": {
+    "ink": "#292925",
+    "paper": "#F4F0E8",
+    "night": "#120F0A",
+    "gold": "#B28F4E",
+    "goldDeep": "#7D5F28",
+    "goldLight": "#D4B06A"
+  },
+  "fonts": {
+    "display": { "family": "Cormorant Garamond", "weights": [500, 600], "use": "name, headings, numerals" },
+    "text": { "family": "Instrument Sans", "weights": [400, 500, 600], "use": "body, buttons, tagline (caps, tracked +0.3em)" }
+  },
+  "logo": {
+    "mark": "brand/logo-mark.svg",
+    "markDark": "brand/logo-mark-dark.svg",
+    "favicon": "brand/favicon.svg",
+    "clearSpace": "half the mark's width on every side",
+    "minSize": { "mark": "20px tall", "lockup": "160px wide" },
+    "rules": ["Never outline or add a gradient", "Transparent background only; never place on a plate or box", "Use the dark variants on #120F0A backgrounds"]
+  },
+  "assetsToExport": [
+    { "file": "favicon.ico", "sizes": [16, 32, 48], "from": "favicon.svg" },
+    { "file": "apple-touch-icon.png", "size": 180, "from": "favicon.svg" },
+    { "file": "icon-192.png", "size": 192, "from": "favicon.svg" },
+    { "file": "icon-512.png", "size": 512, "from": "favicon.svg" },
+    { "file": "og-image.png", "size": [1200, 630], "from": "logo-mark.svg centred on a paper background", "use": "link previews (LinkedIn, X, WhatsApp)" },
+    { "file": "github-avatar.png", "size": 500, "from": "favicon.svg" },
+    { "file": "linkedin-banner.png", "size": [1584, 396], "from": "logo-mark-dark.svg" }
+  ],
+  "headTags": [
+    "<link rel=\"icon\" href=\"/brand/favicon.svg\" type=\"image/svg+xml\">",
+    "<link rel=\"apple-touch-icon\" href=\"/apple-touch-icon.png\">",
+    "<meta name=\"theme-color\" content=\"#120F0A\">",
+    "<meta property=\"og:title\" content=\"Joseph Rejo Mathew — Developer · Builder\">",
+    "<meta property=\"og:image\" content=\"/og-image.png\">"
+  ],
+  "profiles": {
+    "email": "joseph25rejo@gmail.com",
+    "linkedin": "https://www.linkedin.com/in/joseph-r-m-12514229b",
+    "github": "https://github.com/Joseph25Rejo",
+    "medium": "https://medium.com/@joseph25rejo",
+    "resume": "assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf"
+  },
+  "siteNeeds": {
+    "rooms": ["Entrance (About)", "Workshop (Projects)", "Experience", "Study (Skills)", "Library (Writing + GitHub)", "Gallery (Achievements)", "Final Landing (Contact)"],
+    "hosting": "static HTTP server; fetch() of Room*.dc.html fails on file://",
+    "todo": ["Replace header monogram in Main.dc.html with logo-mark + name", "Add favicon + OG tags", "Export PNGs listed above"]
+  }
+}

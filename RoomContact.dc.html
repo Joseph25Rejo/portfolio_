@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>06 The Final Landing</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.ct-a{color:#292925;text-decoration:none;border-bottom:1px solid rgba(125,95,40,.55);transition:color .2s,border-color .2s}
+.ct-a:hover,.ct-a:focus-visible{color:#7D5F28;border-color:#7D5F28;outline:none}
+.ct-f{display:block;width:100%;box-sizing:border-box;min-height:48px;border:0;border-bottom:1px solid rgba(41,41,37,.5);background:rgba(255,255,255,.0);padding:12px 2px;font:400 17px/1.4 'Instrument Sans',Arial,sans-serif;color:#292925;border-radius:0;transition:border-color .2s,background .2s}
+.ct-f::placeholder{color:#5C574D}
+.ct-f:focus{outline:none;border-bottom-color:#B28F4E;background:rgba(255,255,255,.5);box-shadow:0 1px 0 #B28F4E}
+.ct-send{display:inline-flex;align-items:center;gap:12px;min-height:50px;padding:0 28px;border:1px solid #292925;background:#292925;color:#F4F0E8;font:500 16px/1 'Instrument Sans',Arial,sans-serif;cursor:pointer;transition:background .2s,border-color .2s}
+.ct-send:hover,.ct-send:focus-visible{background:#7D5F28;border-color:#7D5F28;outline:none}
+.ct-send[disabled]{opacity:.6;cursor:default}
+</style>
+</helmet>
+
+<div style="position:relative;min-height:900px;box-sizing:border-box;padding:clamp(88px,11vh,120px) clamp(20px,4.4vw,72px) 110px;background:radial-gradient(ellipse 70% 60% at 85% 0%,#FFFDF6 0%,rgba(255,253,246,0) 70%),linear-gradient(180deg,#F5F1E7,#EAE3D3);font-family:'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925">
+
+  <header style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 36px;border-bottom:1px solid rgba(125,95,40,.5);padding-bottom:26px">
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(56px,8vw,104px);line-height:.8;color:#7D5F28;font-weight:500">06</div>
+    <div style="flex:1 1 320px;min-width:0">
+      <h2 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(40px,5.4vw,68px);line-height:1;font-weight:500;letter-spacing:-.01em">The Final Landing</h2>
+      <p style="margin:12px 0 0;font-size:16px;line-height:1.55;color:#4A463E;max-width:560px">Contact.</p>
+    </div>
+  </header>
+
+  <div style="display:flex;flex-wrap:wrap;gap:56px 80px;margin-top:56px">
+
+    <div style="flex:2 1 340px;min-width:0">
+      <p style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(34px,4vw,54px);line-height:1.12;font-weight:500;max-width:520px">If you have something to build, I would like to hear about it.</p>
+      <p style="margin:22px 0 0;font-size:17px;line-height:1.6;max-width:440px;color:#3A372F">Write about a project, a role or a collaboration. I read everything.</p>
+
+      <ul style="margin:40px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;border-top:1px solid rgba(41,41,37,.2)">
+        <li style="display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:52px;border-bottom:1px solid rgba(41,41,37,.2);font-size:16px"><span style="color:#4A463E">Email</span><a class="ct-a" href="mailto:joseph25rejo@gmail.com?subject=Contact%20from%20Portfolio">joseph25rejo@gmail.com</a></li>
+        <li style="display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:52px;border-bottom:1px solid rgba(41,41,37,.2);font-size:16px"><span style="color:#4A463E">LinkedIn</span><a class="ct-a" href="https://www.linkedin.com/in/joseph-r-m-12514229b" target="_blank" rel="noopener">joseph-r-m</a></li>
+        <li style="display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:52px;border-bottom:1px solid rgba(41,41,37,.2);font-size:16px"><span style="color:#4A463E">GitHub</span><a class="ct-a" href="https://github.com/Joseph25Rejo" target="_blank" rel="noopener">Joseph25Rejo</a></li>
+        <li style="display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:52px;border-bottom:1px solid rgba(41,41,37,.2);font-size:16px"><span style="color:#4A463E">Medium</span><a class="ct-a" href="https://medium.com/@joseph25rejo" target="_blank" rel="noopener">@joseph25rejo</a></li>
+        <li style="display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:52px;border-bottom:1px solid rgba(41,41,37,.2);font-size:16px"><span style="color:#4A463E">Instagram</span><span style="color:#4A463E">[handle to supply]</span></li>
+        <li style="display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:52px;border-bottom:1px solid rgba(41,41,37,.2);font-size:16px"><span style="color:#4A463E">Résumé</span><a class="ct-a" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf">Download PDF ↓</a></li>
+      </ul>
+    </div>
+
+    <!-- desk -->
+    <div style="flex:3 1 460px;min-width:0">
+      <form onSubmit="{{ submit }}" novalidate="" style="box-sizing:border-box;padding:clamp(26px,3.4vw,44px);background:linear-gradient(180deg,#FBF9F3,#F1ECDF);box-shadow:0 26px 36px -22px rgba(41,41,37,.5),inset 0 0 0 1px rgba(41,41,37,.12)">
+        <div style="display:flex;flex-direction:column;gap:22px">
+          <div><label for="ct-name" style="display:block;font-size:14px;color:#3A372F;margin-bottom:2px">Name <span aria-hidden="true">*</span></label><input id="ct-name" class="ct-f" type="text" name="name" required="" placeholder="Your name" disabled="{{ busy }}"></div>
+          <div><label for="ct-email" style="display:block;font-size:14px;color:#3A372F;margin-bottom:2px">Email <span aria-hidden="true">*</span></label><input id="ct-email" class="ct-f" type="email" name="email" required="" placeholder="you@example.com" disabled="{{ busy }}"></div>
+          <div><label for="ct-phone" style="display:block;font-size:14px;color:#3A372F;margin-bottom:2px">Phone <span style="color:#4A463E">(optional)</span></label><input id="ct-phone" class="ct-f" type="tel" name="phone" placeholder="+91" disabled="{{ busy }}"></div>
+          <div><label for="ct-msg" style="display:block;font-size:14px;color:#3A372F;margin-bottom:2px">Message <span aria-hidden="true">*</span></label><textarea id="ct-msg" class="ct-f" name="message" required="" rows="5" placeholder="What are you building?" disabled="{{ busy }}" style="resize:vertical;min-height:140px"></textarea></div>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px 22px;margin-top:30px">
+          <button type="submit" class="ct-send" disabled="{{ busy }}"><span>{{ sendLabel }}</span><span aria-hidden="true">→</span></button>
+        </div>
+        <sc-if value="{{ ok }}" hint-placeholder-val="{{ false }}"><div role="status" style="margin-top:22px;padding:14px 16px;background:#E3EBD9;color:#2F4021;font-size:15px;line-height:1.5;box-shadow:inset 0 0 0 1px #A9BD93">Thank you for your message! I will get back to you soon.</div></sc-if>
+        <sc-if value="{{ bad }}" hint-placeholder-val="{{ false }}"><div role="alert" style="margin-top:22px;padding:14px 16px;background:#F2DFD8;color:#6B2A18;font-size:15px;line-height:1.5;box-shadow:inset 0 0 0 1px #D6A998">Something went wrong sending that. Please write to me directly at joseph25rejo@gmail.com.</div></sc-if>
+      </form>
+
+      <div style="margin-top:18px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;font-size:13px;color:#4A463E">
+        <span>Prototype: preview form states</span>
+        <sc-for list="{{ states }}" as="s" hint-placeholder-count="4"><button type="button" onClick="{{ s.pick }}" style="{{ s.style }}">{{ s.label }}</button></sc-for>
+      </div>
+      <p style="margin:10px 0 0;font-size:13px;line-height:1.55;color:#4A463E;max-width:520px">Sending is simulated here. The build keeps the existing EmailJS delivery with the same fields and the same sending, success and error states.</p>
+    </div>
+  </div>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1040}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { st: 'idle' }; }
+  renderVals() {
+    const s = this.state.st;
+    const states = [['idle', 'Idle'], ['sending', 'Sending'], ['success', 'Success'], ['error', 'Error']].map(([k, label]) => ({
+      label, pick: () => this.setState({ st: k }),
+      style: 'min-height:34px;padding:0 12px;border:1px solid rgba(41,41,37,.35);background:' + (s === k ? '#292925' : 'transparent') + ';color:' + (s === k ? '#F4F0E8' : '#292925') + ";font:500 13px/1 'Instrument Sans',Arial,sans-serif;cursor:pointer"
+    }));
+    return {
+      busy: s === 'sending', ok: s === 'success', bad: s === 'error', states,
+      sendLabel: s === 'sending' ? 'Sending…' : 'Send message',
+      submit: (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        const f = e && e.target;
+        if (f && f.checkValidity && !f.checkValidity()) { if (f.reportValidity) f.reportValidity(); return; }
+        this.setState({ st: 'sending' });
+        setTimeout(() => this.setState({ st: 'success' }), 1300);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

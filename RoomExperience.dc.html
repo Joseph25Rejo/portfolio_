@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>02 The Experience</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+
+<div style="position:relative;min-height:900px;box-sizing:border-box;padding:clamp(88px,11vh,120px) clamp(20px,4.4vw,72px) 110px;background:radial-gradient(ellipse 70% 45% at 15% 0%,#F8F4EA 0%,rgba(248,244,234,0) 70%),linear-gradient(180deg,#EDE6D8,#E1D8C5);font-family:'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925">
+
+  <header style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 36px;border-bottom:1px solid rgba(125,95,40,.5);padding-bottom:26px">
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(56px,8vw,104px);line-height:.8;color:#7D5F28;font-weight:500">02</div>
+    <div style="flex:1 1 320px;min-width:0">
+      <h2 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(40px,5.4vw,68px);line-height:1;font-weight:500;letter-spacing:-.01em">The Experience</h2>
+      <p style="margin:12px 0 0;font-size:16px;line-height:1.55;color:#4A463E;max-width:560px">Where the work gets used by real guests.</p>
+    </div>
+  </header>
+
+  <div style="display:flex;flex-wrap:wrap;gap:56px 72px;margin-top:56px;align-items:flex-start">
+
+    <!-- brass plaque -->
+    <div style="flex:2 1 340px;min-width:0;max-width:520px">
+      <div style="padding:12px;background:linear-gradient(135deg,#D9BC7C,#9A7835 55%,#C9A862);box-shadow:0 24px 34px -20px rgba(41,41,37,.65)">
+        <div style="padding:clamp(26px,3vw,40px) clamp(22px,3vw,36px) clamp(28px,3vw,40px);background:linear-gradient(180deg,#3A2A1E,#2A1E15);color:#F4F0E8">
+          <div style="display:inline-block;padding:5px 10px;font:500 12px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#E9D49E;box-shadow:inset 0 0 0 1px rgba(233,212,158,.5)">Current role</div>
+          <div style="margin-top:22px;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(46px,5vw,68px);line-height:.95;font-weight:500">Lume CXM</div>
+          <div style="margin-top:12px;font-size:15.5px;line-height:1.5;color:#D9CFBB">Block 8 Solutions Pvt. Ltd.<br>Bengaluru, India</div>
+          <div style="margin:24px 0 0;width:52px;height:1px;background:#C9A862"></div>
+          <div style="margin-top:22px;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(26px,2.6vw,32px);line-height:1.12;font-weight:500">Founding Engineer Intern</div>
+          <div style="margin-top:8px;font-size:15px;color:#D9CFBB">Jun 2026 to present</div>
+        </div>
+      </div>
+      <p style="margin:16px 0 0;font-size:13px;line-height:1.55;color:#4A463E">Company link and logo: to be supplied.</p>
+    </div>
+
+    <!-- what I do -->
+    <div style="flex:3 1 460px;min-width:0">
+      <p style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(26px,2.8vw,36px);line-height:1.25;font-weight:500;max-width:640px">One of the earliest engineers at a bootstrapped hospitality-tech startup, building fully branded guest web apps for premium Indian resorts.</p>
+      <ol style="list-style:none;margin:36px 0 0;padding:0;border-top:1px solid rgba(41,41,37,.2)">
+        <sc-for list="{{ duties }}" as="d" hint-placeholder-count="4">
+          <li style="display:flex;gap:22px;padding:22px 0;border-bottom:1px solid rgba(41,41,37,.2)">
+            <span style="flex:none;width:34px;font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;line-height:1;color:#7D5F28;font-weight:500">{{ d.n }}</span>
+            <div style="min-width:0">
+              <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:25px;line-height:1.1;font-weight:500">{{ d.title }}</div>
+              <p style="margin:8px 0 0;font-size:16px;line-height:1.6;color:#3A372F;max-width:560px">{{ d.body }}</p>
+            </div>
+          </li>
+        </sc-for>
+      </ol>
+    </div>
+  </div>
+
+  <!-- at a glance -->
+  <div style="margin-top:72px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:20px;max-width:1180px">
+    <sc-for list="{{ facts }}" as="f" hint-placeholder-count="3">
+      <div style="padding:26px 26px 28px;background:linear-gradient(180deg,#F6F2E8,#ECE5D5);box-shadow:inset 0 0 0 1px rgba(41,41,37,.12),0 14px 22px -18px rgba(41,41,37,.55)">
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:56px;line-height:1;color:#7D5F28;font-weight:500">{{ f.big }}</div>
+        <div style="margin-top:10px;font-size:15.5px;line-height:1.5;color:#3A372F">{{ f.text }}</div>
+      </div>
+    </sc-for>
+  </div>
+
+  <!-- engineering log -->
+  <section aria-label="Engineering log" style="margin-top:80px;max-width:1180px">
+    <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 30px;border-bottom:1px solid rgba(125,95,40,.5);padding-bottom:18px">
+      <h3 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(34px,4vw,48px);font-weight:500;line-height:1">Engineering log</h3>
+      <div style="font-size:14px;color:#4A463E">Technical work at Lume, Aug to Oct 2026. Each line carries its status.</div>
+    </div>
+
+    <div style="margin-top:26px;padding:20px 22px;background:linear-gradient(180deg,#34332D,#262521);color:#EFE9DB;box-shadow:0 18px 26px -18px rgba(41,41,37,.6)">
+      <div style="font:500 12px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#E9D49E">Stack I worked in</div>
+      <ul style="margin:14px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px">
+        <sc-for list="{{ stack }}" as="t" hint-placeholder-count="12"><li style="padding:6px 11px;font:500 13.5px/1 'Instrument Sans',Arial,sans-serif;box-shadow:inset 0 0 0 1px rgba(233,212,158,.4)">{{ t }}</li></sc-for>
+      </ul>
+    </div>
+
+    <div style="margin-top:34px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(340px,100%),1fr));gap:36px 44px">
+      <sc-for list="{{ log }}" as="g" hint-placeholder-count="5">
+        <section style="min-width:0">
+          <h4 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:27px;line-height:1.1;font-weight:500;color:#292925">{{ g.title }}</h4>
+          <ul style="margin:12px 0 0;padding:0;list-style:none;border-top:1px solid rgba(41,41,37,.2)">
+            <sc-for list="{{ g.items }}" as="i" hint-placeholder-count="4">
+              <li style="display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px solid rgba(41,41,37,.14);font-size:15px;line-height:1.5;color:#3A372F">
+                <span style="{{ i.chip }}">{{ i.status }}</span><span style="min-width:0">{{ i.text }}</span>
+              </li>
+            </sc-for>
+          </ul>
+        </section>
+      </sc-for>
+    </div>
+  </section>
+
+  <section style="margin-top:64px;max-width:1180px;border-top:1px solid rgba(41,41,37,.2);padding-top:26px">
+    <div style="font:500 13px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#7D5F28">Still to add</div>
+    <p style="margin:14px 0 0;font-size:15px;line-height:1.6;color:#3A372F;max-width:680px">Company link and logo, product screenshots and any figures you are happy to publish. Client names and client metrics are left off on purpose.</p>
+  </section>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":3220}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      duties: [
+        { n: '1', title: 'Guest apps, end to end', body: 'Engineered fully branded guest web applications for premium Indian resorts, supporting the guest journey from pre-arrival through checkout.' },
+        { n: '2', title: 'Frontend from scratch', body: 'Translated Figma designs into production-ready web interfaces and implemented the core product experience.' },
+        { n: '3', title: 'Deployment and infrastructure', body: 'Deployed the platform on Railway and hardened the backend with private networking. The application runs in production across 3 resort properties.' },
+        { n: '4', title: 'Leading the work', body: 'Led project and development activities, driving technical implementation and coordinating the product development lifecycle.' }
+      ],
+      stack: ['Vite', 'React', 'Node.js', 'Express', 'MongoDB Atlas', 'Railway', 'Vercel', 'Cloudinary', 'Resend', 'GitHub Actions', 'Oracle Opera Cloud (OHIP)', 'PostHog / HogQL', 'Postman', 'Figma'],
+      log: [
+        { title: 'Frontend and design handoff', items: [
+          ['Shipped', 'Converted 30+ Figma screens into production React code, replacing the template-based designs across the guest experience.'],
+          ['Shipped', 'Guest and property frontends run as Vite React single-page apps, with no server-side rendering.'],
+          ['In progress', 'Figma-to-Claude Code review step, so handed-off screens are checked before they reach development.']
+        ]},
+        { title: 'Deployment and environments', items: [
+          ['Shipped', 'Built the deployment environment. Guest app on Vercel, property app and Node.js backend on Railway.'],
+          ['Shipped', 'One codebase, one Railway deployment per property. A property differs only by its environment variables, so moving from UAT to production is a variable change.'],
+          ['Shipped', 'Backend hardened with Railway private networking.']
+        ]},
+        { title: 'Authentication and security', items: [
+          ['Built locally', 'Express mini-server in front of the property app: serves the static build, proxies /api/* and attaches the auth cookie server-side.'],
+          ['Built locally', 'Moved auth from a localStorage JWT to an httpOnly cookie, rewiring the auth context, API client and app shell.'],
+          ['Planned', 'Same treatment for the guest app, token expiry, rate limiting and a tighter CORS policy.'],
+          ['Confirmed', 'MongoDB Atlas encryption at rest (AES-256), documented as client-facing proof.']
+        ]},
+        { title: 'PMS integration (Oracle Opera Cloud)', items: [
+          ['Done', 'Mapped 15 Opera API domains against the product roadmap: reservations, guest profiles, folio and charge posting, room assignment, housekeeping and more.'],
+          ['In progress', 'Postman collection of every required endpoint, before any integration code. The PMS stays the source of truth; Lume keeps a synced copy keyed by the PMS booking ID.'],
+          ['Planned', 'Per-property hotel ID as the one deployment variable.']
+        ]},
+        { title: 'Email and automation', items: [
+          ['Designed', 'Automated check-in emails: a Railway Cron job scans reservations daily and sends 10-day, 3-day and checkout messages through Resend.'],
+          ['Designed', 'Staff-facing template editor on the property app, with live preview and test-send before any automated send goes out.']
+        ]},
+        { title: 'Analytics and reliability', items: [
+          ['Shipped', 'Guest analytics pipeline on PostHog HogQL, with exclusion filters for internal users, anonymous devices and token-URL identifiers, delivered as versioned reports.'],
+          ['Shipped', 'Funnel analysis that surfaced a silent submit failure in online check-in, and a drop-off between treatment selection and confirmed spa bookings.'],
+          ['Done', 'Diagnosed a production incident where a mis-wired repository served the wrong app to live guests.']
+        ]},
+        { title: 'Quality and infrastructure roadmap', items: [
+          ['Designed', 'CI/CD on GitHub Actions across dev, staging and production, with Vitest for backend logic and Playwright for component, API and end-to-end tests.'],
+          ['Planned', 'Cloudinary to Cloudflare R2 and Images, Railway frontend consolidation, and a Postgres split from MongoDB as the client count grows.']
+        ]}
+      ].map((g) => ({ title: g.title, items: g.items.map(([st, text]) => {
+        const col = { 'Shipped': ['#2F4021', '#E3EBD9'], 'Done': ['#2F4021', '#E3EBD9'], 'Confirmed': ['#2F4021', '#E3EBD9'], 'In progress': ['#6B4A12', '#F1E3C2'], 'Built locally': ['#6B4A12', '#F1E3C2'], 'Designed': ['#3A372F', '#E2DACA'], 'Planned': ['#3A372F', '#E2DACA'] }[st];
+        return { status: st, text, chip: "flex:none;width:92px;box-sizing:border-box;text-align:center;padding:5px 0 4px;margin-top:2px;font:500 11.5px/1.2 'Instrument Sans',Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:" + col[0] + ";background:" + col[1] };
+      }) })),
+      facts: [
+        { big: '3', text: 'resort properties running the application in production' },
+        { big: '1 of', text: 'the earliest engineers at a bootstrapped hospitality-tech startup' },
+        { big: '0 to 1', text: 'frontend built from scratch, from Figma designs to production' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>
