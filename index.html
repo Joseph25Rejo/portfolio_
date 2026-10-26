@@ -94,6 +94,10 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
 @media (max-width:760px) and (orientation:landscape){
   .hs-cap{width:min(420px,calc(100% - 32px));left:16px;right:auto}
 }
+@media (max-width:760px){
+  #hs-rig > div{will-change:auto}
+  .hs-grain{display:none}
+}
 @media (pointer:coarse){.hs-btn{min-height:44px}.hs-link{padding:6px 0;display:inline-block}}
 </style>
 </helmet>
@@ -150,7 +154,7 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
         <!-- paper grain + vignette -->
         <div aria-hidden="true" style="position:absolute;left:0;top:0;right:0;bottom:0;pointer-events:none;background:radial-gradient(ellipse at 50% 46%,rgba(20,12,4,0) 48%,rgba(14,8,2,.5) 100%)"></div>
 
-        <svg aria-hidden="true" width="100%" height="100%" style="position:absolute;left:0;top:0;pointer-events:none;mix-blend-mode:multiply;opacity:.16"><filter id="hs-grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix values="0 0 0 0 .28  0 0 0 0 .22  0 0 0 0 .14  0 0 0 .6 0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#hs-grain)"></rect></svg>
+        <svg class="hs-grain" aria-hidden="true" width="100%" height="100%" style="position:absolute;left:0;top:0;pointer-events:none;mix-blend-mode:multiply;opacity:.16"><filter id="hs-grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix values="0 0 0 0 .28  0 0 0 0 .22  0 0 0 0 .14  0 0 0 .6 0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#hs-grain)"></rect></svg>
         <!-- Entrance: name, introduction, invitation -->
         <div id="hs-hero" class="hs-hero" style="pointer-events:none">
           <div style="pointer-events:auto;max-width:520px">
@@ -466,7 +470,7 @@ class Component extends DCLogic {
     const glow = document.getElementById('hs-glow');
     if (glow) glow.style.opacity = Math.max(0, Math.min(1, (this._u - 4.7) / 1.3)).toFixed(3);
     const hero = document.getElementById('hs-hero');
-    if (hero) { const o = Math.max(0, Math.min(1, (this._u + 0.18) / -0.4)); hero.style.opacity = o.toFixed(3); hero.style.visibility = o < 0.02 ? 'hidden' : 'visible'; }
+    if (hero) { const o = Math.max(0, Math.min(1, (this._u + 0.18) / -0.4)); hero.style.opacity = o.toFixed(3); hero.style.visibility = o < 0.02 ? 'hidden' : 'visible'; hero.style.display = o < 0.02 ? 'none' : ''; }
   }
 
   scrollTarget(U) {
@@ -609,7 +613,7 @@ class Component extends DCLogic {
       dirOpen: s.dirOpen,
       leave: () => this.closeRoom(),
       onScroll: () => {},
-      roomStyle: 'position:absolute;left:0;top:0;right:0;bottom:0;z-index:20;opacity:' + (roomOn ? 1 : 0) + ';visibility:' + (roomOn ? 'visible' : 'hidden') + ';transition:opacity .6s ease,visibility .6s;',
+      roomStyle: 'display:' + (roomOn || s.room !== null ? 'block' : 'none') + ';position:absolute;left:0;top:0;right:0;bottom:0;z-index:20;opacity:' + (roomOn ? 1 : 0) + ';visibility:' + (roomOn ? 'visible' : 'hidden') + ';transition:opacity .6s ease,visibility .6s;',
       r0: s.room === 0, r1: s.room === 1, r2: s.room === 2, r3: s.room === 3, r4: s.room === 4, r5: s.room === 5, r6: s.room === 6
     };
   }
