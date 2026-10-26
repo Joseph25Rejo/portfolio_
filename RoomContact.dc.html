@@ -15,12 +15,12 @@
 <style>
 body{margin:0}
 .ct-a{color:#292925;text-decoration:none;border-bottom:1px solid rgba(125,95,40,.55);transition:color .2s,border-color .2s}
-.ct-a:hover,.ct-a:focus-visible{color:#7D5F28;border-color:#7D5F28;outline:none}
+.ct-a:hover,.ct-a:focus-visible{color:#6A4E1B;border-color:#6A4E1B;outline:none}
 .ct-f{display:block;width:100%;box-sizing:border-box;min-height:48px;border:0;border-bottom:1px solid rgba(41,41,37,.5);background:rgba(255,255,255,.0);padding:12px 2px;font:400 17px/1.4 'Instrument Sans',Arial,sans-serif;color:#292925;border-radius:0;transition:border-color .2s,background .2s}
 .ct-f::placeholder{color:#5C574D}
 .ct-f:focus{outline:none;border-bottom-color:#B28F4E;background:rgba(255,255,255,.5);box-shadow:0 1px 0 #B28F4E}
 .ct-send{display:inline-flex;align-items:center;gap:12px;min-height:50px;padding:0 28px;border:1px solid #292925;background:#292925;color:#F4F0E8;font:500 16px/1 'Instrument Sans',Arial,sans-serif;cursor:pointer;transition:background .2s,border-color .2s}
-.ct-send:hover,.ct-send:focus-visible{background:#7D5F28;border-color:#7D5F28;outline:none}
+.ct-send:hover,.ct-send:focus-visible{background:#6A4E1B;border-color:#6A4E1B;outline:none}
 .ct-send[disabled]{opacity:.6;cursor:default}
 </style>
 </helmet>
@@ -28,7 +28,7 @@ body{margin:0}
 <div style="position:relative;min-height:900px;box-sizing:border-box;padding:clamp(88px,11vh,120px) clamp(20px,4.4vw,72px) 110px;background:radial-gradient(ellipse 70% 60% at 85% 0%,#FFFDF6 0%,rgba(255,253,246,0) 70%),linear-gradient(180deg,#F5F1E7,#EAE3D3);font-family:'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925">
 
   <header style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 36px;border-bottom:1px solid rgba(125,95,40,.5);padding-bottom:26px">
-    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(56px,8vw,104px);line-height:.8;color:#7D5F28;font-weight:500">06</div>
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(56px,8vw,104px);line-height:.8;color:#6A4E1B;font-weight:500">06</div>
     <div style="flex:1 1 320px;min-width:0">
       <h2 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(40px,5.4vw,68px);line-height:1;font-weight:500;letter-spacing:-.01em">The Final Landing</h2>
       <p style="margin:12px 0 0;font-size:16px;line-height:1.55;color:#4A463E;max-width:560px">Contact.</p>
@@ -38,7 +38,7 @@ body{margin:0}
   <div style="display:flex;flex-wrap:wrap;gap:56px 80px;margin-top:56px">
 
     <div style="flex:2 1 340px;min-width:0">
-      <p style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(34px,4vw,54px);line-height:1.12;font-weight:500;max-width:520px">If you have something to build, I would like to hear about it.</p>
+      <p style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(34px,4vw,54px);line-height:1.3;font-weight:500;max-width:520px">If you have something to build, I would like to hear about it.</p>
       <p style="margin:22px 0 0;font-size:17px;line-height:1.6;max-width:440px;color:#3A372F">Write about a project, a role or a collaboration. I read everything.</p>
 
       <ul style="margin:40px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;border-top:1px solid rgba(41,41,37,.2)">
@@ -63,15 +63,10 @@ body{margin:0}
         <div style="display:flex;flex-wrap:wrap;align-items:center;gap:16px 22px;margin-top:30px">
           <button type="submit" class="ct-send" disabled="{{ busy }}"><span>{{ sendLabel }}</span><span aria-hidden="true">→</span></button>
         </div>
-        <sc-if value="{{ ok }}" hint-placeholder-val="{{ false }}"><div role="status" style="margin-top:22px;padding:14px 16px;background:#E3EBD9;color:#2F4021;font-size:15px;line-height:1.5;box-shadow:inset 0 0 0 1px #A9BD93">Thank you for your message! I will get back to you soon.</div></sc-if>
-        <sc-if value="{{ bad }}" hint-placeholder-val="{{ false }}"><div role="alert" style="margin-top:22px;padding:14px 16px;background:#F2DFD8;color:#6B2A18;font-size:15px;line-height:1.5;box-shadow:inset 0 0 0 1px #D6A998">Something went wrong sending that. Please write to me directly at joseph25rejo@gmail.com.</div></sc-if>
+        <sc-if value="{{ ok }}" hint-placeholder-val="{{ false }}"><div role="status" style="margin-top:22px;padding:14px 16px;background:#E3EBD9;color:#2F4021;font-size:15px;line-height:1.5;box-shadow:inset 0 0 0 1px #A9BD93">Your email app should now be open with the message ready to send. If it did not open, write to me at joseph25rejo@gmail.com.</div></sc-if>
+        <sc-if value="{{ bad }}" hint-placeholder-val="{{ false }}"><div role="alert" style="margin-top:22px;padding:14px 16px;background:#F2DFD8;color:#6B2A18;font-size:15px;line-height:1.5;box-shadow:inset 0 0 0 1px #D6A998">Could not open your email app. Please write to me directly at joseph25rejo@gmail.com.</div></sc-if>
       </form>
 
-      <div style="margin-top:18px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;font-size:13px;color:#4A463E">
-        <span>Prototype: preview form states</span>
-        <sc-for list="{{ states }}" as="s" hint-placeholder-count="4"><button type="button" onClick="{{ s.pick }}" style="{{ s.style }}">{{ s.label }}</button></sc-for>
-      </div>
-      <p style="margin:10px 0 0;font-size:13px;line-height:1.55;color:#4A463E;max-width:520px">Sending is simulated here. The build keeps the existing EmailJS delivery with the same fields and the same sending, success and error states.</p>
     </div>
   </div>
 </div>
@@ -88,13 +83,21 @@ class Component extends DCLogic {
     }));
     return {
       busy: s === 'sending', ok: s === 'success', bad: s === 'error', states,
-      sendLabel: s === 'sending' ? 'Sending…' : 'Send message',
+      sendLabel: s === 'sending' ? 'Sending…' : 'Write the email',
       submit: (e) => {
         if (e && e.preventDefault) e.preventDefault();
         const f = e && e.target;
         if (f && f.checkValidity && !f.checkValidity()) { if (f.reportValidity) f.reportValidity(); return; }
-        this.setState({ st: 'sending' });
-        setTimeout(() => this.setState({ st: 'success' }), 1300);
+        try {
+          const g = (n) => (f.elements[n] && f.elements[n].value || '').trim();
+          const body = g('message') + '
+
+' + g('name') + (g('phone') ? '
+' + g('phone') : '') + '
+' + g('email');
+          window.location.href = 'mailto:joseph25rejo@gmail.com?subject=' + encodeURIComponent('Portfolio message from ' + g('name')) + '&body=' + encodeURIComponent(body);
+          this.setState({ st: 'success' });
+        } catch (err) { this.setState({ st: 'error' }); }
       }
     };
   }
