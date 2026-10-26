@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#120F0A">
 <title>Joseph R.M. — The House</title>
 <script src="./vendor/react.js"></script>
 <script src="./vendor/react-dom.js"></script>
@@ -13,7 +15,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
-body{margin:0;background:#120F0A}
+body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+.hs-vh{height:100vh;height:100dvh}
+.hs-track{height:calc(100vh + 7440px);height:calc(100dvh + 7440px)}
 #hs-scroller{scrollbar-width:none}
 #hs-rig > div{will-change:transform}
 #hs-scroller::-webkit-scrollbar{display:none}
@@ -26,12 +30,12 @@ body{margin:0;background:#120F0A}
 .hs-link{color:#292925;text-decoration:none;border-bottom:1px solid rgba(125,95,40,.55);transition:color .2s,border-color .2s}
 .hs-link:hover,.hs-link:focus-visible{color:#7D5F28;border-color:#7D5F28;outline:none}
 .hs-floor{width:44px;height:44px;display:flex;align-items:center;justify-content:flex-end;background:none;border:0;cursor:pointer;padding:0;position:relative}
-.hs-floor span.n{font:500 17px/1 'Cormorant Garamond',Georgia,serif;color:rgba(41,41,37,.62);transition:color .25s,transform .25s;letter-spacing:.02em}
+.hs-floor span.n{font:500 17px/1 'Cormorant Garamond',Georgia,serif;color:rgba(41,41,37,.74);transition:color .25s,transform .25s;letter-spacing:.02em}
 .hs-floor:hover span.n,.hs-floor:focus-visible span.n,.hs-floor.on span.n{color:#292925;transform:translateX(-4px)}
 .hs-floor.on span.n{font-weight:600}
 .hs-floor span.t{position:absolute;right:48px;white-space:nowrap;font:500 12px/1 'Instrument Sans',Arial,sans-serif;color:#292925;background:rgba(244,240,232,.94);padding:7px 10px;border-radius:2px;opacity:0;pointer-events:none;transition:opacity .2s}
 .hs-floor:hover span.t,.hs-floor:focus-visible span.t{opacity:1}
-.hs-door-btn{display:block;border:0;padding:0;margin:0;background:transparent;cursor:pointer;outline:none}
+.hs-door-btn{-webkit-tap-highlight-color:transparent;touch-action:manipulation;display:block;border:0;padding:0;margin:0;background:transparent;cursor:pointer;outline:none}
 .hs-door-btn:focus-visible{box-shadow:0 0 0 3px #B28F4E}
 .hs-logo{pointer-events:auto;position:absolute;z-index:9;top:18px;left:clamp(16px,4.4vw,72px);display:block;line-height:0;color:#292925;text-decoration:none;outline:none}
 .hs-logo svg{display:block;height:40px;width:auto;overflow:visible;filter:drop-shadow(0 0 6px rgba(244,240,232,.95)) drop-shadow(0 0 2px rgba(244,240,232,.9));transition:transform .45s cubic-bezier(.16,1,.3,1)}
@@ -62,15 +66,43 @@ body{margin:0;background:#120F0A}
   .hs-name{font-size:clamp(38px,min(15vw,8.4vh),64px)}
   .hs-rail{display:none !important}
   .hs-bar{display:flex !important}
+  .hs-dir{top:calc(14px + env(safe-area-inset-top,0px));right:12px}
+  .hs-logo{top:calc(16px + env(safe-area-inset-top,0px))}
+  .hs-cap{bottom:calc(76px + env(safe-area-inset-bottom,0px));padding:16px 16px 16px;display:flex;flex-direction:column}
+  .hs-cap .hs-capline{margin-top:6px !important;font-size:15px !important;line-height:1.45 !important}
+  .hs-cap .hs-capnum{font-size:34px !important}
+  .hs-cap .hs-captitle{font-size:28px !important}
+  .hs-cap .hs-capbtn{margin-top:14px !important}
+  .hs-cap .hs-capbtn .hs-btn{width:100%;height:56px;font-size:17px;font-weight:600;justify-content:center;background:#292925;color:#F4F0E8;border-color:#292925;border-radius:3px;box-shadow:0 6px 16px rgba(20,12,4,.35)}
+  .hs-cap .hs-capbtn .hs-btn:active{background:#7D5F28;border-color:#7D5F28;transform:translateY(1px)}
+  .hs-hero{padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .hs-hero .hs-ctas{flex-direction:column;align-items:stretch !important;gap:10px !important}
+  .hs-hero .hs-ctas .hs-btn{height:52px;justify-content:center;font-size:16px}
+  .hs-hero .hs-ctas span[style*="flex-basis"]{text-align:center;flex-basis:auto !important}
+  .hs-btn{height:44px}
+  .hs-cap .hs-links{margin-top:8px !important;font-size:14px !important;line-height:1.75 !important}
+  .hs-cap .hs-links .hs-link{padding:4px 0}
 }
+@media (max-width:760px) and (max-height:700px){
+  .hs-cap{padding:12px 14px 14px;bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+  .hs-cap .hs-capnum{font-size:28px !important}
+  .hs-cap .hs-captitle{font-size:24px !important}
+  .hs-cap .hs-capline{font-size:14px !important;line-height:1.35 !important}
+  .hs-cap .hs-capbtn{margin-top:10px !important}
+  .hs-cap .hs-capbtn .hs-btn{height:52px}
+}
+@media (max-width:760px) and (orientation:landscape){
+  .hs-cap{width:min(420px,calc(100% - 32px));left:16px;right:auto}
+}
+@media (pointer:coarse){.hs-btn{min-height:44px}.hs-link{padding:6px 0;display:inline-block}}
 </style>
 </helmet>
 
-<div id="hs-root" class="hs-sans" style="position:relative;width:100%;height:100vh;min-height:560px;overflow:hidden;background:#120F0A;color:#292925">
+<div id="hs-root" class="hs-sans hs-vh" style="position:relative;width:100%;min-height:560px;overflow:hidden;background:#120F0A;color:#292925">
 
   <div id="hs-scroller" tabindex="0" aria-label="Scroll to climb the staircase" onScroll="{{ onScroll }}" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow-y:{{ scrollMode }};overscroll-behavior:contain">
-    <div style="position:relative;height:calc(100vh + 7440px)">
-      <div id="hs-sticky" style="position:sticky;top:0;height:100vh;overflow:hidden">
+    <div class="hs-track" style="position:relative">
+      <div id="hs-sticky" class="hs-vh" style="position:sticky;top:0;overflow:hidden">
 
         <!-- 3D house -->
         <div id="hs-stage" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;perspective:1100px;perspective-origin:50% 50%;background:linear-gradient(180deg,#0B0E24,#15131A)">
@@ -125,7 +157,7 @@ body{margin:0;background:#120F0A}
             <p class="hs-sans" style="margin:0 0 22px;font-size:14px;line-height:1.5;color:#4A463E;letter-spacing:.02em">Developer · Engineering student · Product builder</p>
             <h1 class="hs-name hs-serif">Joseph<br><span style="padding-left:.55em">Rejo Mathew</span></h1>
             <p class="hs-sans" style="margin:26px 0 0;font-size:17px;line-height:1.55;color:#3A372F;max-width:440px">A full-stack developer and third-year engineering student in Bengaluru, taking products from Figma to production. Founding engineer intern at Lume, where I help build guest apps for premium Indian resorts.</p>
-            <div style="margin-top:34px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+            <div class="hs-ctas" style="margin-top:34px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
               <button type="button" class="hs-btn" onClick="{{ begin }}"><span>Begin the journey</span><span class="hs-nudge" aria-hidden="true" style="display:inline-block;font-size:18px;line-height:1">↓</span></button>
               <a class="hs-btn hs-btn-solid" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf" style="text-decoration:none"><span>Download résumé</span><span aria-hidden="true">↓</span></a>
               <span class="hs-sans" style="font-size:13px;color:#4A463E;flex-basis:100%">PDF · or scroll to climb the staircase</span>
@@ -136,14 +168,14 @@ body{margin:0;background:#120F0A}
         <!-- Landing caption -->
         <div class="hs-cap" style="{{ capStyle }}">
           <div style="display:flex;align-items:baseline;gap:16px">
-            <span class="hs-serif" style="font-size:46px;line-height:1;color:#7D5F28;font-weight:500">{{ cap.num }}</span>
-            <span class="hs-serif" style="font-size:34px;line-height:1.05;color:#292925;font-weight:500">{{ cap.title }}</span>
+            <span class="hs-serif hs-capnum" style="font-size:46px;line-height:1;color:#7D5F28;font-weight:500">{{ cap.num }}</span>
+            <span class="hs-serif hs-captitle" style="font-size:34px;line-height:1.05;color:#292925;font-weight:500">{{ cap.title }}</span>
           </div>
-          <p class="hs-sans" style="margin:14px 0 0;font-size:15.5px;line-height:1.55;color:#3A372F">{{ cap.line }}</p>
+          <p class="hs-sans hs-capline" style="margin:14px 0 0;font-size:15.5px;line-height:1.55;color:#3A372F">{{ cap.line }}</p>
           <sc-if value="{{ cap.last }}" hint-placeholder-val="{{ false }}">
-            <p class="hs-sans" style="margin:14px 0 0;font-size:14.5px;line-height:1.9;color:#3A372F"><a class="hs-link" href="mailto:joseph25rejo@gmail.com">joseph25rejo@gmail.com</a><br><a class="hs-link" href="https://www.linkedin.com/in/joseph-r-m-12514229b" target="_blank" rel="noopener">LinkedIn</a> &nbsp;·&nbsp; <a class="hs-link" href="https://github.com/Joseph25Rejo" target="_blank" rel="noopener">GitHub</a> &nbsp;·&nbsp; <a class="hs-link" href="https://medium.com/@joseph25rejo" target="_blank" rel="noopener">Medium</a> &nbsp;·&nbsp; <a class="hs-link" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf">Résumé (PDF)</a></p>
+            <p class="hs-sans hs-links" style="margin:14px 0 0;font-size:14.5px;line-height:1.9;color:#3A372F"><a class="hs-link" href="mailto:joseph25rejo@gmail.com">joseph25rejo@gmail.com</a><br><a class="hs-link" href="https://www.linkedin.com/in/joseph-r-m-12514229b" target="_blank" rel="noopener">LinkedIn</a> &nbsp;·&nbsp; <a class="hs-link" href="https://github.com/Joseph25Rejo" target="_blank" rel="noopener">GitHub</a> &nbsp;·&nbsp; <a class="hs-link" href="https://medium.com/@joseph25rejo" target="_blank" rel="noopener">Medium</a> &nbsp;·&nbsp; <a class="hs-link" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf">Résumé (PDF)</a></p>
           </sc-if>
-          <div style="margin-top:22px"><button type="button" class="hs-btn" onClick="{{ capOpen }}" tabindex="{{ capTab }}"><span>{{ cap.btn }}</span><span aria-hidden="true">→</span></button></div>
+          <div class="hs-capbtn" style="margin-top:22px"><button type="button" class="hs-btn" onClick="{{ capOpen }}" tabindex="{{ capTab }}"><span>{{ cap.btn }}</span><span aria-hidden="true">→</span></button></div>
         </div>
 
         <!-- Floor indicator (desktop) -->
@@ -154,7 +186,7 @@ body{margin:0;background:#120F0A}
         </nav>
 
         <!-- Floor bar (mobile) -->
-        <nav class="hs-bar" aria-label="Floors" style="position:absolute;left:0;right:0;bottom:0;height:60px;display:none;align-items:center;justify-content:space-around;background:rgba(244,240,232,.94);border-top:1px solid rgba(41,41,37,.14)">
+        <nav class="hs-bar" aria-label="Floors" style="position:absolute;left:0;right:0;bottom:0;height:calc(60px + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:border-box;display:none;align-items:center;justify-content:space-around;background:rgba(244,240,232,.94);border-top:1px solid rgba(41,41,37,.14)">
           <sc-for list="{{ floors }}" as="f" hint-placeholder-count="7">
             <button type="button" aria-label="{{ f.aria }}" onClick="{{ f.go }}" style="{{ f.barStyle }}">{{ f.num }}</button>
           </sc-for>
@@ -401,7 +433,7 @@ class Component extends DCLogic {
     const land = {
       psi: 180 * (ue + 1), r: 240, h: FH * ue + 300,
       beta: 180 * ue + (narrow ? 0 : 7),
-      pitch: -6 + 10 * Math.sin(Math.PI * f) + 9 * sm(ue - 5), pk: narrow ? 0.8 : 0.92
+      pitch: -6 + 10 * Math.sin(Math.PI * f) + 9 * sm(ue - 5), pk: narrow ? 0.9 + 0.22 * Math.max(0, Math.min(1, ((this._hh || 844) - 640) / 200)) : 0.92
     };
     if (U >= 0) return land;
     const t = sm(1 + U / 0.625);
@@ -413,6 +445,7 @@ class Component extends DCLogic {
     const rig = document.getElementById('hs-rig'), st = document.getElementById('hs-stage');
     if (!rig || !st) return;
     const Hh = st.clientHeight || 900;
+    this._hh = Hh;
     const R = Math.PI / 180;
     const narrow = (st.clientWidth || 1440) < 700;
     const p = this.pose(this._u, narrow);
@@ -425,8 +458,9 @@ class Component extends DCLogic {
     }
     const alpha = 180 - p.beta;
     st.style.perspective = P.toFixed(1) + 'px';
-    st.style.perspectiveOrigin = narrow ? '50% 36%' : '50% 50%';
-    rig.style.top = narrow ? '36%' : '50%';
+    const lift = narrow ? 6 * Math.max(0, Math.min(1, this._u - 5)) : 0;
+    st.style.perspectiveOrigin = narrow ? '50% ' + (36 - lift) + '%' : '50% 50%';
+    rig.style.top = narrow ? (36 - lift) + '%' : '50%';
     rig.style.transformOrigin = '0 0 ' + P.toFixed(1) + 'px';
     rig.style.transform = 'rotateX(' + pitch.toFixed(3) + 'deg) rotateY(' + alpha.toFixed(3) + 'deg) translate3d(' + (-X).toFixed(2) + 'px,' + h.toFixed(2) + 'px,' + (P - Z).toFixed(2) + 'px)';
     const glow = document.getElementById('hs-glow');
@@ -561,7 +595,7 @@ class Component extends DCLogic {
       aria: 'Go to ' + f.num + ', ' + f.title,
       go: () => this.goTo(k),
       goDir: () => { this.setState({ dirOpen: false }); this.goTo(k); },
-      barStyle: 'min-width:44px;min-height:44px;border:0;background:none;cursor:pointer;font:' + (s.near === k ? '600' : '500') + ' 19px/1 \'Cormorant Garamond\',Georgia,serif;color:' + (s.near === k ? '#292925' : 'rgba(41,41,37,.6)') + ';border-bottom:2px solid ' + (s.near === k ? '#B28F4E' : 'transparent')
+      barStyle: 'min-width:44px;min-height:44px;border:0;background:none;cursor:pointer;font:' + (s.near === k ? '600' : '500') + ' 19px/1 \'Cormorant Garamond\',Georgia,serif;color:' + (s.near === k ? '#292925' : 'rgba(41,41,37,.74)') + ';border-bottom:2px solid ' + (s.near === k ? '#B28F4E' : 'transparent')
     }));
     const roomOn = s.roomVis;
     return {
