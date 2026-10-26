@@ -64,6 +64,9 @@ body{margin:0}
           <sc-if value="{{ videoFrame }}" hint-placeholder-val="{{ false }}">
             <iframe src="{{ cur.video }}" title="{{ cur.name }} demo video" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position:absolute;left:0;top:0;width:100%;height:100%;border:0;background:#120F0A"></iframe>
           </sc-if>
+          <sc-if value="{{ videoFile }}" hint-placeholder-val="{{ false }}">
+            <video src="{{ cur.video }}" poster="{{ cur.cover }}" controls="" playsinline="" preload="metadata" aria-label="{{ cur.name }} demo video" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;background:#120F0A"></video>
+          </sc-if>
           <sc-if value="{{ videoSoon }}" hint-placeholder-val="{{ false }}">
             <div aria-hidden="true" style="width:64px;height:64px;border-radius:50%;border:1px solid rgba(41,41,37,.5);display:flex;align-items:center;justify-content:center"><div style="width:0;height:0;border-left:16px solid #292925;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:5px"></div></div>
             <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,2.6vw,32px);font-weight:500;line-height:1.1">Demo video coming soon</div>
@@ -132,7 +135,7 @@ class Component extends DCLogic {
   data() {
     return [
       { n: 'I', name: 'QuarksFinance', kind: 'Stock analysis and strategy platform',
-        cover: './assets/projects/quarksfinance-cover.jpg', arch: './assets/projects/quarksfinance-arch.png', video: 'https://www.youtube.com/embed/pCVa_T0C6t4',
+        cover: './assets/projects/Quarks/quarks-finance-cover.webp', arch: './assets/projects/Quarks/quarksfinance-arch.png', video: 'https://www.youtube.com/embed/pCVa_T0C6t4',
         archCaption: 'How QuarksFinance fits together. Select the diagram to open it at full size.',
         demoLong: 'A walkthrough of QuarksFinance: portfolio and watchlist, backtesting, live signals and sentiment.',
         purpose: 'A stock analysis and strategy platform that brings backtesting, live signals and sentiment into one place.',
@@ -141,25 +144,25 @@ class Component extends DCLogic {
         stack: ['Python', 'Flask', 'SQLite', 'React', 'Next.js', 'CPanel', 'Render', 'Vercel'],
         live: 'https://quarks-nu.vercel.app', repo: 'https://github.com/Joseph25Rejo/QuarksFinance' },
       { n: 'II', name: 'Hatch', kind: 'Hackathon management platform',
-        cover: './assets/projects/hatch-cover.png', arch: './assets/projects/hatch-arch.png', video: '',
+        cover: './assets/projects/hatch/hatch-cover.webp', arch: './assets/projects/hatch/hatch-arch.png', video: './assets/videos/hatch.mp4',
         archCaption: 'How Hatch fits together. Select the diagram to open it at full size.',
-        demoLong: 'A demo video for this project is on the way.',
+        demoLong: 'A short walkthrough of Hatch: events, teams, submissions and judging.',
         purpose: 'Runs the whole life of a hackathon in one platform: events, teams, submissions and judging. It won WhiteHack 1.0, a national online web development hackathon, in August 2025.',
         features: ['Event registration', 'Team formation', 'Project submissions', 'Evaluations and judging', 'Event management through admin panels'],
         contrib: ['Delivered the full-stack platform with Flask and MongoDB across 5 workflows.', 'Built Flask APIs and admin panels that cut manual coordination effort by 40%.'],
         stack: ['Next.js', 'TypeScript', 'Flask', 'MongoDB', 'Firebase Firestore', 'SQLite', 'CPanel'],
         live: 'https://hatch-iota.vercel.app/', repo: 'https://github.com/AdityaKaushik295/Hatch' },
       { n: 'III', name: 'ParkNGo', kind: 'Smart parking with dynamic pricing',
-        cover: './assets/projects/parkngo-cover.jpeg', arch: './assets/projects/parkngo-arch.png', video: '',
+        cover: './assets/projects/Parkngo/parkngo-cover.jpg', arch: './assets/projects/Parkngo/parkngo-arch.png', video: './assets/videos/parkngo.mp4',
         archCaption: 'How ParkNGo fits together. Select the diagram to open it at full size.',
-        demoLong: 'A demo video for this project is on the way.',
+        demoLong: 'A short walkthrough of ParkNGo: booking, QR entry and exit, and billing.',
         purpose: 'A smart parking platform covering booking, entry and exit, and billing, with prices that respond to demand.',
         features: ['Real-time booking', 'QR-based entry and exit', 'Automated billing', 'Dynamic pricing with ML-based demand prediction', 'Role-based access for users, managers and owners'],
         contrib: ['Engineered the platform across React Native, Express.js, FastAPI and MongoDB, with Cloudinary integration.', 'Implemented JWT authentication and role-based access control across 3 roles.'],
         stack: ['React Native', 'Node.js', 'Express.js', 'FastAPI', 'MongoDB Atlas', 'Cloudinary', 'RazorPay', 'HuggingFace', 'Google Maps'],
         live: '', repo: 'https://github.com/Joseph25Rejo/ParknGo-appln' },
       { n: 'IV', name: 'ORION', kind: 'AI grocery management',
-        cover: './assets/projects/orion-cover.png', arch: './assets/projects/orion-arch.png', video: '',
+        cover: './assets/projects/ORION/orion-cover.png', arch: './assets/projects/ORION/orion-arch.png', video: '',
         archCaption: 'How ORION fits together. Select the diagram to open it at full size.',
         demoLong: 'A demo video for this project is on the way.',
         purpose: 'An AI grocery management system that links what people consume with live inventory, through demand forecasting, recommendations and anomaly detection.',
@@ -184,7 +187,7 @@ class Component extends DCLogic {
     const showCover = s.tab === 'overview', showArch = s.tab === 'arch', showDemo = s.tab === 'demo';
     return { list, cur, tabs, showCover, showArch, showDemo,
       coverImg: showCover && !!cur.cover, archImg: showArch && !!cur.arch,
-      videoFrame: showDemo && !!cur.video, videoSoon: showDemo && !cur.video };
+      videoFrame: showDemo && !!cur.video && /youtube/.test(cur.video), videoFile: showDemo && !!cur.video && !/youtube/.test(cur.video), videoSoon: showDemo && !cur.video };
   }
 }
 </script>
