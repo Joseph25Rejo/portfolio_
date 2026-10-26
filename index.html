@@ -54,11 +54,11 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
 @media (prefers-reduced-motion:reduce){.hs-nudge{animation:none}}
 .hs-hero{position:absolute;left:0;bottom:0;top:0;width:min(640px,100%);display:flex;flex-direction:column;justify-content:flex-end;padding:0 clamp(24px,4.4vw,72px) clamp(40px,8vh,88px);box-sizing:border-box;background:linear-gradient(90deg,rgba(244,240,232,.94) 0%,rgba(244,240,232,.78) 55%,rgba(244,240,232,0) 100%)}
 .hs-name{margin:0;font-weight:400;font-size:clamp(46px,6.6vw,104px);line-height:.94;letter-spacing:-.012em;color:#292925;text-shadow:0 1px 0 rgba(255,255,255,.7),0 -1px 0 rgba(41,41,37,.10)}
-.hs-cap{position:absolute;left:clamp(24px,4.4vw,72px);bottom:clamp(36px,7vh,76px);width:min(440px,calc(100% - 48px));background:rgba(244,240,232,.9);padding:28px 30px 30px;box-sizing:border-box}
-.hs-dir{position:absolute;top:22px;right:clamp(16px,2.6vw,36px)}
+.hs-cap{z-index:6;isolation:isolate;-webkit-transform:translateZ(0);position:absolute;left:clamp(24px,4.4vw,72px);bottom:clamp(36px,7vh,76px);width:min(440px,calc(100% - 48px));background:rgba(244,240,232,.9);padding:28px 30px 30px;box-sizing:border-box}
+.hs-dir{z-index:8;position:absolute;top:22px;right:clamp(16px,2.6vw,36px)}
 @media (max-width:760px){
   .hs-hero{width:100%;background:linear-gradient(0deg,rgba(244,240,232,.96) 0%,rgba(244,240,232,.9) 48%,rgba(244,240,232,0) 100%);padding-bottom:84px}
-  .hs-cap{left:16px;right:16px;width:auto;bottom:80px;padding:20px 20px 22px}
+  .hs-cap{left:16px;right:16px;width:auto;bottom:80px;padding:20px 20px 22px;background:#F4F0E8;box-shadow:0 10px 30px rgba(10,6,2,.45)}
   .hs-btn{padding:0 14px;height:42px}
   .hs-logo{top:16px}
   .hs-logo svg{height:32px}
@@ -105,7 +105,7 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
       <div id="hs-sticky" class="hs-vh" style="position:sticky;top:0;overflow:hidden">
 
         <!-- 3D house -->
-        <div id="hs-stage" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;perspective:1100px;perspective-origin:50% 50%;background:linear-gradient(180deg,#0B0E24,#15131A)">
+        <div id="hs-stage" style="z-index:0;isolation:isolate;position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;perspective:1100px;perspective-origin:50% 50%;background:linear-gradient(180deg,#0B0E24,#15131A)">
           <div id="hs-rig" style="position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d;transform-origin:0 0 1100px;transform:rotateX(10deg) rotateY(145deg) translate3d(-190px,170px,1480px)">
             <sc-for list="{{ paint }}" as="p" hint-placeholder-count="0"><div style="{{ p.s }}"><sc-for list="{{ p.kids }}" as="c" hint-placeholder-count="0"><div style="{{ c }}"></div></sc-for></div></sc-for>
             <sc-for list="{{ world }}" as="w" hint-placeholder-count="0"><div class="{{ w.c }}" style="{{ w.s }}"></div></sc-for>
@@ -179,14 +179,14 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
         </div>
 
         <!-- Floor indicator (desktop) -->
-        <nav class="hs-rail" aria-label="Floors" style="position:absolute;right:clamp(10px,1.8vw,26px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:flex-end;background:rgba(244,240,232,.88);padding:6px 10px 6px 0;border-radius:2px;box-shadow:0 6px 18px rgba(0,0,0,.35)">
+        <nav class="hs-rail" aria-label="Floors" style="z-index:7;position:absolute;right:clamp(10px,1.8vw,26px);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:flex-end;background:rgba(244,240,232,.88);padding:6px 10px 6px 0;border-radius:2px;box-shadow:0 6px 18px rgba(0,0,0,.35)">
           <sc-for list="{{ floors }}" as="f" hint-placeholder-count="7">
             <button type="button" class="{{ f.cls }}" aria-label="{{ f.aria }}" onClick="{{ f.go }}"><span class="t">{{ f.title }}</span><span class="n">{{ f.num }}</span></button>
           </sc-for>
         </nav>
 
         <!-- Floor bar (mobile) -->
-        <nav class="hs-bar" aria-label="Floors" style="position:absolute;left:0;right:0;bottom:0;height:calc(60px + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:border-box;display:none;align-items:center;justify-content:space-around;background:rgba(244,240,232,.94);border-top:1px solid rgba(41,41,37,.14)">
+        <nav class="hs-bar" aria-label="Floors" style="z-index:7;position:absolute;left:0;right:0;bottom:0;height:calc(60px + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px);box-sizing:border-box;display:none;align-items:center;justify-content:space-around;background:rgba(244,240,232,.94);border-top:1px solid rgba(41,41,37,.14)">
           <sc-for list="{{ floors }}" as="f" hint-placeholder-count="7">
             <button type="button" aria-label="{{ f.aria }}" onClick="{{ f.go }}" style="{{ f.barStyle }}">{{ f.num }}</button>
           </sc-for>
