@@ -1,8 +1,11 @@
 {
   "name": "portfolio",
+  "main": "worker.js",
   "compatibility_date": "2025-10-01",
   "assets": {
     "directory": "./",
-    "html_handling": "auto-trailing-slash"
+    "binding": "ASSETS",
+    "html_handling": "auto-trailing-slash",
+    "run_worker_first": ["/api/*"]
   }
 }

@@ -12,7 +12,17 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>body{margin:0}</style>
+<style>
+body{margin:0}
+.st-a{color:#292925;text-decoration:none;border-bottom:1px solid rgba(106,78,27,.6);transition:color .2s,border-color .2s}
+.st-a:hover,.st-a:focus-visible{color:#6A4E1B;border-bottom-color:#6A4E1B}
+.st-a:focus-visible,.st-btn:focus-visible{outline:3px solid #B28F4E;outline-offset:3px}
+.st-btn{display:inline-flex;align-items:center;gap:12px;min-height:50px;padding:0 26px;background:#292925;color:#F4F0E8;font:500 16px/1 'Instrument Sans',Arial,sans-serif;text-decoration:none;border:1px solid #292925;transition:background .2s}
+.st-btn:hover{background:#6A4E1B;border-color:#6A4E1B}
+.st-item{font:500 17px/1.3 'Instrument Sans',Arial,sans-serif;color:#292925;white-space:nowrap}
+.st-item+.st-item::before{content:"\00b7";color:#6A4E1B;margin:0 10px;font-weight:600}
+@media (prefers-reduced-motion:reduce){.st-a,.st-btn{transition:none}}
+</style>
 </helmet>
 
 <div style="position:relative;min-height:900px;box-sizing:border-box;padding:clamp(88px,11vh,120px) clamp(20px,4.4vw,72px) 110px;background:radial-gradient(ellipse 70% 45% at 85% 0%,#F7F3EA 0%,rgba(247,243,234,0) 70%),linear-gradient(180deg,#E9E2D3,#DED5C2);font-family:'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925">
@@ -21,65 +31,85 @@
     <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(56px,8vw,104px);line-height:.8;color:#6A4E1B;font-weight:500">03</div>
     <div style="flex:1 1 320px;min-width:0">
       <h2 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(40px,5.4vw,68px);line-height:1;font-weight:500;letter-spacing:-.01em">The Study</h2>
-      <p style="margin:12px 0 0;font-size:16px;line-height:1.55;color:#4A463E;max-width:560px">The tools within reach, shelved by how often I reach for them.</p>
+      <p style="margin:12px 0 0;font-size:16px;line-height:1.55;color:#4A463E;max-width:560px">Skills: what I build with, what I am strongest at, and everything on my résumé.</p>
     </div>
   </header>
 
-  <div style="margin-top:56px;display:flex;flex-direction:column;gap:0;max-width:1180px">
-    <sc-for list="{{ shelves }}" as="sh" hint-placeholder-count="3">
-      <section aria-label="{{ sh.aria }}" style="display:flex;flex-wrap:wrap;gap:20px 44px;align-items:flex-end;padding-top:6px">
-        <div style="flex:0 0 190px;max-width:100%;padding-bottom:22px">
-          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;line-height:1.05;font-weight:500">{{ sh.label }}</div>
-          <div style="margin-top:8px;font-size:14px;line-height:1.5;color:#4A463E">{{ sh.note }}</div>
+  <!-- primary stack -->
+  <section aria-labelledby="st-primary" style="margin-top:56px;max-width:1180px">
+    <h3 id="st-primary" style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(32px,3.6vw,44px);line-height:1.15;font-weight:500">The stack I build with</h3>
+    <p style="margin:14px 0 0;font-size:18px;line-height:1.6;color:#3A372F;max-width:640px">Most of my projects use the same three layers: Next.js for the interface, Node.js with Express.js or Flask for the server, and MongoDB or SQLite for the data.</p>
+
+    <div style="margin-top:36px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:36px 44px">
+      <sc-for list="{{ layers }}" as="l" hint-placeholder-count="3">
+        <div style="min-width:0;border-top:2px solid #292925;padding-top:18px">
+          <h4 style="margin:0;font:600 15px/1.3 'Instrument Sans',Arial,sans-serif;color:#4A463E">{{ l.layer }}</h4>
+          <div style="margin-top:14px;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(38px,4vw,50px);line-height:1.1;font-weight:500;color:#292925">{{ l.main }}</div>
+          <div style="margin-top:8px;font-size:16.5px;line-height:1.45;color:#3A372F">{{ l.alt }}</div>
+          <p style="margin:16px 0 0;font-size:15.5px;line-height:1.55;color:#4A463E">Used in {{ l.used }}</p>
         </div>
-        <div style="flex:1 1 380px;min-width:0">
-          <ul style="margin:0;padding:0 8px;list-style:none;display:flex;flex-wrap:wrap;gap:0 10px;align-items:flex-end;min-height:120px">
-            <sc-for list="{{ sh.items }}" as="it" hint-placeholder-count="6">
-              <li style="{{ it.style }}"><span style="{{ it.text }}">{{ it.name }}</span></li>
-            </sc-for>
-          </ul>
-          <div aria-hidden="true" style="height:18px;background:linear-gradient(180deg,#D6BF98 0%,#C7AC80 45%,#A9895C 100%);box-shadow:0 10px 18px -8px rgba(41,41,37,.35),inset 0 1px 0 rgba(255,255,255,.45)"></div>
-          <div aria-hidden="true" style="height:22px;background:linear-gradient(180deg,rgba(41,41,37,.16),rgba(41,41,37,0))"></div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- strongest -->
+  <section aria-labelledby="st-strong" style="margin-top:84px;max-width:1180px">
+    <h3 id="st-strong" style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(32px,3.6vw,44px);line-height:1.15;font-weight:500">Where I am strongest</h3>
+    <div style="margin-top:28px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(230px,100%),1fr));gap:30px 44px">
+      <sc-for list="{{ strong }}" as="s" hint-placeholder-count="4">
+        <div style="min-width:0;border-top:1px solid rgba(41,41,37,.3);padding-top:16px">
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;line-height:1.1;font-weight:500;color:#6A4E1B">{{ s.name }}</div>
+          <p style="margin:8px 0 0;font-size:16px;line-height:1.55;color:#3A372F">{{ s.line }}</p>
         </div>
-      </section>
-    </sc-for>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- full list -->
+  <section aria-labelledby="st-all" style="margin-top:84px;max-width:1180px">
+    <h3 id="st-all" style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(32px,3.6vw,44px);line-height:1.15;font-weight:500">Everything on my résumé</h3>
+    <dl style="margin:26px 0 0;border-top:1px solid rgba(41,41,37,.3)">
+      <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
+        <div style="display:flex;flex-wrap:wrap;gap:8px 40px;padding:18px 0;border-bottom:1px solid rgba(41,41,37,.2)">
+          <dt style="flex:0 0 220px;max-width:100%;font-family:'Cormorant Garamond',Georgia,serif;font-size:25px;line-height:1.2;font-weight:500">{{ g.label }}</dt>
+          <dd style="flex:1 1 320px;min-width:0;margin:0;display:flex;flex-wrap:wrap;row-gap:8px;align-items:center">
+            <sc-for list="{{ g.items }}" as="i" hint-placeholder-count="6"><span class="st-item">{{ i }}</span></sc-for>
+          </dd>
+        </div>
+      </sc-for>
+    </dl>
+  </section>
+
+  <div style="margin-top:56px;display:flex;flex-wrap:wrap;align-items:center;gap:16px 28px">
+    <a class="st-btn" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf"><span>Download résumé</span><span aria-hidden="true">↓</span></a>
+    <span style="font-size:15px;color:#4A463E">See these used in The Workshop, one floor down.</span>
   </div>
 </div>
 </x-dc>
 
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1180}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
 class Component extends DCLogic {
   renderVals() {
-    const mats = {
-      travertine: ['linear-gradient(180deg,#F1EBDD,#DDD3BE)', '#292925'],
-      oak: ['linear-gradient(180deg,#D9C4A0,#C2A57A)', '#292925'],
-      plaster: ['linear-gradient(180deg,#F6F2E8,#E7E0D0)', '#292925'],
-      charcoal: ['linear-gradient(180deg,#3B3A34,#292925)', '#F4F0E8']
+    return {
+      layers: [
+        { layer: 'Interface', main: 'Next.js', alt: 'with React, and React Native for mobile', used: 'QuarksFinance and Hatch (Next.js), ParkNGo (React Native).' },
+        { layer: 'Server', main: 'Node.js', alt: 'with Express.js, or Flask in Python', used: 'ParkNGo (Express.js), QuarksFinance and Hatch (Flask).' },
+        { layer: 'Data', main: 'MongoDB', alt: 'or SQLite for lighter projects', used: 'Hatch, ParkNGo and ORION (MongoDB), QuarksFinance (SQLite).' }
+      ],
+      strong: [
+        { name: 'Java', line: 'Including Spring Boot for backend services.' },
+        { name: 'SQL', line: 'Relational data, queries and SQLite.' },
+        { name: 'Figma', line: 'Turned 30+ Figma screens into React at Lume.' },
+        { name: 'Git', line: 'Version control across every project.' }
+      ],
+      groups: [
+        { label: 'Languages', items: ['Python', 'Java', 'C', 'JavaScript', 'TypeScript', 'HTML', 'CSS'] },
+        { label: 'Backend and web', items: ['Node.js', 'Express.js', 'Flask', 'FastAPI', 'Spring Boot', 'JWT authentication', 'RBAC'] },
+        { label: 'Frameworks and libraries', items: ['React', 'Next.js', 'React Native'] },
+        { label: 'Databases', items: ['SQL', 'MongoDB', 'SQLite', 'Firebase'] },
+        { label: 'Cloud and tools', items: ['AWS', 'Railway', 'Vercel', 'Git', 'MATLAB', 'Figma'] }
+      ]
     };
-    const item = (name, mat, hgt, i) => {
-      const m = mats[mat];
-      return {
-        name,
-        style: 'display:flex;align-items:flex-end;justify-content:center;box-sizing:border-box;height:' + hgt + 'px;padding:0 18px 14px;background:' + m[0] + ';box-shadow:inset 0 0 0 1px rgba(41,41,37,.14),inset 0 1px 0 rgba(255,255,255,.65),6px 0 10px -6px rgba(41,41,37,.3);border-radius:2px 2px 0 0;margin-bottom:0',
-        text: "font-family:'Cormorant Garamond',Georgia,serif;font-size:23px;font-weight:600;line-height:1;white-space:nowrap;color:" + m[1]
-      };
-    };
-    const mk = (arr, mat, hs) => arr.map((n, i) => item(n, mat, hs[i % hs.length], i));
-    const defs = [
-      { label: 'Using now', note: 'The stack behind most of what I ship.', names: ['HTML5', 'CSS3', 'JavaScript', 'Figma', 'React', 'Next.js', 'Node JS', 'MongoDB', 'Git'], mat: 'travertine', hs: [118, 96, 130, 104, 124, 112, 92, 128, 100] },
-      { label: 'Learning', note: 'On the bench this year.', names: ['SQLite', 'TypeScript', 'PyTorch'], mat: 'oak', hs: [104, 124, 94] },
-      { label: 'Other skills', note: 'Comfortable, less often in use.', names: ['Java', 'Python', 'C'], mat: 'plaster', hs: [96, 116, 88] },
-      { label: 'Also on the résumé', note: 'Listed in the résumé, not yet on the site.', names: ['Express.js', 'Flask', 'FastAPI', 'Spring Boot', 'React Native', 'SQL', 'Firebase', 'AWS', 'Railway', 'Vercel', 'MATLAB', 'JWT', 'RBAC'], mat: 'charcoal', hs: [76, 64, 84, 70, 80, 66] }
-    ];
-    const shelves = [];
-    defs.forEach((d) => {
-      const rows = Math.ceil(d.names.length / 6), per = Math.ceil(d.names.length / rows);
-      for (let r = 0; r < rows; r++) {
-        const part = d.names.slice(r * per, (r + 1) * per);
-        shelves.push({ label: r === 0 ? d.label : '', note: r === 0 ? d.note : '', aria: d.label, items: mk(part, d.mat, d.hs.slice(r * per)) });
-      }
-    });
-    return { shelves };
   }
 }
 </script>

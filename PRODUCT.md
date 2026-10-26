@@ -31,14 +31,14 @@ The owner works from Bengaluru and keeps older portfolio versions (Portfolio-1 t
 - Library data is meant to come from the Medium feed and the GitHub events and contributions APIs, including private contributions. The current room holds placeholder slots.
 - Workshop projects: QuarksFinance, Hatch, ParkNGo and ORION. Cover screenshots and architecture diagrams are in `assets/projects/`.
 - Names and terms to keep: "Lume CXM" (Block 8 Solutions Pvt. Ltd.), "Founding Engineer Intern", the room names above.
-- Undecided: final framework and hosting; the Instagram handle; whether Lume's company link and logo are shown; the publication's journal name.
+- Undecided: final framework and hosting; the Instagram handle; the publication's journal name.
 
 ## Brand Commitments
 - Name: Joseph Rejo Mathew; short form "Joseph R.M." and initials JRM.
 - Descriptor on the landing: "Developer · Engineering student · Product builder".
 - Logo: JRM in Cormorant Garamond with a gold staircase stroke beneath it, on a transparent background, files in `brand/`. The owner rejected two earlier marks (an outlined arch with stairs, then a solid arch with a J) and asked that the logo never sit on a background plate.
 - The hero line "Developer · Engineering student · Product builder" must never be covered by the header or logo.
-- Voice: first person, plain and specific, no inflated claims. Client names and client metrics from Lume are left off on purpose.
+- Voice: first person, plain and specific, no inflated claims. Lume's own client names may appear in the Lume product film (owner confirmed); client metrics are still left off.
 
 ## Evidence on Hand
 - Lume: runs in production across 3 resort properties; 30+ Figma screens converted to React; one deployment per property on Railway, guest app on Vercel; analytics on PostHog.
@@ -47,7 +47,7 @@ The owner works from Bengaluru and keeps older portfolio versions (Portfolio-1 t
 - Publication: "AI-Driven Pathogen Profiling in Scientific Literature using NLP", Jan 2025, DOI 10.37896/sr12.1/006.
 - Patent application: ORION, India, No. 202641030238, filed Mar 2026, published in the Patent Office Journal on 29 May 2026; Joseph is a co-inventor.
 - Assets: résumé PDF; project covers and architecture diagrams; a QuarksFinance demo video at https://youtu.be/pCVa_T0C6t4.
-- Not available, so do not fabricate: demo videos for Hatch, ParkNGo and ORION; certificate images; a link to the patent journal entry; the publication's journal name; the Instagram handle; Lume logo and company link; product screenshots from Lume.
+- Not available, so do not fabricate: demo videos for Hatch, ParkNGo and ORION; certificate images; a link to the patent journal entry; the publication's journal name; the Instagram handle; product screenshots from Lume.
 
 ## Product Principles
 1. The journey must never block the goal. Every room, the résumé and the contact route stay reachable in one step from anywhere, by keyboard or touch, without climbing.

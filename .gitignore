@@ -1,3 +1,9 @@
 Portfolio-4/
 .impeccable/
 *.png.tmp
+
+.dev.vars
+.env
+.env.*
+node_modules/
+.wrangler/

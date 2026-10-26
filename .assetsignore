@@ -8,3 +8,12 @@ README.md
 brand/preview.html
 brand/brand.json
 assets/people/source
+assets/videos/Lume.mp4
+
+worker.js
+.dev.vars
+.env
+.env.*
+.impeccable
+node_modules
+.wrangler

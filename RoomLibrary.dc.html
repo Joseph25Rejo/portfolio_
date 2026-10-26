@@ -14,79 +14,102 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 body{margin:0}
-.lb-a{color:#292925;text-decoration:none;border-bottom:1px solid rgba(125,95,40,.55);transition:color .2s,border-color .2s}
-.lb-a:hover,.lb-a:focus-visible{color:#6A4E1B;border-color:#6A4E1B;outline:none}
+.lb-a{color:#292925;text-decoration:none;border-bottom:1px solid rgba(106,78,27,.6);transition:color .2s,border-color .2s}
+.lb-a:hover,.lb-a:focus-visible{color:#6A4E1B;border-color:#6A4E1B}
+.lb-a:focus-visible,.lb-art:focus-visible,.lb-row:focus-visible{outline:3px solid #B28F4E;outline-offset:3px}
 .lb-art{display:flex;flex-direction:column;text-decoration:none;color:#292925;transition:transform .25s ease}
-.lb-art:hover,.lb-art:focus-visible{transform:translateY(-4px);outline:none}
-.lb-art:focus-visible .lb-thumb{box-shadow:0 0 0 3px #B28F4E}
+.lb-art:hover{transform:translateY(-4px)}
+.lb-row{color:#292925;text-decoration:none}
+.lb-row:hover .lb-msg{color:#6A4E1B}
+@keyframes lb-pulse{0%,100%{opacity:.55}50%{opacity:1}}
+.lb-wait{animation:lb-pulse 1.6s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.lb-art{transition:none}.lb-art:hover{transform:none}.lb-wait{animation:none}}
 </style>
 </helmet>
 
-<div style="position:relative;min-height:900px;box-sizing:border-box;padding:clamp(88px,11vh,120px) clamp(20px,4.4vw,72px) 110px;background:radial-gradient(ellipse 70% 45% at 50% 0%,#F6F1E7 0%,rgba(246,241,231,0) 70%),linear-gradient(180deg,#E8E0CF,#DDD3BF);font-family:'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925">
+<div style="position:relative;min-height:900px;box-sizing:border-box;padding:clamp(88px,11vh,120px) clamp(20px,4.4vw,72px) 110px;background:radial-gradient(ellipse 70% 45% at 50% 0%,#F6F1E7 0%,rgba(246,241,231,0) 70%),linear-gradient(180deg,#EBE4D5,#DFD6C3);font-family:'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925">
 
   <header style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 36px;border-bottom:1px solid rgba(125,95,40,.5);padding-bottom:26px">
     <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(56px,8vw,104px);line-height:.8;color:#6A4E1B;font-weight:500">04</div>
     <div style="flex:1 1 320px;min-width:0">
       <h2 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(40px,5.4vw,68px);line-height:1;font-weight:500;letter-spacing:-.01em">The Library</h2>
-      <p style="margin:12px 0 0;font-size:16px;line-height:1.55;color:#4A463E;max-width:600px">What I write, and what I commit. Both load live from their sources.</p>
+      <p style="margin:12px 0 0;font-size:16px;line-height:1.55;color:#4A463E;max-width:600px">What I write on Medium and what I commit on GitHub, loaded live.</p>
     </div>
   </header>
 
   <div style="display:flex;flex-wrap:wrap;gap:56px 64px;margin-top:52px;align-items:flex-start">
 
     <!-- Writing -->
-    <section aria-label="Writing" style="flex:3 1 520px;min-width:0">
+    <section aria-labelledby="lb-writing" style="flex:3 1 520px;min-width:0">
       <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 20px;margin-bottom:26px">
-        <h3 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:500;line-height:1">Writing</h3>
+        <h3 id="lb-writing" style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:500;line-height:1.15">Writing</h3>
         <a class="lb-a" href="https://medium.com/@joseph25rejo" target="_blank" rel="noopener" style="font-size:15px">All articles on Medium ↗</a>
       </div>
+
+      <sc-if value="{{ mLoading }}" hint-placeholder-val="{{ false }}">
+        <p class="lb-wait" role="status" style="margin:0;font-size:16px;line-height:1.6;color:#4A463E">Loading my latest articles…</p>
+      </sc-if>
+      <sc-if value="{{ mFailed }}" hint-placeholder-val="{{ false }}">
+        <p role="status" style="margin:0;font-size:16px;line-height:1.6;color:#3A372F;max-width:520px">The article feed is not available right now. You can read everything on <a class="lb-a" href="https://medium.com/@joseph25rejo" target="_blank" rel="noopener">my Medium profile ↗</a>.</p>
+      </sc-if>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:34px 28px">
-        <sc-for list="{{ articles }}" as="a" hint-placeholder-count="4">
-          <a class="lb-art" href="https://medium.com/@joseph25rejo" target="_blank" rel="noopener" aria-label="{{ a.aria }}">
-            <div class="lb-thumb" style="aspect-ratio:3/2;display:flex;align-items:center;justify-content:center;background:repeating-linear-gradient(135deg,rgba(41,41,37,.05) 0 9px,rgba(41,41,37,0) 9px 18px),linear-gradient(180deg,#EDE6D6,#DCD3C0);box-shadow:inset 0 0 0 1px rgba(41,41,37,.16),0 12px 18px -14px rgba(41,41,37,.5)"><span style="font-size:12.5px;color:#4A463E">Thumbnail from the feed</span></div>
-            <div style="margin-top:16px;font-family:'Cormorant Garamond',Georgia,serif;font-size:25px;line-height:1.15;font-weight:500">[Article title {{ a.n }}]</div>
-            <div style="margin-top:8px;font-size:14.5px;line-height:1.55;color:#4A463E">[Excerpt, first 150 characters of the post]</div>
-            <div style="margin-top:12px;font-size:14px;color:#6A4E1B;font-weight:500">Read on Medium ↗</div>
+        <sc-for list="{{ articles }}" as="a" hint-placeholder-count="0">
+          <a class="lb-art" href="{{ a.link }}" target="_blank" rel="noopener" aria-label="{{ a.aria }}">
+            <sc-if value="{{ a.hasThumb }}" hint-placeholder-val="{{ false }}">
+              <div style="aspect-ratio:3/2;overflow:hidden;background:#D9D0BC;box-shadow:0 14px 22px -16px rgba(41,41,37,.6)"><img src="{{ a.thumb }}" alt="" loading="lazy" referrerpolicy="no-referrer" style="display:block;width:100%;height:100%;object-fit:cover"></div>
+            </sc-if>
+            <div style="margin-top:16px;font-family:'Cormorant Garamond',Georgia,serif;font-size:25px;line-height:1.2;font-weight:500">{{ a.title }}</div>
+            <div style="margin-top:8px;font-size:15px;line-height:1.55;color:#3A372F">{{ a.excerpt }}</div>
+            <div style="margin-top:12px;font-size:14.5px;color:#6A4E1B;font-weight:600">{{ a.date }} · Read on Medium ↗</div>
           </a>
         </sc-for>
       </div>
-      <p style="margin:30px 0 0;font-size:13.5px;line-height:1.55;color:#4A463E;max-width:560px">Slots only. The four latest posts load from the Medium feed; if the feed is down, these tiles fall back to links to the profile.</p>
     </section>
 
     <!-- Code -->
-    <section aria-label="Code" style="flex:2 1 400px;min-width:0;max-width:100%">
+    <section aria-labelledby="lb-code" style="flex:2 1 400px;min-width:0;max-width:100%">
       <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 20px;margin-bottom:26px">
-        <h3 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:500;line-height:1">Code</h3>
+        <h3 id="lb-code" style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;font-weight:500;line-height:1.15">Code</h3>
         <a class="lb-a" href="https://github.com/Joseph25Rejo" target="_blank" rel="noopener" style="font-size:15px">Joseph25Rejo on GitHub ↗</a>
       </div>
 
       <div style="background:linear-gradient(180deg,#2F2E29,#262521);color:#EFE9DB;padding:24px 22px 26px;box-shadow:0 18px 26px -18px rgba(41,41,37,.6)">
         <div style="display:flex;align-items:center;gap:14px">
-          <div aria-hidden="true" style="width:54px;height:54px;border-radius:50%;flex:none;background:repeating-linear-gradient(135deg,rgba(255,255,255,.08) 0 6px,rgba(255,255,255,0) 6px 12px),#4A483F;box-shadow:inset 0 0 0 1px rgba(255,255,255,.2)"></div>
+          <sc-if value="{{ hasAvatar }}" hint-placeholder-val="{{ false }}"><img src="{{ avatar }}" alt="" width="54" height="54" referrerpolicy="no-referrer" style="flex:none;width:54px;height:54px;border-radius:50%;display:block;box-shadow:0 0 0 2px rgba(233,212,158,.55)"></sc-if>
           <div style="min-width:0">
             <div style="font-size:17px;font-weight:600">Joseph25Rejo</div>
-            <div style="font-size:13.5px;color:#CFC7B5;margin-top:3px">[N] contributions in the last year</div>
+            <div style="font-size:14px;color:#D9D1BF;margin-top:3px">{{ totalLine }}</div>
           </div>
         </div>
 
-        <div style="margin-top:22px;overflow-x:auto;padding-bottom:6px">
-          <div role="img" aria-label="Contribution calendar for the last year, loaded live from GitHub" style="display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,11px);grid-auto-columns:11px;gap:3px;width:max-content">
-            <sc-for list="{{ cells }}" as="c" hint-placeholder-count="0"><span style="width:11px;height:11px;border-radius:2px;background:#3D3B34"></span></sc-for>
+        <sc-if value="{{ gHasCal }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:22px;overflow-x:auto;padding-bottom:6px">
+            <div role="img" aria-label="{{ calAria }}" style="display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,11px);grid-auto-columns:11px;gap:3px;width:max-content">
+              <sc-for list="{{ cells }}" as="c" hint-placeholder-count="0"><span title="{{ c.tip }}" style="{{ c.style }}"></span></sc-for>
+            </div>
           </div>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 14px;margin-top:12px;font-size:12.5px;color:#CFC7B5"><span>Calendar slot, includes private contributions</span><span style="display:inline-flex;align-items:center;gap:4px">Less <i style="width:11px;height:11px;border-radius:2px;background:#3D3B34;display:inline-block"></i><i style="width:11px;height:11px;border-radius:2px;background:#5B6B4F;display:inline-block"></i><i style="width:11px;height:11px;border-radius:2px;background:#7C9468;display:inline-block"></i><i style="width:11px;height:11px;border-radius:2px;background:#A3BD8A;display:inline-block"></i><i style="width:11px;height:11px;border-radius:2px;background:#CBE0B2;display:inline-block"></i> More</span></div>
+          <div style="display:flex;align-items:center;justify-content:flex-end;gap:6px;margin-top:10px;font-size:13px;color:#D9D1BF">
+            <span>Less</span>
+            <span aria-hidden="true" style="width:11px;height:11px;border-radius:2px;background:#3D3B34"></span><span aria-hidden="true" style="width:11px;height:11px;border-radius:2px;background:#6F5E34"></span><span aria-hidden="true" style="width:11px;height:11px;border-radius:2px;background:#9A7F3F"></span><span aria-hidden="true" style="width:11px;height:11px;border-radius:2px;background:#C9A862"></span><span aria-hidden="true" style="width:11px;height:11px;border-radius:2px;background:#E9D49E"></span>
+            <span>More</span>
+          </div>
+        </sc-if>
+        <sc-if value="{{ gLoading }}" hint-placeholder-val="{{ false }}"><p class="lb-wait" role="status" style="margin:20px 0 0;font-size:15px;color:#D9D1BF">Loading contributions…</p></sc-if>
+        <sc-if value="{{ gFailed }}" hint-placeholder-val="{{ false }}"><p role="status" style="margin:20px 0 0;font-size:15px;line-height:1.55;color:#D9D1BF">The contribution calendar is not available right now. See it on GitHub.</p></sc-if>
       </div>
 
-      <h4 style="margin:34px 0 6px;font:500 13px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6A4E1B">Latest activity</h4>
-      <ul style="margin:0;padding:0;list-style:none">
-        <sc-for list="{{ commits }}" as="c" hint-placeholder-count="4">
-          <li style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid rgba(41,41,37,.18);font-size:15px">
-            <span style="display:flex;gap:12px;align-items:baseline;min-width:0"><i aria-hidden="true" style="flex:none;width:8px;height:8px;border-radius:50%;background:#B28F4E;display:inline-block"></i><span style="min-width:0">&lt;Commit message&gt;</span></span>
-            <span style="color:#4A463E;font-size:13.5px;white-space:nowrap">2 days ago</span>
+      <h4 style="margin:34px 0 6px;font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;line-height:1.2;font-weight:500">Latest commits</h4>
+      <ul style="margin:0;padding:0;list-style:none;border-top:1px solid rgba(41,41,37,.25)">
+        <sc-for list="{{ commits }}" as="c" hint-placeholder-count="0">
+          <li style="border-bottom:1px solid rgba(41,41,37,.18)">
+            <a class="lb-row" href="{{ c.url }}" target="_blank" rel="noopener" style="display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:14px 0;font-size:15.5px;line-height:1.4">
+              <span class="lb-msg" style="min-width:0;transition:color .2s">{{ c.message }}</span>
+              <span style="flex:none;color:#4A463E;font-size:14px;white-space:nowrap">{{ c.when }}</span>
+            </a>
           </li>
         </sc-for>
       </ul>
-      <p style="margin:16px 0 0;font-size:13.5px;line-height:1.55;color:#4A463E">The four most recent commits load from the GitHub events feed, each linking to its commit.</p>
+      <sc-if value="{{ noCommits }}" hint-placeholder-val="{{ false }}"><p style="margin:14px 0 0;font-size:15px;line-height:1.55;color:#4A463E">Recent commits are not available right now.</p></sc-if>
     </section>
   </div>
 </div>
@@ -94,11 +117,45 @@ body{margin:0}
 
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1180}}'>
 class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { m: 'loading', posts: [], g: 'loading', gh: null };
+  }
+  componentDidMount() {
+    this._alive = true;
+    const get = (u) => fetch(u, { headers: { accept: 'application/json' } }).then((r) => { if (!r.ok) throw new Error(String(r.status)); return r.json(); });
+    get('/api/medium').then((d) => { if (this._alive) this.setState({ m: d.posts && d.posts.length ? 'ok' : 'failed', posts: d.posts || [] }); }).catch(() => { if (this._alive) this.setState({ m: 'failed' }); });
+    get('/api/github').then((d) => { if (this._alive) this.setState({ g: 'ok', gh: d }); }).catch((e) => {  if (this._alive) this.setState({ g: 'failed' }); });
+  }
+  componentWillUnmount() { this._alive = false; }
   renderVals() {
+    const s = this.state;
+    const fmt = (iso, withYear) => { try { return new Date(iso).toLocaleDateString('en-GB', withYear ? { day: 'numeric', month: 'short', year: 'numeric' } : { day: 'numeric', month: 'short' }); } catch (e) { return ''; } };
+    const ago = (iso) => {
+      const d = Math.floor((Date.now() - new Date(iso).getTime()) / 86400000);
+      if (isNaN(d)) return '';
+      return d <= 0 ? 'today' : d === 1 ? 'yesterday' : d < 30 ? d + ' days ago' : fmt(iso, true);
+    };
+    const articles = s.m === 'ok' ? s.posts.map((p) => ({
+      title: p.title, link: p.link, excerpt: p.description, hasThumb: !!p.thumbnail, thumb: p.thumbnail,
+      date: fmt(p.date, true), aria: p.title + ', opens on Medium'
+    })) : [];
+    const gh = s.gh, has = s.g === 'ok' && gh && gh.days && gh.days.length;
+    const lvl = (n) => (n === 0 ? 0 : n < 3 ? 1 : n < 6 ? 2 : n < 10 ? 3 : 4);
+    const col = ['#3D3B34', '#6F5E34', '#9A7F3F', '#C9A862', '#E9D49E'];
+    const cells = has ? gh.days.map(([date, n]) => ({
+      tip: n + (n === 1 ? ' contribution on ' : ' contributions on ') + fmt(date, true),
+      style: 'width:11px;height:11px;border-radius:2px;background:' + col[lvl(n)]
+    })) : [];
+    const commits = s.g === 'ok' && gh && gh.commits ? gh.commits.map((c) => ({ message: c.message, url: c.url, when: ago(c.date) })) : [];
+    const avatar = s.g === 'ok' && gh && /^https:\/\/avatars\.githubusercontent\.com\//.test(gh.avatar || '') ? gh.avatar : '';
     return {
-      articles: [1, 2, 3, 4].map((n) => ({ n, aria: 'Medium article slot ' + n + ', opens the Medium profile' })),
-      cells: Array.from({ length: 371 }, (_, i) => ({ i })),
-      commits: [1, 2, 3, 4]
+      mLoading: s.m === 'loading', mFailed: s.m === 'failed', articles,
+      gLoading: s.g === 'loading', gFailed: s.g === 'failed', gHasCal: !!has, cells,
+      calAria: has ? 'Contribution calendar for the last year, ' + gh.total + ' contributions, loaded live from GitHub' : '',
+      totalLine: has ? gh.total + ' contributions in the last year' : 'Public and private contributions',
+      commits, noCommits: s.g !== 'loading' && commits.length === 0,
+      hasAvatar: !!avatar, avatar
     };
   }
 }
