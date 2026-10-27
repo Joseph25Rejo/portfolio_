@@ -65,6 +65,7 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
 .hs-still .hs-fire{animation:none !important}
 .hs-still .hs-fl,.hs-still .hs-gl,.hs-still .hs-sp{animation:none !important}
 .hs-still .hs-sp{display:none}
+.hs-moving .hs-fire,.hs-moving .hs-fl,.hs-moving .hs-gl,.hs-moving .hs-sp{animation-play-state:paused !important}
 .hs-hero{position:absolute;left:0;bottom:0;top:0;width:min(640px,100%);display:flex;flex-direction:column;justify-content:flex-end;padding:0 clamp(24px,4.4vw,72px) clamp(40px,8vh,88px);box-sizing:border-box;background:linear-gradient(90deg,rgba(244,240,232,.94) 0%,rgba(244,240,232,.78) 55%,rgba(244,240,232,0) 100%)}
 .hs-name{margin:0;font-weight:400;font-size:clamp(46px,6.6vw,104px);line-height:.94;letter-spacing:-.012em;color:#292925;text-shadow:0 1px 0 rgba(255,255,255,.7),0 -1px 0 rgba(41,41,37,.10)}
 .hs-cap{z-index:6;isolation:isolate;-webkit-transform:translateZ(0);position:absolute;left:clamp(24px,4.4vw,72px);bottom:clamp(36px,7vh,76px);width:min(440px,calc(100% - 48px));background:rgba(244,240,232,.9);padding:28px 30px 30px;box-sizing:border-box}
@@ -127,7 +128,7 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
         <!-- 3D house -->
         <div id="hs-stage" style="z-index:0;isolation:isolate;position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;perspective:1100px;perspective-origin:50% 50%;background:linear-gradient(180deg,#0B0E24,#15131A)">
           <div id="hs-rig" style="position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d;transform-origin:0 0 1100px;transform:rotateX(10deg) rotateY(145deg) translate3d(-190px,170px,1480px)">
-            <sc-for list="{{ paint }}" as="p" hint-placeholder-count="0"><div style="{{ p.s }}"><sc-for list="{{ p.kids }}" as="c" hint-placeholder-count="0"><div style="{{ c }}"></div></sc-for></div></sc-for>
+            <sc-for list="{{ paint }}" as="p" hint-placeholder-count="0"><div class="hs-paint" style="{{ p.s }}"><sc-for list="{{ p.kids }}" as="c" hint-placeholder-count="0"><div style="{{ c }}"></div></sc-for></div></sc-for>
             <sc-for list="{{ world }}" as="w" hint-placeholder-count="0"><div class="{{ w.c }}" style="{{ w.s }}"></div></sc-for>
 
             <sc-for list="{{ doors }}" as="d" hint-placeholder-count="0">
@@ -171,7 +172,7 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
         <!-- paper grain + vignette -->
         <div aria-hidden="true" style="position:absolute;left:0;top:0;right:0;bottom:0;pointer-events:none;background:radial-gradient(ellipse at 50% 46%,rgba(20,12,4,0) 48%,rgba(14,8,2,.5) 100%)"></div>
 
-        <svg class="hs-grain" aria-hidden="true" width="100%" height="100%" style="position:absolute;left:0;top:0;pointer-events:none;mix-blend-mode:multiply;opacity:.16"><filter id="hs-grain"><feTurbulence type="fractalNoise" baseFrequency=".85" numOctaves="2" stitchTiles="stitch"></feTurbulence><feColorMatrix values="0 0 0 0 .28  0 0 0 0 .22  0 0 0 0 .14  0 0 0 .6 0"></feColorMatrix></filter><rect width="100%" height="100%" filter="url(#hs-grain)"></rect></svg>
+        <div id="hs-grain" class="hs-grain" aria-hidden="true" style="position:absolute;left:0;top:0;right:0;bottom:0;pointer-events:none;opacity:.16"></div>
         <!-- Entrance: name, introduction, invitation -->
         <div id="hs-hero" class="hs-hero" style="pointer-events:none">
           <div style="pointer-events:auto;max-width:520px">
@@ -299,6 +300,8 @@ class Component extends DCLogic {
     };
     const wallBg = (az, y0, y1) => 'background:linear-gradient(180deg,' + wallAt(az, y1) + ',' + wallAt(az, y0) + ');';
     const clip = 'clip-path:polygon(30.5% 0,69.5% 0,100% 100%,0 100%);';
+    /* the tread wedge as a pre-drawn SVG: a clip-path gives every tread its own mask surface, which is what stalls the climb */
+    const wedge = (stops) => 'background:url("data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">' + stops.map((q) => '<stop offset="' + q[0] + '" stop-color="' + q[1] + '"/>').join('') + '</linearGradient></defs><polygon points="30.5,0 69.5,0 100,100 0,100" fill="url(#g)"/></svg>') + '") 0 0/100% 100% no-repeat;';
     const GROUT = 'repeating-linear-gradient(0deg,rgba(16,8,3,.62) 0 2px,transparent 2px 75px),repeating-linear-gradient(90deg,rgba(16,8,3,.62) 0 2px,transparent 2px 75px)';
 
     /* coffee-tile ground floor + night skylight */
@@ -364,10 +367,10 @@ class Component extends DCLogic {
         const t = sun(am);
         const top = mix('#4A3123', '#6A4A36', t);
         const wO = 2 * RO * Math.sin(DTH / 2 * R) * 1.012;
-        add(place(am, 0, h, 450, 'rotateX(90deg)', wO, 400, 'background:linear-gradient(180deg,' + mix(top, '#D2AC82', .34) + ' 0%,' + top + ' 38%,' + mix(top, '#1B0F08', .5) + ' 100%);' + clip), k);
+        add(place(am, 0, h, 450, 'rotateX(90deg)', wO, 400, wedge([[0, mix(top, '#D2AC82', .34)], [.38, top], [1, mix(top, '#1B0F08', .5)]])), k);
         add(place(a0, 0, h - RISE / 2, 450, 'rotateY(90deg)', 400, RISE, 'background:linear-gradient(90deg,' + mix('#2E1D13', '#4C3324', t) + ',' + mix('#25170F', '#3E281B', t) + ');'), k);
         add(place(am, 0, h - 26, 249, 'rotateY(180deg)', 46, 52, 'background:linear-gradient(180deg,' + mix('#4A3123', '#6A4A36', t) + ',' + mix('#2B1B11', '#3A2619', t) + ');backface-visibility:hidden;'), k);
-        if (!lite) add(place(am, 0, h - 52, 450, 'rotateX(90deg)', wO, 400, 'background:linear-gradient(180deg,#2D1D13,#1B110A);' + clip), k);
+        if (!lite) add(place(am, 0, h - 52, 450, 'rotateX(90deg)', wO, 400, wedge([[0, '#2D1D13'], [1, '#1B110A']])), k);
         if (!lite || j % 2 === 0) add(place(am, 0, h + 65, 254, 'rotateY(180deg)', 4, 130, 'background:linear-gradient(90deg,#46443E,#1F1E1B);backface-visibility:hidden;'), k);
       }
     }
@@ -707,10 +710,19 @@ class Component extends DCLogic {
     document.addEventListener('keydown', this.onKey);
     this._alive = true;
     this._cullEl = document.createElement('style'); document.head.appendChild(this._cullEl);
+    try {
+      const gc = document.createElement('canvas'); gc.width = gc.height = 160;
+      const gx = gc.getContext('2d'), gd = gx.createImageData(160, 160);
+      for (let i = 0; i < gd.data.length; i += 4) { gd.data[i] = 71; gd.data[i + 1] = 56; gd.data[i + 2] = 36; gd.data[i + 3] = Math.random() * 153; }
+      gx.putImageData(gd, 0, 0);
+      const ge = document.getElementById('hs-grain');
+      if (ge) ge.style.backgroundImage = 'url(' + gc.toDataURL() + ')';
+    } catch (e) {}
     let last = performance.now();
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this._reduce = reduce;
     this.mountProps();
+    this.later(() => this.bakePaint(0), 250);
     this.hashOpen();
     const tick = (now) => {
       if (!this._alive) return;
@@ -730,7 +742,10 @@ class Component extends DCLogic {
         this._dolly = a.from + (a.to - a.from) * e;
         if (t >= 1) { const cb = a.done; this._anim = null; if (cb) cb(); }
       }
-      this.applyCamera();
+      const moving = !!this._anim || this._u !== this._tU;
+      if (moving !== this._moving && this._host) { this._moving = moving; this._host.classList.toggle('hs-moving', moving); }
+      const ck = this._u + '|' + this._dolly + '|' + window.innerWidth + 'x' + window.innerHeight;
+      if (ck !== this._camKey) { this._camKey = ck; this.applyCamera(); }
       this.cull();
       const near = Math.max(0, Math.min(6, Math.round(this._u)));
       const at = Math.abs(this._u - near) < 0.11 && this._u > -0.2 ? near : -1;
@@ -740,8 +755,42 @@ class Component extends DCLogic {
     this._raf = requestAnimationFrame(tick);
     this.applyCamera();
   }
+  /* the painted city behind each window is hundreds of masked divs; draw each once into an image so the climb only moves flat bitmaps */
+  bakePaint(tries) {
+    if (window.__nobake) return;
+    const els = Array.prototype.slice.call(document.querySelectorAll('#hs-rig > .hs-paint'));
+    if (!els.length) { if (tries < 10) this.later(() => this.bakePaint(tries + 1), 250); return; }
+    const S = 1.25, ser = new XMLSerializer();
+    const bake = (el) => new Promise((ok, fail) => {
+      const w = parseFloat(el.style.width), h = parseFloat(el.style.height);
+      if (!w || !h || el.dataset.baked) return ok();
+      const box = document.createElement('div');
+      box.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
+      box.style.cssText = 'position:relative;width:' + w + 'px;height:' + h + 'px;overflow:hidden';
+      box.innerHTML = el.innerHTML;
+      const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '"><foreignObject x="0" y="0" width="' + w + '" height="' + h + '">' + ser.serializeToString(box) + '</foreignObject></svg>';
+      const img = new Image();
+      img.onerror = fail;
+      img.onload = () => {
+        try {
+          const cv = document.createElement('canvas'); cv.width = Math.ceil(w * S); cv.height = Math.ceil(h * S);
+          cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
+          cv.toBlob((b) => {
+            if (!b || !this._alive) return ok();
+            const url = URL.createObjectURL(b);
+            (this._blobs = this._blobs || []).push(url);
+            el.innerHTML = '<div style="position:absolute;left:0;top:0;width:100%;height:100%;background:url(' + url + ') 0 0/100% 100% no-repeat"></div>';
+            el.dataset.baked = '1';
+            ok();
+          });
+        } catch (e) { fail(e); }
+      };
+      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    });
+    els.reduce((p, el) => p.then(() => bake(el)).catch(() => {}), Promise.resolve());
+  }
   onKey = (e) => { if (e.key === 'Escape' && this.state.roomVis) this.closeRoom(); };
-  componentWillUnmount() { document.removeEventListener('keydown', this.onKey); this._alive = false; cancelAnimationFrame(this._raf); if (this._cullEl && this._cullEl.parentNode) this._cullEl.parentNode.removeChild(this._cullEl); this._timers.forEach(clearTimeout); }
+  componentWillUnmount() { (this._blobs || []).forEach((u) => URL.revokeObjectURL(u)); document.removeEventListener('keydown', this.onKey); this._alive = false; cancelAnimationFrame(this._raf); if (this._cullEl && this._cullEl.parentNode) this._cullEl.parentNode.removeChild(this._cullEl); this._timers.forEach(clearTimeout); }
   later(fn, ms) { const t = setTimeout(() => { if (this._alive) fn(); }, ms); this._timers.push(t); }
 
   /* ---------- stable section URLs ---------- */
