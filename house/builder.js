@@ -10,7 +10,12 @@ export class Builder {
     nu = nu || 1; nv = nv || 1;
     const ux = b[0] - a[0], uy = b[1] - a[1], uz = b[2] - a[2], vx = d[0] - a[0], vy = d[1] - a[1], vz = d[2] - a[2];
     let nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
-    const l = Math.hypot(nx, ny, nz);
+    let l = Math.hypot(nx, ny, nz);
+    if (l < 1e-6) {
+      /* a collapsed edge (a fan quad at a circle's centre): take the winding from the triangle a,c,d, which is the one that survives */
+      const wx = c[0] - a[0], wy = c[1] - a[1], wz = c[2] - a[2];
+      nx = wy * vz - wz * vy; ny = wz * vx - wx * vz; nz = wx * vy - wy * vx; l = Math.hypot(nx, ny, nz);
+    }
     if (l < 1e-6) { nx = hint[0]; ny = hint[1]; nz = hint[2]; } else { nx /= l; ny /= l; nz /= l; }
     let flip = false;
     if (hint && nx * hint[0] + ny * hint[1] + nz * hint[2] < 0) { flip = true; nx = -nx; ny = -ny; nz = -nz; }

@@ -34,8 +34,8 @@ export function buildKeyframes() {
   const at = (id, label, stop, pos, look, px, extra) => kf.push(Object.assign({ id, label, stop, pos, look, px: px || 0 }, extra));
 
   const eye = (v, y) => [v[0], y, v[2]];
-  at('outside', 'Outside', true, eye(add(add(F.center, F.out, 1900), side, 260), 190), add(F.center, [0, 1, 0], 40), 0);
-  at('door', 'The front door', true, eye(add(F.center, F.out, 520), 205), add(F.center, [0, 1, 0], 45), 900);
+  at('outside', 'Outside', true, eye(add(add(F.center, F.out, 1700), side, 240), 170), add(F.center, [0, 1, 0], 40), 0);
+  at('door', 'The front door', true, eye(add(F.center, F.out, 560), 185), add(F.center, [0, 1, 0], 55), 900);
   at('threshold', 'Threshold', false, eye(add(F.center, F.out, -70), 210), add(F.center, F.out, -700), 0);
   at('hall', 'The hearth', true, polar(255, 380, 210), HEARTH.center, 1500);
   at('turn', 'Turn', false, polar(215, 300, 220), polar(300, APO, 150), 0);

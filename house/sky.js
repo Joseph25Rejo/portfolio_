@@ -43,7 +43,7 @@ export function buildSky(scene) {
   const el = 22 * Math.PI / 180; moon.position.set(Math.cos(el) * 8400, Math.sin(el) * 8400, 0); moon.lookAt(0, 0, 0); moon.renderOrder = -1; scene.add(moon);
 
   const ground = new THREE.Mesh(new THREE.CircleGeometry(9300, 64), new THREE.MeshBasicMaterial({ color: 0x141b33 }));
-  ground.rotation.x = -Math.PI / 2; ground.position.y = -1; scene.add(ground);
+  ground.rotation.x = -Math.PI / 2; ground.position.y = -61; scene.add(ground);
   scene.fog = new THREE.Fog(0x21203f, 3500, 9000);
   return { dome, moon, ground };
 }

@@ -34,7 +34,7 @@ export function createKernel(host, opts) {
 
   const stats = { frames: 0, ms: 16.7, fps: 60, lvl: 0, dpr: levels[0], calls: 0, tris: 0, lost: false };
   const ticks = [];
-  let raf = 0, dirty = true, alive = true, lastT = 0, lastRender = 0, slow = 0, lastDrop = 0;
+  let raf = 0, dirty = true, inFrame = false, alive = true, lastT = 0, lastRender = 0, slow = 0, lastDrop = 0;
 
   const resize = () => {
     const w = Math.max(1, host.clientWidth), h = Math.max(1, host.clientHeight);
@@ -64,7 +64,9 @@ export function createKernel(host, opts) {
     if (!alive || stats.lost) return;
     const dt = Math.min(0.1, (now - (lastT || now)) / 1000); lastT = now;
     let busy = false;
+    inFrame = true;
     for (let i = 0; i < ticks.length; i++) if (ticks[i](now, dt)) busy = true;
+    inFrame = false;
     if (busy || dirty) {
       dirty = false;
       renderer.render(scene, camera);
@@ -73,7 +75,7 @@ export function createKernel(host, opts) {
     } else lastRender = 0;
     if (busy) raf = requestAnimationFrame(frame); else lastT = 0;
   };
-  function invalidate() { dirty = true; if (!raf && alive && !stats.lost) raf = requestAnimationFrame(frame); }
+  function invalidate() { dirty = true; if (!raf && !inFrame && alive && !stats.lost) raf = requestAnimationFrame(frame); }
 
   canvas.addEventListener('webglcontextlost', (e) => { e.preventDefault(); stats.lost = true; if (opts.onLost) opts.onLost(); });
   canvas.addEventListener('webglcontextrestored', () => { stats.lost = false; invalidate(); });

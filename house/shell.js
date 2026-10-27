@@ -4,6 +4,7 @@
 import * as THREE from '../vendor/three.module.min.js';
 import { Builder } from './builder.js';
 import { addLight, shade, mix, hex, grain, INT, extAmb } from './light.js';
+import { exteriorLights, buildExterior } from './exterior.js';
 import { D, RISE, FH, NS, DTH, RI, RO, APO, NF, TOP, DOOR, DOORS, FRONT, HEARTH, FLOORS } from './layout.js';
 
 const FW = 2 * APO * Math.tan(9 * D) + 1.5, WT = 2860, WALL = 30, RR = 254;
@@ -26,7 +27,7 @@ const lit = (alb, o) => (p, n) => shade([alb[0], alb[1], alb[2]].map((v) => v * 
 export function buildShell(scene) {
   const t0 = performance.now();
   /* ---------- lights, placed first so every surface bakes them in ---------- */
-  const sconces = [];
+  const sconces = [], ex = exteriorLights();
   for (let k = 0; k < NF; k++) {
     const az = k % 2 ? 180 : 0;
     [-18, 18].forEach((o) => { sconces.push({ az: az + o, y: FH * k + 335 }); addLight(fp(az + o, 0, FH * k + 335, APO - 40), [1, 0.82, 0.55], 1.25, 430); });
@@ -114,6 +115,8 @@ export function buildShell(scene) {
     for (let q = 1; q <= NF; q++) slab(az, -FW / 2, FW / 2, FH * q - 9, FH * q + 9, APO + WALL, APO + WALL + 8, ext(C('#A39A87')), 'otb');
   }
 
+  const exterior = buildExterior(scene, B, { slab, fp }, ex);
+
   /* ---------- floors: coffee tile in polar cells ---------- */
   const tile = (ra, rb, azA, azB, y, up) => {
     /* every row shares one cell count, so the edges between rows meet exactly (no cracks) */
@@ -198,6 +201,9 @@ export function buildShell(scene) {
   lbox(14, 136, 20, 130, 4, 4.8, () => [196, 172, 132], 'f'); lbox(14, 136, 160, 280, 4, 4.8, () => [196, 172, 132], 'f');
   lbox(112, 132, 132, 152, 4, 11, () => [200, 160, 82], 'fte'); lbox(78, 126, 138, 146, 4, 10, () => [226, 190, 110], 'ft');
   lbox(-1, 6, 30, 64, 3, 6, () => [150, 118, 58], 'f'); lbox(-1, 6, 236, 270, 3, 6, () => [150, 118, 58], 'f');
+  /* the outside face of every leaf: raised panels and a knob */
+  lbox(14, 136, 20, 130, -4.8, -4, () => [190, 166, 126], 'b'); lbox(14, 136, 160, 280, -4.8, -4, () => [190, 166, 126], 'b');
+  lbox(18, 38, 132, 152, -11, -4, () => [200, 160, 82], 'bt');
   const leaf = new THREE.InstancedMesh(LB.geometry(), new THREE.MeshBasicMaterial({ vertexColors: true }), NF + 1);
   const leaves = DOORS.map((d) => ({ az: d.az, y: d.base, r: APO + 5, tint: [1, 1, 1] })).concat([{ az: FRONT.az, y: 0, r: APO + 5, tint: [0.55, 0.38, 0.28] }]);
   const setLeaf = (i, ang) => {
@@ -252,6 +258,8 @@ export function buildShell(scene) {
   if (document.fonts && document.fonts.load) document.fonts.load('600 40px "Cormorant Garamond"').then(() => { drawPlaques(); atex.needsUpdate = true; if (api.onChange) api.onChange(); });
 
   const api = {
+    exterior,
+    leafMatrix(i, out) { leaf.getMatrixAt(i, out); return out; },
     meshes: { shell: shellMesh, treads, bal, leaf, body, glow, plaques },
     tris: B.tris + LB.tris / 1 * (NF + 1) + NT * 12 * 2,
     buildMs: performance.now() - t0,
