@@ -34,7 +34,7 @@ export function createKernel(host, opts) {
 
   const stats = { frames: 0, ms: 16.7, fps: 60, lvl: 0, dpr: levels[0], calls: 0, tris: 0, lost: false };
   const ticks = [];
-  let raf = 0, dirty = true, inFrame = false, alive = true, lastT = 0, lastRender = 0, slow = 0, lastDrop = 0;
+  let lastAmb = 0, raf = 0, dirty = true, inFrame = false, alive = true, lastT = 0, lastRender = 0, slow = 0, lastDrop = 0;
 
   const resize = () => {
     const w = Math.max(1, host.clientWidth), h = Math.max(1, host.clientHeight);
@@ -63,17 +63,22 @@ export function createKernel(host, opts) {
     raf = 0;
     if (!alive || stats.lost) return;
     const dt = Math.min(0.1, (now - (lastT || now)) / 1000); lastT = now;
-    let busy = false;
+    let busy = false, ambient = false;
     inFrame = true;
-    for (let i = 0; i < ticks.length; i++) if (ticks[i](now, dt)) busy = true;
+    /* a tick returns true for motion, or 2 for ambient animation (fire), which is capped to 30 fps and never judged by the governor */
+    for (let i = 0; i < ticks.length; i++) { const r = ticks[i](now, dt); if (r === 2) ambient = true; else if (r) busy = true; }
     inFrame = false;
-    if (busy || dirty) {
+    const skip = !busy && !dirty && ambient && now - lastAmb < 32;
+    if (skip) { raf = requestAnimationFrame(frame); return; }
+    if (busy || dirty || ambient) {
+      const ambOnly = ambient && !busy && !dirty;
+      if (ambOnly) lastAmb = now;
       dirty = false;
       renderer.render(scene, camera);
       stats.frames++; stats.calls = renderer.info.render.calls; stats.tris = renderer.info.render.triangles;
-      govern(now);
+      if (ambOnly) lastRender = 0; else govern(now);
     } else lastRender = 0;
-    if (busy) raf = requestAnimationFrame(frame); else lastT = 0;
+    if (busy || ambient) raf = requestAnimationFrame(frame); else lastT = 0;
   };
   function invalidate() { dirty = true; if (!raf && !inFrame && alive && !stats.lost) raf = requestAnimationFrame(frame); }
 

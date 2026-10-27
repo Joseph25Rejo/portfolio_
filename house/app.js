@@ -14,7 +14,7 @@ if (!hasWebGL()) { note('WebGL is not available here. The finished site shows a 
 
 const kernel = createKernel(host, { onLost: () => note('The graphics context was lost. The finished site falls back to the poster and Quick view.') });
 buildSky(kernel.scene);
-const shell = buildShell(kernel.scene);
+const shell = buildShell(kernel.scene, kernel);
 shell.onChange = kernel.invalidate;
 const rail = createRail(buildKeyframes());
 const reduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -54,6 +54,7 @@ kernel.addTick((now, dt) => {
   if (debug) debug.update(info);
   return moving || signBusy;
 });
+kernel.addTick((now, dt) => shell.hall.tick(now, dt));
 window.addEventListener('scroll', kernel.invalidate, { passive: true });
 if (/#s(\d+)/.test(location.hash)) { cur = rail.scrollOf(+RegExp.$1); window.scrollTo(0, cur); }
 

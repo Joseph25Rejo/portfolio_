@@ -11,6 +11,8 @@ export const FLOORS = [
 ];
 
 export const polar = (az, r, y) => [r * Math.sin(az * D), y, r * Math.cos(az * D)];
+/* a point on a wall facet's frame: lat runs to the right as seen from inside, rad is distance from the axis */
+export const wallPt = (az, lat, y, rad) => [rad * Math.sin(az * D) - lat * Math.cos(az * D), y, rad * Math.cos(az * D) + lat * Math.sin(az * D)];
 
 /* the seven room doors: door k sits on floor k, on the az 0 side for even floors and az 180 for odd */
 export const DOORS = FLOORS.map((f, k) => {
@@ -37,8 +39,8 @@ export function buildKeyframes() {
   at('outside', 'Outside', true, eye(add(add(F.center, F.out, 1700), side, 240), 170), add(F.center, [0, 1, 0], 40), 0);
   at('door', 'The front door', true, eye(add(F.center, F.out, 560), 185), add(F.center, [0, 1, 0], 55), 900);
   at('threshold', 'Threshold', false, eye(add(F.center, F.out, -70), 210), add(F.center, F.out, -700), 0);
-  at('hall', 'The hearth', true, polar(255, 380, 210), HEARTH.center, 1500);
-  at('turn', 'Turn', false, polar(215, 300, 220), polar(300, APO, 150), 0);
+  at('hall', 'The hearth', true, wallPt(HEARTH_AZ, 0, 190, APO - 690), wallPt(HEARTH_AZ, 0, 165, APO - 60), 1500);
+  at('turn', 'Turn', false, polar(200, 250, 215), polar(320, APO, 150), 0);
 
   /* door k is the f = 0 point of the climb around the well: camera on the far side, looking across at the door */
   for (let k = 0; k < NF; k++) {
