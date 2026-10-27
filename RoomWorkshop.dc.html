@@ -112,8 +112,9 @@ body{margin:0}
             <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:30px">
               <sc-if value="{{ cur.hasLive }}" hint-placeholder-val="{{ true }}"><a class="wk-b solid" href="{{ cur.live }}" target="_blank" rel="noopener"><span>Live demo</span><span aria-hidden="true">↗</span></a></sc-if>
               <sc-if value="{{ cur.hasRepo }}" hint-placeholder-val="{{ true }}"><a class="wk-b" href="{{ cur.repo }}" target="_blank" rel="noopener"><span>GitHub</span><span aria-hidden="true">↗</span></a></sc-if>
+              <sc-if value="{{ cur.hasDoc }}" hint-placeholder-val="{{ false }}"><a class="wk-b solid" href="{{ cur.doc }}" target="_blank" rel="noopener"><span>Patent document</span><span aria-hidden="true">↗</span></a></sc-if>
             </div>
-            <sc-if value="{{ cur.noLinks }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:14.5px;line-height:1.55;color:#4A463E">No public demo or repository for this one. The patent application is shown in The Gallery.</p></sc-if>
+            <sc-if value="{{ cur.noLinks }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:14.5px;line-height:1.55;color:#4A463E">No public demo or repository for this one. The patent application is also shown in The Gallery.</p></sc-if>
           </aside>
         </div>
       </sc-if>
@@ -169,12 +170,12 @@ class Component extends DCLogic {
         features: ['Demand forecasting', 'Depletion prediction', 'Personalised recommendations', 'Behavioural segmentation', 'Anomaly detection', 'Role-specific alerts'],
         contrib: ['Co-inventor on the patent application for ORION, filed in India in March 2026. Details are in The Gallery.'],
         stack: ['HTML', 'CSS', 'JavaScript', 'FastAPI', 'Kubernetes', 'Scikit-learn', 'Pandas', 'MongoDB'],
-        live: '', repo: '' }
+        live: '', repo: '', doc: './assets/CERTIFICATES/Patent_ORION.pdf#page=3' }
     ];
   }
   renderVals() {
     const s = this.state, d = this.data();
-    const cur = Object.assign({}, d[s.p], { hasLive: !!d[s.p].live, hasRepo: !!d[s.p].repo, noLinks: !d[s.p].live && !d[s.p].repo });
+    const cur = Object.assign({}, d[s.p], { hasLive: !!d[s.p].live, hasRepo: !!d[s.p].repo, hasDoc: !!d[s.p].doc, noLinks: !d[s.p].live && !d[s.p].repo });
     const list = d.map((p, i) => ({
       n: p.n, name: p.name, kind: p.kind, on: i === s.p,
       pick: () => this.setState({ p: i, tab: 'overview' }),
