@@ -9,6 +9,8 @@ web
 ## Stack
 Design Component pages (`*.dc.html`) running on the bundled `support.js` runtime with vendored React. Confirmed by the owner: keep this as-is for now and improve later; a port to a framework is deliberately undecided. The pages must be served over HTTP, because the runtime fetches each `Room*.dc.html` and fails on `file://`.
 
+The house itself is native Three.js (r170, vendored as `vendor/three.module.min.js`), written as ES modules in `house/` with no build step: `house/mount.js` is the only entry the page uses, and `house.html` is a dev harness (listed in `.assetsignore`, so it is not deployed). The rest of the page (scroll, captions, floor rail, Directory, room overlays) is the DC component in `index.html`.
+
 ## Users
 Primary: recruiters and hiring managers evaluating Joseph for internships and full-time engineering roles. They skim, and need to find the résumé, the projects and the contact route quickly.
 Secondary: startup founders and prospective clients who might commission a build, and collaborators. Roles come first.
@@ -21,7 +23,7 @@ Success, as confirmed by the owner: the résumé gets downloaded; a project gets
 The site is a house you climb. A spiral staircase leads to seven doors, one per section, and each door opens into a room (the Entrance, Workshop, Experience, Study, Library, Gallery and Final Landing). Other portfolios use a scrolling page of sections; this one makes navigation a physical walkthrough while still offering a floor indicator, a Directory menu and deep links (`#entrance`, `#workshop`, `#experience`, `#study`, `#library`, `#gallery`, `#landing`) for anyone who wants to skip the journey.
 
 ## Operating Context
-Visitors arrive on a landing view with the name, a one-line description, "Begin the journey" and "Download résumé". They climb by scrolling, or jump with the floor indicator (desktop), the floor bar (mobile) or the Directory. Opening a door plays a door-swing and camera-dolly animation and then overlays the room; "Back to the landing" returns. Reduced-motion preferences are honoured in code.
+Visitors arrive outside the house at night, with the name, a one-line description, Quick view and "Walk the house" over the scene. A business-style sign hangs on the front door and flips between "Open, scroll down to come in" and Quick view plus the résumé. Scrolling walks them through the front door to the hearth, where a portrait of Joseph hangs above the fire and five friends sit on sofas (flat cutouts, so the hall's windows are curtained from outside), then to the first door by the staircase. They climb by scrolling, or jump with the floor indicator (desktop), the floor bar (mobile) or the Directory. Clicking a door in 3D, or using any of those controls, squares the camera to it, swings it open and then overlays the room; "Back to the landing" returns. Reduced-motion preferences are honoured in code. If WebGL is missing or the graphics context is lost, a still poster (`assets/house-poster.webp`) replaces the scene and the same controls open the rooms directly; `?gl=0` forces that path for testing.
 The owner works from Bengaluru and keeps older portfolio versions (Portfolio-1 to Portfolio-4) as references only.
 
 ## Capabilities and Constraints
