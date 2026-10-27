@@ -335,7 +335,7 @@ export function createGL(stage, rig, opts) {
         return null;
       }
     }
-    const sx = Math.min(1, (f.maxDim || 1024) / Math.max(w, h));
+    const sx = Math.min(f.scale || 1, (f.maxDim || 1024) / Math.max(w, h));
     const cv = document.createElement('canvas'); cv.width = Math.max(1, Math.ceil(w * sx)); cv.height = Math.max(1, Math.ceil(h * sx));
     const ctx = cv.getContext('2d'); ctx.scale(sx, sx);
     ctx.save();
@@ -384,7 +384,7 @@ export function createGL(stage, rig, opts) {
       if (c.style.transformStyle === 'preserve-3d' && c.children.length) { /* the hinged leaf */
         const bx = boxOf(c), obj = new THREE.Object3D(); obj.matrixAutoUpdate = false; grp.add(obj);
         const leaf = { el: c, obj, bx, angle: 0, from: 0, to: 0, t0: 0 };
-        Array.from(c.children).forEach((ch) => emit(faceOf(ch, I, { kids: ch.children.length > 0 }), { parent: obj }));
+        Array.from(c.children).forEach((ch) => emit(faceOf(ch, I, { kids: ch.children.length > 0, scale: 4 }), { parent: obj }));
         leaf.set = (a) => {
           const tr = c.style.transform.replace(/rotateY\([^)]*\)/, 'rotateY(' + a + 'deg)');
           obj.matrix.copy(conj(Mg.clone().multiply(T(bx.left, bx.top, 0)).multiply(T(bx.ox, bx.oy, 0)).multiply(trMatrix(tr)).multiply(T(-bx.ox, -bx.oy, 0))));
@@ -398,7 +398,7 @@ export function createGL(stage, rig, opts) {
         if (mesh) { const v = parseFloat(c.style.opacity); mesh.material.color.setScalar(v); mesh.material.opacity = v; d.spill = { el: c, mesh, v, from: v, to: v, t0: 0 }; }
         return;
       }
-      emit(faceOf(c, Mg, { kids: c.children.length > 0 }), sink);
+      emit(faceOf(c, Mg, { kids: c.children.length > 0, scale: 4 }), sink);
     });
     finish(local, grp, false);
     doors.push(d);
