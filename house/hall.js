@@ -190,8 +190,11 @@ export function buildHall(scene, B, H, kernel) {
     people, fire, sparks, frame,
     /* the fire only animates while the hall is around the camera */
     tick(now, dt) {
-      if (kernel.reduce) return false; /* reduced motion: the fire stays as the first frame */
       const cam = kernel.camera.position;
+      /* the people are flat cutouts, only right seen from inside: from the garden they are not drawn */
+      const inside = Math.hypot(cam.x, cam.z) < APO;
+      if (people.visible !== inside) { people.visible = inside; kernel.invalidate(); }
+      if (kernel.reduce) return false; /* reduced motion: the fire stays as the first frame */
       if (cam.y > 650 || cam.distanceTo(hp) > 1300) return false;
       kernel.camera.getWorldDirection(fwd); to.copy(hp).sub(cam).normalize();
       if (fwd.dot(to) < 0.25) return false; /* the hearth is not in front of us: let the GPU sleep */

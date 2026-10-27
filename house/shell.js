@@ -111,6 +111,13 @@ export function buildShell(scene, kernel) {
           const fr = lit(C('#7A6444'));
           slab(az, -3.5, 3.5, o.y0, o.y1, APO - 9, APO - 2, fr, 'oltr');
           for (let q = 1; q <= 6; q++) slab(az, -L, L, FH * q - 4.5, FH * q + 4.5, APO - 9, APO - 2, fr, 'otb');
+          /* the hall's windows are curtained, closed: the people in the hall are flat cutouts and must not be seen from the garden */
+          const wine = C('#7A2E2A'), brass = lit(C('#C9A862')), top = FH - 10, bot = o.y0 + 6, nu = Math.ceil(2 * L / 5);
+          const drape = (p, n, s, t) => { const f = 0.66 + 0.34 * Math.pow(0.5 + 0.5 * Math.cos(s * Math.PI * 2 * 11), 1.3), hem = 0.78 + 0.22 * t; return shade(wine.map((v) => v * f * hem * grain(p, 0.06)), p, n, INT); };
+          [[APO - 14, inN(az)], [APO - 14.4, outN(az)]].forEach(([r, h]) => B.quad(fp(az, -L, bot, r), fp(az, L, bot, r), fp(az, L, top, r), fp(az, -L, top, r), drape, nu, 2, h));
+          slab(az, -L - 6, L + 6, top + 2, top + 8, APO - 22, APO - 12, brass, 'oitlrb');       /* the rod */
+          slab(az, -L, L, top - 16, top + 2, APO - 19, APO - 13, lit(wine), 'oitlr');          /* the valance */
+          [-1, 1].forEach((sd) => slab(az, sd * (L + 6) - 3, sd * (L + 6) + 3, top - 2, top + 12, APO - 24, APO - 10, brass, 'oitlr')); /* the finials */
         }
       });
     }
