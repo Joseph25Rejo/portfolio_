@@ -18,15 +18,16 @@ export function hasWebGL() {
 export function createKernel(host, opts) {
   opts = opts || {};
   const coarse = !!(window.matchMedia && matchMedia('(pointer:coarse)').matches);
-  const dprMax = Math.min(window.devicePixelRatio || 1, coarse ? 1.5 : 2);
-  /* pixel-ratio ladder the governor steps down through */
-  const levels = [dprMax, Math.min(dprMax, 1.5), Math.min(dprMax, 1.25), 1].filter((v, i, a) => i === 0 || v < a[i - 1]);
+  /* the scene is flat-shaded and cheap to fill, so phones can afford 2x; below that, text on the sign and the plaques goes soft */
+  const dprMax = Math.min(window.devicePixelRatio || 1, 2);
+  /* pixel-ratio ladder the governor steps down through; phones never drop under 1.5, where the picture is still clean enough */
+  const levels = [dprMax, Math.min(dprMax, 1.75), Math.min(dprMax, 1.5), coarse ? 1.5 : 1.25, coarse ? 1.5 : 1].filter((v, i, a) => i === 0 || v < a[i - 1]);
   let lvl = 0;
 
   const canvas = document.createElement('canvas');
   canvas.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;display:block;outline:none';
   host.appendChild(canvas);
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !coarse, powerPreference: 'high-performance', alpha: false });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !coarse || dprMax < 2, powerPreference: 'high-performance', alpha: false });
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
   renderer.setClearColor(0x0b0e24, 1);
   const scene = new THREE.Scene();
