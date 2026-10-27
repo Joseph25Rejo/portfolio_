@@ -39,7 +39,7 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
 .hs-sans{font-family:'Instrument Sans','Helvetica Neue',Arial,sans-serif}
 .hs-btn{font:500 15px/1 'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925;background:rgba(244,240,232,.88);border:1px solid rgba(41,41,37,.28);padding:0 22px;height:46px;min-width:46px;border-radius:2px;cursor:pointer;display:inline-flex;align-items:center;gap:10px;letter-spacing:.01em;transition:background .25s,border-color .25s,color .25s}
 .hs-btn:hover,.hs-btn:focus-visible{background:#292925;color:#F4F0E8;border-color:#292925;outline:none}
-.hs-qlink{font:600 13px/1.4 'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925;background:none;border:0;border-bottom:1px solid rgba(125,95,40,.7);padding:0;cursor:pointer;transition:color .2s,border-color .2s}
+.hs-qlink{font:500 13px/1.4 'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925;background:none;border:0;border-bottom:1px solid rgba(125,95,40,.7);padding:0;cursor:pointer;transition:color .2s,border-color .2s}
 .hs-qlink:hover,.hs-qlink:focus-visible{color:#7D5F28;border-color:#7D5F28}
 @media (pointer:coarse){.hs-qlink{padding:12px 0 8px;border-bottom-width:0;text-decoration:underline;text-decoration-color:rgba(125,95,40,.7);text-underline-offset:4px}}
 .hs-btn-solid{background:#292925;color:#F4F0E8;border-color:#292925}
@@ -114,6 +114,7 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
   .hs-rail{display:none !important}
   .hs-bar{display:flex !important}
   .hs-dir{top:calc(14px + env(safe-area-inset-top,0px));right:12px}
+  .hs-dir .hs-dir-quick{display:none}
   .hs-logo{top:calc(16px + env(safe-area-inset-top,0px))}
   .hs-cap{bottom:calc(76px + env(safe-area-inset-bottom,0px));padding:16px 16px 16px;display:flex;flex-direction:column}
   .hs-cap .hs-capline{margin-top:6px !important;font-size:15px !important;line-height:1.45 !important}
@@ -211,9 +212,9 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
             <h1 class="hs-name hs-serif">Joseph<br><span style="padding-left:.55em">Rejo Mathew</span></h1>
             <p class="hs-sans hs-lede" style="margin:26px 0 0;font-size:17px;line-height:1.55;color:#3A372F;max-width:440px">A full-stack developer from RV College of Engineering, studying AI and machine learning in Bengaluru. I get things done, whatever it takes. Founding engineer at Lume, building guest apps for premium Indian resorts.</p>
             <div class="hs-ctas" style="margin-top:34px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
-              <button type="button" class="hs-btn" onClick="{{ begin }}"><span>Begin the journey</span><span class="hs-nudge" aria-hidden="true" style="display:inline-block;font-size:18px;line-height:1">↓</span></button>
-              <a class="hs-btn hs-btn-solid" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf" style="text-decoration:none"><span>Download résumé</span><span aria-hidden="true">↓</span></a>
-              <span class="hs-sans" style="font-size:13px;color:#4A463E;flex-basis:100%"><button type="button" id="hs-quick-btn" class="hs-qlink" onClick="{{ openQuick }}">Quick view, 30 seconds →</button> &nbsp;or scroll to climb the staircase</span>
+              <button type="button" id="hs-quick-btn" class="hs-btn hs-btn-solid" onClick="{{ openQuick }}"><span>Quick view</span><span aria-hidden="true">→</span></button>
+              <button type="button" class="hs-btn" onClick="{{ begin }}"><span>Walk the house</span><span class="hs-nudge" aria-hidden="true" style="display:inline-block;font-size:18px;line-height:1">↓</span></button>
+              <span class="hs-sans" style="font-size:13px;color:#4A463E;flex-basis:100%">A 30-second overview, or scroll to climb the house. <a class="hs-qlink" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf" style="text-decoration:none;white-space:nowrap">Résumé (PDF)</a></span>
             </div>
           </div>
         </div>
@@ -247,10 +248,12 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
 
         <!-- Directory -->
         <div class="hs-dir" style="z-index:8;display:flex;gap:10px;align-items:flex-start">
+          <button type="button" class="hs-btn hs-btn-solid hs-dir-quick" onClick="{{ openQuick }}"><span>Quick view</span><span aria-hidden="true">→</span></button>
           <a class="hs-btn" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf" style="text-decoration:none"><span>Résumé</span><span aria-hidden="true">↓</span></a>
           <button type="button" class="hs-btn" aria-expanded="{{ dirOpen }}" onClick="{{ toggleDir }}"><span>Directory</span></button>
           <sc-if value="{{ dirOpen }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute;top:54px;right:0;width:min(300px,calc(100vw - 32px));box-sizing:border-box;background:rgba(244,240,232,.97);border:1px solid rgba(41,41,37,.18);padding:10px 8px">
+              <button type="button" onClick="{{ openQuick }}" style="display:flex;width:100%;min-height:50px;align-items:center;justify-content:space-between;gap:16px;background:#292925;border:0;cursor:pointer;padding:0 14px;margin-bottom:6px;text-align:left;color:#F4F0E8"><span class="hs-sans" style="font-size:15px;font-weight:600">Quick view, 30 seconds</span><span aria-hidden="true">→</span></button>
               <sc-for list="{{ floors }}" as="f" hint-placeholder-count="7">
                 <button type="button" onClick="{{ f.goDir }}" style="display:flex;width:100%;min-height:46px;align-items:center;gap:16px;background:none;border:0;cursor:pointer;padding:0 14px;text-align:left;color:#292925">
                   <span class="hs-serif" style="font-size:22px;width:30px;color:#6A4E1B;font-weight:500">{{ f.num }}</span>

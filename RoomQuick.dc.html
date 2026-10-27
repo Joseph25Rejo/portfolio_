@@ -22,9 +22,20 @@ body{margin:0}
 .qv .qv-btn:hover{background:#292925;color:#F4F0E8}
 .qv .qv-btn.solid{background:#292925;color:#F4F0E8}
 .qv .qv-btn.solid:hover{background:#6A4E1B;border-color:#6A4E1B}
-.qv .qv-row{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:26px 0;border-bottom:1px solid rgba(41,41,37,.2)}
+.qv .qv-row{display:grid;grid-template-columns:minmax(0,1fr);gap:16px 28px;padding:28px 0;border-bottom:1px solid rgba(41,41,37,.2)}
+.qv .qv-cover{display:block;width:100%;height:auto;aspect-ratio:16/9;object-fit:cover;background:#CFC6B2;box-shadow:0 14px 22px -16px rgba(41,41,37,.6),0 0 0 1px rgba(41,41,37,.14)}
+.qv .qv-body{display:grid;gap:10px;min-width:0;align-content:start}
+.qv dl{margin:0}
+.qv dt{font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;line-height:1.2;font-weight:500}
+.qv dd{margin:4px 0 0;font-size:15.5px;line-height:1.6;color:#3A372F}
+@media (min-width:720px){.qv .qv-row{grid-template-columns:230px minmax(0,1fr)}}
 .qv h2{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(30px,3.2vw,40px);line-height:1.05;font-weight:500;letter-spacing:-.005em}
 .qv h3{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(26px,2.6vw,32px);line-height:1.1;font-weight:500}
+/* these sit on the dark closing panel, so they override the page link colour */
+.qv a.qv-dk{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 20px;border:1px solid #D9BC7C;color:#F4F0E8;font:500 15.5px/1 'Instrument Sans',Arial,sans-serif;transition:background .2s,color .2s}
+.qv a.qv-dk:hover,.qv a.qv-dk:focus-visible{background:#F4F0E8;color:#242320;border-color:#F4F0E8;outline:2px solid #F4F0E8;outline-offset:3px}
+.qv a.qv-dk.solid{background:#D9BC7C;color:#242320}
+.qv a.qv-dk.solid:hover,.qv a.qv-dk.solid:focus-visible{background:#F4F0E8}
 @media (min-width:980px){
   .qv .qv-side{position:sticky;top:104px;align-self:flex-start}
 }
@@ -61,18 +72,21 @@ body{margin:0}
         <div style="margin-top:18px;border-top:1px solid rgba(41,41,37,.3)">
           <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
             <article class="qv-row">
-              <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px">
-                <h3>{{ p.name }}</h3>
-                <span style="font-size:15px;color:#4A463E">{{ p.kind }}</span>
+              <img class="qv-cover" src="{{ p.cover }}" alt="{{ p.name }} cover" width="1920" height="1080" loading="lazy" decoding="async">
+              <div class="qv-body">
+                <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px">
+                  <h3>{{ p.name }}</h3>
+                  <span style="font-size:15px;color:#4A463E">{{ p.kind }}</span>
+                </div>
+                <p style="margin:0;font-size:16px;line-height:1.55;color:#2F2D28;max-width:62ch">{{ p.line }}</p>
+                <p style="margin:0;font-size:14.5px;line-height:1.6;color:#4A463E;max-width:62ch">{{ p.stack }}</p>
+                <p style="margin:2px 0 0;font-size:15px;line-height:1.7;color:#3A372F">
+                  <sc-if value="{{ p.hasLive }}" hint-placeholder-val="{{ true }}"><a href="{{ p.live }}" target="_blank" rel="noopener">Live demo ↗</a></sc-if>
+                  <sc-if value="{{ p.both }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="margin:0 10px;color:#4A463E">·</span></sc-if>
+                  <sc-if value="{{ p.hasRepo }}" hint-placeholder-val="{{ true }}"><a href="{{ p.repo }}" target="_blank" rel="noopener">GitHub ↗</a></sc-if>
+                  <sc-if value="{{ p.noLinks }}" hint-placeholder-val="{{ false }}"><span>No public demo or repository. Patent details are below.</span></sc-if>
+                </p>
               </div>
-              <p style="margin:0;font-size:16px;line-height:1.55;color:#2F2D28;max-width:62ch">{{ p.line }}</p>
-              <p style="margin:0;font-size:14.5px;line-height:1.6;color:#4A463E;max-width:62ch">{{ p.stack }}</p>
-              <p style="margin:2px 0 0;font-size:15px;line-height:1.7;color:#3A372F">
-                <sc-if value="{{ p.hasLive }}" hint-placeholder-val="{{ true }}"><a href="{{ p.live }}" target="_blank" rel="noopener">Live demo ↗</a></sc-if>
-                <sc-if value="{{ p.both }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="margin:0 10px;color:#4A463E">·</span></sc-if>
-                <sc-if value="{{ p.hasRepo }}" hint-placeholder-val="{{ true }}"><a href="{{ p.repo }}" target="_blank" rel="noopener">GitHub ↗</a></sc-if>
-                <sc-if value="{{ p.noLinks }}" hint-placeholder-val="{{ false }}"><span>No public demo or repository. Patent details are below.</span></sc-if>
-              </p>
             </article>
           </sc-for>
         </div>
@@ -103,7 +117,27 @@ body{margin:0}
         </ul>
       </section>
 
-      <p style="margin:56px 0 0;font-size:15.5px;line-height:1.6;color:#3A372F;max-width:52ch">That is the short version. The house has the architecture diagrams, demo videos and the rest of the work. Use the back button to climb it.</p>
+      <section aria-labelledby="qv-stack" style="margin-top:64px">
+        <h2 id="qv-stack">What I work with</h2>
+        <dl style="margin-top:18px;border-top:1px solid rgba(41,41,37,.3)">
+          <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:2px 28px;padding:16px 0;border-bottom:1px solid rgba(41,41,37,.2)">
+              <dt>{{ g.label }}</dt>
+              <dd>{{ g.items }}</dd>
+            </div>
+          </sc-for>
+        </dl>
+      </section>
+
+      <section aria-labelledby="qv-end" style="margin-top:72px;padding:clamp(26px,4vw,44px);background:linear-gradient(180deg,#34332D,#242320);color:#F4F0E8;box-shadow:0 26px 34px -20px rgba(41,41,37,.7)">
+        <h2 id="qv-end" style="color:#F4F0E8">Hiring, or have something to build?</h2>
+        <p style="margin:12px 0 0;font-size:16px;line-height:1.6;color:#DDD3BF;max-width:52ch">Send a note, or take the résumé and read it later. I read everything.</p>
+        <div style="margin-top:24px;display:flex;flex-wrap:wrap;gap:12px">
+          <a class="qv-dk solid" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf"><span>Download résumé</span><span aria-hidden="true">↓</span></a>
+          <a class="qv-dk" href="mailto:joseph25rejo@gmail.com?subject=Hello%20from%20your%20portfolio"><span>joseph25rejo@gmail.com</span><span aria-hidden="true">→</span></a>
+        </div>
+        <p style="margin:22px 0 0;font-size:14.5px;line-height:1.6;color:#DDD3BF">The house has the architecture diagrams, demo videos and the rest of the work. Use the back button at the top to climb it.</p>
+      </section>
     </main>
   </div>
 </div>
@@ -112,12 +146,12 @@ body{margin:0}
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
 class Component extends DCLogic {
   renderVals() {
-    const mk = (name, kind, line, stack, live, repo) => ({ name, kind, line, stack: stack.join(', '), live, repo, hasLive: !!live, hasRepo: !!repo, both: !!live && !!repo, noLinks: !live && !repo });
+    const mk = (name, kind, cover, line, stack, live, repo) => ({ name, kind, cover, line, stack: stack.join(', '), live, repo, hasLive: !!live, hasRepo: !!repo, both: !!live && !!repo, noLinks: !live && !repo });
     const projects = [
-      mk('QuarksFinance', 'Stock analysis and strategy platform', 'Backtesting, live signals and sentiment in one place, on real market data through the yFinance API.', ['Python', 'Flask', 'SQLite', 'React', 'Next.js', 'Vercel'], 'https://quarks-nu.vercel.app', 'https://github.com/Joseph25Rejo/QuarksFinance'),
-      mk('Hatch', 'Hackathon management platform', 'Runs a hackathon from registration to judging. It won WhiteHack 1.0, and its admin panels cut manual coordination effort by 40%.', ['Next.js', 'TypeScript', 'Flask', 'MongoDB', 'Firebase'], 'https://hatch-iota.vercel.app/', 'https://github.com/AdityaKaushik295/Hatch'),
-      mk('ParkNGo', 'Smart parking with dynamic pricing', 'Booking, QR entry and exit, and billing, with ML-based demand prediction. JWT authentication and role-based access across 3 roles.', ['React Native', 'Node.js', 'Express.js', 'FastAPI', 'MongoDB Atlas', 'RazorPay'], '', 'https://github.com/Joseph25Rejo/ParknGo-appln'),
-      mk('ORION', 'AI grocery management', 'Links what people consume with live inventory through demand forecasting and anomaly detection. I am a co-inventor on the patent application.', ['FastAPI', 'Kubernetes', 'Scikit-learn', 'Pandas', 'MongoDB'], '', '')
+      mk('QuarksFinance', 'Stock analysis and strategy platform', './assets/projects/Quarks/quarks-finance-cover.webp', 'Backtesting, live signals and sentiment in one place, on real market data through the yFinance API.', ['Python', 'Flask', 'SQLite', 'React', 'Next.js', 'Vercel'], 'https://quarks-nu.vercel.app', 'https://github.com/Joseph25Rejo/QuarksFinance'),
+      mk('Hatch', 'Hackathon management platform', './assets/projects/hatch/hatch-cover.webp', 'Runs a hackathon from registration to judging. It won WhiteHack 1.0, and its admin panels cut manual coordination effort by 40%.', ['Next.js', 'TypeScript', 'Flask', 'MongoDB', 'Firebase'], 'https://hatch-iota.vercel.app/', 'https://github.com/AdityaKaushik295/Hatch'),
+      mk('ParkNGo', 'Smart parking with dynamic pricing', './assets/projects/Parkngo/parkngo-cover.jpg', 'Booking, QR entry and exit, and billing, with ML-based demand prediction. JWT authentication and role-based access across 3 roles.', ['React Native', 'Node.js', 'Express.js', 'FastAPI', 'MongoDB Atlas', 'RazorPay'], '', 'https://github.com/Joseph25Rejo/ParknGo-appln'),
+      mk('ORION', 'AI grocery management', './assets/projects/ORION/orion-cover.png', 'Links what people consume with live inventory through demand forecasting and anomaly detection. I am a co-inventor on the patent application.', ['FastAPI', 'Kubernetes', 'Scikit-learn', 'Pandas', 'MongoDB'], '', '')
     ];
     const proof = [
       { title: 'Winner, WhiteHack 1.0', when: 'Aug 2025', body: 'National online web development hackathon, won with Hatch.' },
@@ -125,7 +159,14 @@ class Component extends DCLogic {
       { title: 'Patent application, ORION', when: 'Filed Mar 2026', body: 'India, No. 202641030238, published in the Patent Office Journal on 29 May 2026. Co-inventor.' },
       { title: 'Publication', when: 'Jan 2025', body: 'AI-Driven Pathogen Profiling in Scientific Literature using NLP. DOI 10.37896/sr12.1/006.' }
     ];
-    return { projects, proof };
+    const groups = [
+      { label: 'Languages', items: 'Python, Java, C, JavaScript, TypeScript, HTML, CSS' },
+      { label: 'Backend and web', items: 'Node.js, Express.js, Flask, FastAPI, Spring Boot, JWT authentication, RBAC' },
+      { label: 'Frameworks and libraries', items: 'React, Next.js, React Native' },
+      { label: 'Databases', items: 'SQL, MongoDB, SQLite, Firebase' },
+      { label: 'Cloud and tools', items: 'AWS, Railway, Vercel, Git, MATLAB, Figma' }
+    ];
+    return { projects, proof, groups };
   }
 }
 </script>
