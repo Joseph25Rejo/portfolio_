@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Quick view</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+.qv ::selection{background:#D9BC7C;color:#292925}
+.qv a{color:#292925;text-decoration:none;border-bottom:1px solid rgba(106,78,27,.55);text-underline-offset:3px;transition:color .2s,border-color .2s}
+.qv a:hover,.qv a:focus-visible{color:#6A4E1B;border-color:#6A4E1B}
+.qv a:focus-visible,.qv .qv-btn:focus-visible{outline:2px solid #6A4E1B;outline-offset:3px}
+.qv .qv-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border:1px solid #292925;font:500 15.5px/1 'Instrument Sans',Arial,sans-serif;color:#292925;background:transparent;transition:background .2s,color .2s}
+.qv .qv-btn:hover{background:#292925;color:#F4F0E8}
+.qv .qv-btn.solid{background:#292925;color:#F4F0E8}
+.qv .qv-btn.solid:hover{background:#6A4E1B;border-color:#6A4E1B}
+.qv .qv-row{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;padding:26px 0;border-bottom:1px solid rgba(41,41,37,.2)}
+.qv h2{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(30px,3.2vw,40px);line-height:1.05;font-weight:500;letter-spacing:-.005em}
+.qv h3{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(26px,2.6vw,32px);line-height:1.1;font-weight:500}
+@media (min-width:980px){
+  .qv .qv-side{position:sticky;top:104px;align-self:flex-start}
+}
+</style>
+</helmet>
+
+<div class="qv" style="position:relative;min-height:900px;box-sizing:border-box;padding:clamp(88px,11vh,112px) clamp(20px,4.4vw,72px) 96px;background:radial-gradient(ellipse 60% 40% at 50% 0%,#F6F1E6 0%,rgba(246,241,230,0) 75%),linear-gradient(180deg,#E9E2D2,#DDD5C3);font-family:'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925">
+  <div style="display:flex;flex-wrap:wrap;gap:56px clamp(40px,6vw,96px);align-items:flex-start;max-width:1280px;margin:0 auto">
+
+    <!-- who, and the three things a recruiter came for -->
+    <header class="qv-side" style="flex:2 1 340px;min-width:0;max-width:460px">
+      <h1 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(48px,6vw,84px);line-height:.95;font-weight:500;letter-spacing:-.01em">Joseph<br>Rejo Mathew</h1>
+      <p style="margin:20px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,2.2vw,28px);line-height:1.25;font-weight:500;color:#6A4E1B">Full-stack developer. Founding Engineer Intern at Lume.</p>
+      <p style="margin:18px 0 0;font-size:16.5px;line-height:1.6;color:#3A372F;max-width:440px">I build products end to end and ship them: a hackathon-winning platform, and guest apps running at three resorts.</p>
+      <p style="margin:14px 0 0;font-size:15px;line-height:1.55;color:#4A463E">Bengaluru, India. B.E. in AI and ML, RV College of Engineering, CGPA 9.16.</p>
+
+      <div style="margin-top:30px;display:flex;flex-wrap:wrap;gap:12px">
+        <a class="qv-btn solid" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf" style="border-bottom:1px solid #292925"><span>Download résumé</span><span aria-hidden="true">↓</span></a>
+        <a class="qv-btn" href="mailto:joseph25rejo@gmail.com?subject=Hello%20from%20your%20portfolio"><span>Email me</span><span aria-hidden="true">→</span></a>
+      </div>
+      <p style="margin:22px 0 0;font-size:15.5px;line-height:1.9;color:#3A372F">
+        <a href="https://github.com/Joseph25Rejo" target="_blank" rel="noopener">GitHub</a>
+        <span aria-hidden="true" style="margin:0 10px;color:#4A463E">·</span>
+        <a href="https://www.linkedin.com/in/joseph-r-m-12514229b" target="_blank" rel="noopener">LinkedIn</a>
+        <span aria-hidden="true" style="margin:0 10px;color:#4A463E">·</span>
+        <a href="https://medium.com/@joseph25rejo" target="_blank" rel="noopener">Medium</a>
+      </p>
+    </header>
+
+    <main style="flex:3 1 520px;min-width:0">
+
+      <section aria-labelledby="qv-work">
+        <h2 id="qv-work">What I have built</h2>
+        <div style="margin-top:18px;border-top:1px solid rgba(41,41,37,.3)">
+          <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
+            <article class="qv-row">
+              <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px">
+                <h3>{{ p.name }}</h3>
+                <span style="font-size:15px;color:#4A463E">{{ p.kind }}</span>
+              </div>
+              <p style="margin:0;font-size:16px;line-height:1.55;color:#2F2D28;max-width:62ch">{{ p.line }}</p>
+              <p style="margin:0;font-size:14.5px;line-height:1.6;color:#4A463E;max-width:62ch">{{ p.stack }}</p>
+              <p style="margin:2px 0 0;font-size:15px;line-height:1.7;color:#3A372F">
+                <sc-if value="{{ p.hasLive }}" hint-placeholder-val="{{ true }}"><a href="{{ p.live }}" target="_blank" rel="noopener">Live demo ↗</a></sc-if>
+                <sc-if value="{{ p.both }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="margin:0 10px;color:#4A463E">·</span></sc-if>
+                <sc-if value="{{ p.hasRepo }}" hint-placeholder-val="{{ true }}"><a href="{{ p.repo }}" target="_blank" rel="noopener">GitHub ↗</a></sc-if>
+                <sc-if value="{{ p.noLinks }}" hint-placeholder-val="{{ false }}"><span>No public demo or repository. Patent details are below.</span></sc-if>
+              </p>
+            </article>
+          </sc-for>
+        </div>
+      </section>
+
+      <section aria-labelledby="qv-lume" style="margin-top:64px">
+        <h2 id="qv-lume">Where it runs</h2>
+        <div style="margin-top:18px;padding:26px 0;border-top:1px solid rgba(41,41,37,.3);border-bottom:1px solid rgba(41,41,37,.2)">
+          <h3>Lume CXM, Founding Engineer Intern</h3>
+          <p style="margin:8px 0 0;font-size:15px;color:#4A463E">Block 8 Solutions Pvt. Ltd., Bengaluru. Jun 2026 to present.</p>
+          <p style="margin:14px 0 0;font-size:16px;line-height:1.6;color:#2F2D28;max-width:62ch">Fully branded guest web apps for premium Indian resorts. The product runs in production across 3 resort properties. I converted 30+ Figma screens to React, with one deployment per property on Railway, the guest app on Vercel, and analytics in PostHog.</p>
+          <p style="margin:12px 0 0;font-size:15px"><a href="https://www.lume-cxm.com/" target="_blank" rel="noopener">lume-cxm.com ↗</a></p>
+        </div>
+      </section>
+
+      <section aria-labelledby="qv-proof" style="margin-top:64px">
+        <h2 id="qv-proof">Recognition</h2>
+        <ul style="list-style:none;margin:18px 0 0;padding:0;border-top:1px solid rgba(41,41,37,.3)">
+          <sc-for list="{{ proof }}" as="r" hint-placeholder-count="4">
+            <li style="display:grid;grid-template-columns:minmax(0,1fr);gap:4px;padding:20px 0;border-bottom:1px solid rgba(41,41,37,.2)">
+              <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 14px">
+                <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,2.2vw,27px);line-height:1.15;font-weight:500">{{ r.title }}</span>
+                <span style="font-size:14.5px;color:#4A463E">{{ r.when }}</span>
+              </div>
+              <span style="font-size:15.5px;line-height:1.55;color:#3A372F;max-width:62ch">{{ r.body }}</span>
+            </li>
+          </sc-for>
+        </ul>
+      </section>
+
+      <p style="margin:56px 0 0;font-size:15.5px;line-height:1.6;color:#3A372F;max-width:52ch">That is the short version. The house has the architecture diagrams, demo videos and the rest of the work. Use the back button to climb it.</p>
+    </main>
+  </div>
+</div>
+</x-dc>
+
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const mk = (name, kind, line, stack, live, repo) => ({ name, kind, line, stack: stack.join(', '), live, repo, hasLive: !!live, hasRepo: !!repo, both: !!live && !!repo, noLinks: !live && !repo });
+    const projects = [
+      mk('QuarksFinance', 'Stock analysis and strategy platform', 'Backtesting, live signals and sentiment in one place, on real market data through the yFinance API.', ['Python', 'Flask', 'SQLite', 'React', 'Next.js', 'Vercel'], 'https://quarks-nu.vercel.app', 'https://github.com/Joseph25Rejo/QuarksFinance'),
+      mk('Hatch', 'Hackathon management platform', 'Runs a hackathon from registration to judging. It won WhiteHack 1.0, and its admin panels cut manual coordination effort by 40%.', ['Next.js', 'TypeScript', 'Flask', 'MongoDB', 'Firebase'], 'https://hatch-iota.vercel.app/', 'https://github.com/AdityaKaushik295/Hatch'),
+      mk('ParkNGo', 'Smart parking with dynamic pricing', 'Booking, QR entry and exit, and billing, with ML-based demand prediction. JWT authentication and role-based access across 3 roles.', ['React Native', 'Node.js', 'Express.js', 'FastAPI', 'MongoDB Atlas', 'RazorPay'], '', 'https://github.com/Joseph25Rejo/ParknGo-appln'),
+      mk('ORION', 'AI grocery management', 'Links what people consume with live inventory through demand forecasting and anomaly detection. I am a co-inventor on the patent application.', ['FastAPI', 'Kubernetes', 'Scikit-learn', 'Pandas', 'MongoDB'], '', '')
+    ];
+    const proof = [
+      { title: 'Winner, WhiteHack 1.0', when: 'Aug 2025', body: 'National online web development hackathon, won with Hatch.' },
+      { title: 'Runner-Up, ExploreLikeALocal Hackathon', when: 'Sep 2024', body: 'Tourism web app.' },
+      { title: 'Patent application, ORION', when: 'Filed Mar 2026', body: 'India, No. 202641030238, published in the Patent Office Journal on 29 May 2026. Co-inventor.' },
+      { title: 'Publication', when: 'Jan 2025', body: 'AI-Driven Pathogen Profiling in Scientific Literature using NLP. DOI 10.37896/sr12.1/006.' }
+    ];
+    return { projects, proof };
+  }
+}
+</script>
+</body>
+</html>

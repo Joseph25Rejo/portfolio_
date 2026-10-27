@@ -39,6 +39,9 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
 .hs-sans{font-family:'Instrument Sans','Helvetica Neue',Arial,sans-serif}
 .hs-btn{font:500 15px/1 'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925;background:rgba(244,240,232,.88);border:1px solid rgba(41,41,37,.28);padding:0 22px;height:46px;min-width:46px;border-radius:2px;cursor:pointer;display:inline-flex;align-items:center;gap:10px;letter-spacing:.01em;transition:background .25s,border-color .25s,color .25s}
 .hs-btn:hover,.hs-btn:focus-visible{background:#292925;color:#F4F0E8;border-color:#292925;outline:none}
+.hs-qlink{font:600 13px/1.4 'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925;background:none;border:0;border-bottom:1px solid rgba(125,95,40,.7);padding:0;cursor:pointer;transition:color .2s,border-color .2s}
+.hs-qlink:hover,.hs-qlink:focus-visible{color:#7D5F28;border-color:#7D5F28}
+@media (pointer:coarse){.hs-qlink{padding:12px 0 8px;border-bottom-width:0;text-decoration:underline;text-decoration-color:rgba(125,95,40,.7);text-underline-offset:4px}}
 .hs-btn-solid{background:#292925;color:#F4F0E8;border-color:#292925}
 .hs-btn-solid:hover,.hs-btn-solid:focus-visible{background:#7D5F28;border-color:#7D5F28}
 .hs-link{color:#292925;text-decoration:none;border-bottom:1px solid rgba(125,95,40,.55);transition:color .2s,border-color .2s}
@@ -84,6 +87,22 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
 .hs-name{margin:0;font-weight:400;font-size:clamp(46px,6.6vw,104px);line-height:.94;letter-spacing:-.012em;color:#292925;text-shadow:0 1px 0 rgba(255,255,255,.7),0 -1px 0 rgba(41,41,37,.10)}
 .hs-cap{z-index:6;isolation:isolate;-webkit-transform:translateZ(0);position:absolute;left:clamp(24px,4.4vw,72px);bottom:clamp(36px,7vh,76px);width:min(440px,calc(100% - 48px));background:rgba(244,240,232,.9);padding:28px 30px 30px;box-sizing:border-box}
 .hs-dir{z-index:8;position:absolute;top:22px;right:clamp(16px,2.6vw,36px)}
+/* short desktop windows (or zoomed browsers): shrink the hero by height so it never runs under the logo */
+@media (min-width:761px) and (max-height:760px){
+  .hs-hero{padding-top:72px;padding-bottom:clamp(24px,5vh,64px)}
+  .hs-name{font-size:clamp(36px,min(6.6vw,11vh),104px)}
+  .hs-hero p[style*="max-width:440px"]{font-size:15.5px !important;line-height:1.45 !important;margin-top:14px !important}
+  .hs-hero p[style*="margin:0 0 22px"]{margin-bottom:10px !important}
+  .hs-hero .hs-ctas{margin-top:20px !important}
+}
+@media (min-width:761px) and (max-height:640px){
+  .hs-hero{padding-top:68px;padding-bottom:20px}
+  .hs-name{font-size:clamp(32px,min(6.6vw,9.5vh),104px)}
+  .hs-hero p[style*="max-width:440px"]{font-size:14.5px !important;margin-top:10px !important}
+  .hs-hero p[style*="margin:0 0 22px"]{margin-bottom:6px !important}
+  .hs-hero .hs-ctas{margin-top:14px !important;gap:12px !important}
+  .hs-hero .hs-ctas .hs-btn{height:40px}
+}
 @media (max-width:760px){
   .hs-hero{width:100%;background:linear-gradient(0deg,rgba(244,240,232,.97) 0%,rgba(244,240,232,.92) 34%,rgba(244,240,232,0) 58%);padding-bottom:84px}
   .hs-cap{left:16px;right:16px;width:auto;bottom:80px;padding:20px 20px 22px;background:#F4F0E8;box-shadow:0 10px 30px rgba(10,6,2,.45)}
@@ -194,7 +213,7 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
             <div class="hs-ctas" style="margin-top:34px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
               <button type="button" class="hs-btn" onClick="{{ begin }}"><span>Begin the journey</span><span class="hs-nudge" aria-hidden="true" style="display:inline-block;font-size:18px;line-height:1">↓</span></button>
               <a class="hs-btn hs-btn-solid" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf" style="text-decoration:none"><span>Download résumé</span><span aria-hidden="true">↓</span></a>
-              <span class="hs-sans" style="font-size:13px;color:#4A463E;flex-basis:100%">PDF · or scroll to climb the staircase</span>
+              <span class="hs-sans" style="font-size:13px;color:#4A463E;flex-basis:100%"><button type="button" id="hs-quick-btn" class="hs-qlink" onClick="{{ openQuick }}">Quick view, 30 seconds →</button> &nbsp;or scroll to climb the staircase</span>
             </div>
           </div>
         </div>
@@ -255,9 +274,10 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
             <sc-if value="{{ r4 }}" hint-placeholder-val="{{ false }}"><dc-import name="RoomLibrary" hint-size="100%,900px"></dc-import></sc-if>
             <sc-if value="{{ r5 }}" hint-placeholder-val="{{ false }}"><dc-import name="RoomGallery" hint-size="100%,900px"></dc-import></sc-if>
             <sc-if value="{{ r6 }}" hint-placeholder-val="{{ false }}"><dc-import name="RoomContact" hint-size="100%,900px"></dc-import></sc-if>
+            <sc-if value="{{ r7 }}" hint-placeholder-val="{{ false }}"><dc-import name="RoomQuick" hint-size="100%,900px"></dc-import></sc-if>
           </div>
           <div style="position:absolute;left:0;top:0;right:0;height:72px;pointer-events:none;background:linear-gradient(180deg,rgba(239,233,221,.96),rgba(239,233,221,0))"></div>
-          <button type="button" id="hs-back" class="hs-btn" onClick="{{ leave }}" style="position:absolute;left:clamp(16px,2.6vw,36px);top:18px"><span aria-hidden="true">←</span><span>Back to the landing</span></button>
+          <button type="button" id="hs-back" class="hs-btn" onClick="{{ leave }}" style="position:absolute;left:clamp(16px,2.6vw,36px);top:18px"><span aria-hidden="true">←</span><span>{{ backLabel }}</span></button>
         </div>
 
       </div>
@@ -848,8 +868,9 @@ class Component extends DCLogic {
   slugs() { return ['entrance', 'workshop', 'experience', 'study', 'library', 'gallery', 'landing']; }
   setHash(k) { try { history.replaceState(null, '', k === null ? location.pathname + location.search : '#' + this.slugs()[k]); } catch (e) {} }
   hashOpen() {
-    let k = -1;
-    try { k = this.slugs().indexOf((location.hash || '').replace('#', '')); } catch (e) {}
+    let k = -1, h = '';
+    try { h = (location.hash || '').replace('#', ''); k = this.slugs().indexOf(h); } catch (e) {}
+    if (h === 'quick') { this.later(() => this.openQuick(), 400); return; }
     if (k < 0) return;
     this.later(() => { const sc = document.getElementById('hs-scroller'); if (sc) sc.scrollTop = this.scrollTarget(k); this._u = k; this.later(() => this.openDoor(k), 700); }, 400);
   }
@@ -868,7 +889,22 @@ class Component extends DCLogic {
     this.later(() => { this._anim = { from: 0, to: 1, t0: performance.now(), dur: 1500, done: () => { this.setState({ room: k, roomVis: true }); this.setBgInert(true); this.later(() => { const b = document.getElementById('hs-back'); if (b) b.focus({ preventScroll: true }); }, 60); } }; }, 800);
   }
   setBgInert(on) { ['hs-hero', 'hs-logo', 'hs-dir', 'hs-cap'].forEach(c => document.querySelectorAll('#' + c + ',.' + c).forEach(el => { if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert'); })); document.querySelectorAll('.hs-rail,.hs-bar').forEach(el => { if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert'); }); }
+  /* the quick view is a plain overlay: no climb, no door swing */
+  openQuick() {
+    if (this.state.openK !== null || this.state.room !== null) return;
+    try { history.replaceState(null, '', '#quick'); } catch (e) {}
+    this.setState({ room: 7, roomVis: true, dirOpen: false });
+    this.setBgInert(true);
+    this.later(() => { const rs = document.getElementById('hs-roomscroll'); if (rs) rs.scrollTop = 0; const b = document.getElementById('hs-back'); if (b) b.focus({ preventScroll: true }); }, 60);
+  }
+  closeQuick() {
+    this.setBgInert(false);
+    this.setHash(null);
+    this.setState({ roomVis: false });
+    this.later(() => { this.setState({ room: null }); const q = document.getElementById('hs-quick-btn'); if (q && q.offsetParent !== null) q.focus({ preventScroll: true }); }, 520);
+  }
   closeRoom() {
+    if (this.state.room === 7) { this.closeQuick(); return; }
     this.setBgInert(false);
     this.later(() => { const d = document.querySelector('.hs-cap .hs-btn') || document.querySelector('.hs-door-btn'); if (d && d.offsetParent !== null) d.focus({ preventScroll: true }); }, 700);
     this.setHash(null);
@@ -932,9 +968,11 @@ class Component extends DCLogic {
       dirOpen: s.dirOpen,
       leave: () => this.closeRoom(),
       onScroll: () => {},
-      roomLabel: s.room !== null ? floors[s.room].title : 'Room',
+      roomLabel: s.room === 7 ? 'Quick view' : s.room !== null ? floors[s.room].title : 'Room',
+      backLabel: s.room === 7 ? 'Back to the house' : 'Back to the landing',
+      openQuick: () => this.openQuick(),
       roomStyle: 'display:' + (roomOn || s.room !== null ? 'block' : 'none') + ';position:absolute;left:0;top:0;right:0;bottom:0;z-index:20;opacity:' + (roomOn ? 1 : 0) + ';visibility:' + (roomOn ? 'visible' : 'hidden') + ';transition:opacity .6s ease,visibility .6s;',
-      r0: s.room === 0, r1: s.room === 1, r2: s.room === 2, r3: s.room === 3, r4: s.room === 4, r5: s.room === 5, r6: s.room === 6
+      r0: s.room === 0, r1: s.room === 1, r2: s.room === 2, r3: s.room === 3, r4: s.room === 4, r5: s.room === 5, r6: s.room === 6, r7: s.room === 7
     };
   }
 }
