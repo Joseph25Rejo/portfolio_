@@ -292,7 +292,7 @@ function paintText(ctx, el, w, h) {
 export function createGL(stage, rig, opts) {
   opts = opts || {};
   let renderer;
-  try { renderer = new THREE.WebGLRenderer({ antialias: window.innerWidth >= 700, alpha: true, powerPreference: 'high-performance' }); } catch (e) { return null; }
+  try { renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' }); } catch (e) { return null; }
   if (!renderer.getContext()) return null;
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
   const el = renderer.domElement;
@@ -528,7 +528,7 @@ export function createGL(stage, rig, opts) {
     get stats() { return { textured: texCount, buckets: Object.keys(buckets).length, doors: doors.length, unsupported: unsupportedList.length }; },
     /* upload textures and compile shaders a few at a time so the page never freezes for one long task */
     async warm(W0, H0) {
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 700 ? 1.5 : 2));
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 700 ? 2.25 : 2));
       renderer.setSize(W0, H0, false);
       await new Promise((r) => setTimeout(r, 0));
       const texs = []; scene.traverse((o) => { if (o.material && o.material.map) texs.push(o.material.map); });
@@ -575,7 +575,7 @@ export function createGL(stage, rig, opts) {
       api.last = c;
       if (c.W !== W || c.Hh !== Hh) {
         W = c.W; Hh = c.Hh;
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 700 ? 1.5 : 2));
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, window.innerWidth < 700 ? 2.25 : 2));
         renderer.setSize(W, Hh, false);
       }
       tmp.makeTranslation(0, 0, c.P);
