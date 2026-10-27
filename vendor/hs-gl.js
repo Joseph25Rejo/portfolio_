@@ -407,7 +407,7 @@ export function createGL(stage, rig, opts) {
   Array.from(rig.children).forEach((c) => {
     if (c.id === 'hs-props') return;
     if (c.classList.contains('hs-paint')) {
-      emit(faceOf(c, I, { image: opts.paints && opts.paints.get(c), maxDim: 4096 }), { parent: root });
+      emit(faceOf(c, I, { image: opts.paints && opts.paints.get(c), scale: 2, maxDim: 4096 }), { parent: root });
     } else if (!c.children.length) {
       const cls = c.className || '';
       emit(faceOf(c, I), { bucket: (dbl) => bucketFor(cls, dbl).b, parent: root, track: (m) => track(cls, m) });
