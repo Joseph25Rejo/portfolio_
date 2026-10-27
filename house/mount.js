@@ -42,11 +42,15 @@ export function mountHouse(stage, opts) {
     const target = openK !== null && openK !== undefined ? openK : (dolly > 0 ? state.lastK : null);
     if (dolly > 0 && target !== null) {
       state.lastK = target;
-      const d = DOORS[target], e = ease(Math.min(1, dolly));
-      /* stop just in front of the door, square to it, level with its middle */
-      tgt.set(d.center[0] + d.out[0] * 190, d.center[1] - 20, d.center[2] + d.out[2] * 190);
+      const d = DOORS[target], e = ease(Math.min(1, dolly)), t2 = Math.max(0, Math.min(1, dolly - 1)), e2 = 1 - Math.pow(1 - t2, 2);
+      /* 0..1: walk up to just in front of the door, square to it, level with its middle. 1..2: step through the doorway into the light */
+      tgt.set(d.center[0] - d.out[0] * 190, d.center[1] - 20, d.center[2] - d.out[2] * 190);
       ctr.set(d.center[0], d.center[1] - 10, d.center[2]);
       pos.lerp(tgt, e); look.lerp(ctr, e);
+      if (t2 > 0) {
+        pos.set(tgt.x + (d.center[0] + d.out[0] * 40 - tgt.x) * e2, tgt.y, tgt.z + (d.center[2] + d.out[2] * 40 - tgt.z) * e2);
+        look.set(ctr.x + d.out[0] * 300 * e2, ctr.y, ctr.z + d.out[2] * 300 * e2);
+      }
       setAng(target, -1.26 * e);
     } else if (state.lastK !== null) { setAng(state.lastK, state.hoverK === state.lastK ? -0.09 : 0); state.lastK = null; }
     kernel.camera.position.copy(pos); kernel.camera.lookAt(look);

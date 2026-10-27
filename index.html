@@ -137,6 +137,8 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
         <!-- 3D house: the canvas is mounted here by house/mount.js; until it is ready (or if WebGL is missing) the poster shows -->
         <div id="hs-stage" style="z-index:0;isolation:isolate;position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;background:#0B0E24 url(./assets/house-poster.webp) center/cover no-repeat"></div>
 
+        <!-- the light you step into when a door opens: the same cream as the rooms, so the room appears out of it -->
+        <div id="hs-flash" aria-hidden="true" style="position:absolute;left:0;top:0;right:0;bottom:0;pointer-events:none;opacity:0;visibility:hidden;z-index:15;background:radial-gradient(ellipse 60% 70% at 50% 55%,#FFF6E0 0%,#F6E7C8 45%,#EFE9DD 100%)"></div>
         <div id="hs-glow" aria-hidden="true" style="position:absolute;left:0;top:0;right:0;bottom:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(140,170,255,.34),rgba(140,170,255,0) 70%)"></div>
         <!-- paper grain + vignette -->
 
@@ -261,6 +263,8 @@ class Component extends DCLogic {
   applyCamera() {
     const px = this._px, hero = document.getElementById('hs-hero'), wel = document.getElementById('hs-welcome');
     if (this._gl) this._gl.render(px, this._dolly, this.state.openK);
+    const fl = document.getElementById('hs-flash');
+    if (fl) { const o = Math.max(0, Math.min(1, (this._dolly - 1) / 0.65)); fl.style.opacity = o.toFixed(3); fl.style.visibility = o > 0 ? 'visible' : 'hidden'; }
     const glow = document.getElementById('hs-glow');
     if (glow) { const go = Math.max(0, Math.min(1, (this._u - 4.7) / 1.3)); glow.style.opacity = go.toFixed(3); glow.style.visibility = go > 0 ? 'visible' : 'hidden'; }
     /* the hero greets the visitor outside, and gives way as they walk up to the door */
@@ -323,7 +327,7 @@ class Component extends DCLogic {
       if (!this._alive) return;
       const ctl = m.mountHouse(st, { reduce: this._reduce, resumeHref: './assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf', onQuick: () => this.openQuick(), onDoor: (k) => this.activate(k), onLost: () => this.fallbackPoster() });
       if (!ctl) { this.fallbackPoster(); return; }
-      this._gl = ctl; this._d0 = ctl.doorPx(0); this._hearth = ctl.hearthPx(); this._total = ctl.total;
+      this._gl = ctl; window.__houseCtl = ctl; this._d0 = ctl.doorPx(0); this._hearth = ctl.hearthPx(); this._total = ctl.total;
       const tr = document.querySelector('.hs-track'); if (tr) tr.style.height = 'calc(100dvh + ' + ctl.total + 'px)';
       this._camKey = null;
       const sc = document.getElementById('hs-scroller'); if (sc && this._wantPx !== undefined) { sc.scrollTop = this._wantPx; this._px = this._tPx = this._wantPx; }
@@ -365,7 +369,7 @@ class Component extends DCLogic {
     if (this.state.openK !== null) return;
     this.setHash(k);
     this.setState({ openK: k, dirOpen: false });
-    const go = () => { this._anim = { from: 0, to: 1, t0: performance.now(), dur: 1500, done: () => { this.setState({ room: k, roomVis: true }); this.setBgInert(true); this.later(() => { const b = document.getElementById('hs-back'); if (b) b.focus({ preventScroll: true }); }, 60); } }; };
+    const go = () => { this._anim = { from: 0, to: 1, t0: performance.now(), dur: 1300, done: () => { this._anim = { from: 1, to: 2, t0: performance.now(), dur: 750, done: () => { this.setState({ room: k, roomVis: true }); this.setBgInert(true); this.later(() => { const b = document.getElementById('hs-back'); if (b) b.focus({ preventScroll: true }); }, 60); } }; } }; };
     if (this._fb) { this.setState({ room: k, roomVis: true }); this.setBgInert(true); this.later(() => { const b = document.getElementById('hs-back'); if (b) b.focus({ preventScroll: true }); }, 60); } else this.later(go, 250);
   }
   setBgInert(on) { if (this._gl) this._gl.setSignEnabled(!on);  ['hs-hero', 'hs-logo', 'hs-dir', 'hs-cap', 'hs-welcome'].forEach(c => document.querySelectorAll('#' + c + ',.' + c).forEach(el => { if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert'); })); document.querySelectorAll('.hs-rail,.hs-bar').forEach(el => { if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert'); }); }
@@ -392,7 +396,7 @@ class Component extends DCLogic {
     this.setState({ roomVis: false });
     this.later(() => {
       this.setState({ room: null });
-      this._anim = { from: this._dolly, to: 0, t0: performance.now(), dur: 1100, done: () => this.setState({ openK: null }) };
+      this._anim = { from: this._dolly, to: 0, t0: performance.now(), dur: 1500, done: () => this.setState({ openK: null }) };
     }, 520);
   }
   /* the floor rail and the Directory walk you there; without the 3D house they open the room straight away */
