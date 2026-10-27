@@ -4,15 +4,17 @@ import { D, APO, RO, DOORS, FRONT, HEARTH, NF } from './layout.js';
 
 export function createDebug(kernel, rail, goStop) {
   /* the rail in 3D: cyan = camera path, magenta = look-at path, dots = keyframes (white = stops) */
+  const railGroup = new THREE.Group(); railGroup.visible = /[?&]rail=1/.test(location.search); kernel.scene.add(railGroup);
+  window.addEventListener('keydown', (e) => { if (e.key === 'r') { railGroup.visible = !railGroup.visible; kernel.invalidate(); } });
   const line = (curve, color) => {
     const pts = curve.getPoints(rail.N * 24), g = new THREE.BufferGeometry().setFromPoints(pts);
-    const l = new THREE.Line(g, new THREE.LineBasicMaterial({ color })); kernel.scene.add(l);
+    const l = new THREE.Line(g, new THREE.LineBasicMaterial({ color })); railGroup.add(l);
   };
   line(rail.posC, 0x39d0ff); line(rail.lookC, 0xff4fd8);
   const dots = new THREE.InstancedMesh(new THREE.SphereGeometry(9, 8, 6), new THREE.MeshBasicMaterial({ color: 0xffffff }), rail.N);
   const m = new THREE.Matrix4();
   rail.kfs.forEach((k, i) => { m.makeScale(k.stop ? 1.6 : 0.8, k.stop ? 1.6 : 0.8, k.stop ? 1.6 : 0.8).setPosition(k.pos[0], k.pos[1], k.pos[2]); dots.setMatrixAt(i, m); });
-  kernel.scene.add(dots);
+  railGroup.add(dots);
 
   const css = 'position:fixed;z-index:10;font:12px/1.5 ui-monospace,Menlo,Consolas,monospace;color:#e9e4d6;background:rgba(10,12,24,.82);border:1px solid rgba(255,255,255,.14);';
   const hud = document.createElement('pre'); hud.style.cssText = css + 'left:10px;top:10px;margin:0;padding:8px 10px;pointer-events:none;white-space:pre'; document.body.appendChild(hud);

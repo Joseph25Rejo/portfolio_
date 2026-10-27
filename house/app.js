@@ -2,7 +2,8 @@
 import * as THREE from '../vendor/three.module.min.js';
 import { createKernel, hasWebGL } from './kernel.js';
 import { createRail } from './rail.js';
-import { buildGreybox } from './greybox.js';
+import { buildShell } from './shell.js';
+import { buildSky } from './sky.js';
 import { createDebug } from './debug.js';
 import { buildKeyframes, DOORS, D } from './layout.js';
 
@@ -11,7 +12,9 @@ const note = (t) => { const n = document.getElementById('note'); if (n) { n.text
 if (!hasWebGL()) { note('WebGL is not available here. The finished site shows a still poster and the Quick view instead.'); throw new Error('no webgl'); }
 
 const kernel = createKernel(host, { onLost: () => note('The graphics context was lost. The finished site falls back to the poster and Quick view.') });
-buildGreybox(kernel.scene);
+buildSky(kernel.scene);
+const shell = buildShell(kernel.scene);
+shell.onChange = kernel.invalidate;
 const rail = createRail(buildKeyframes());
 const reduce = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
 
@@ -40,7 +43,8 @@ if (/#s(\d+)/.test(location.hash)) { cur = rail.scrollOf(+RegExp.$1); window.scr
 
 /* test hooks: the objective checks in the Phase 1 report run through these */
 window.__house = {
-  kernel, rail, info,
+  kernel, rail, info, shell,
+  snap(px) { cur = px; window.scrollTo(0, px); kernel.invalidate(); },
   /* at each door stop: how far does the camera's line of sight miss the door centre, and how far is it from facing the door square? */
   check() {
     const p = new THREE.Vector3(), l = new THREE.Vector3();

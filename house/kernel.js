@@ -3,6 +3,9 @@
    animating. When no tick is animating and nothing invalidated the view, the loop stops and the GPU is idle. */
 import * as THREE from '../vendor/three.module.min.js';
 
+/* pass authored sRGB values straight through, as the old CSS scene did */
+THREE.ColorManagement.enabled = false;
+
 export function hasWebGL() {
   try {
     const c = document.createElement('canvas'), g = c.getContext('webgl2') || c.getContext('webgl');
@@ -24,6 +27,7 @@ export function createKernel(host, opts) {
   canvas.style.cssText = 'position:absolute;left:0;top:0;width:100%;height:100%;display:block;outline:none';
   host.appendChild(canvas);
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: !coarse, powerPreference: 'high-performance', alpha: false });
+  renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
   renderer.setClearColor(0x0b0e24, 1);
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(48, 1, 5, 20000);

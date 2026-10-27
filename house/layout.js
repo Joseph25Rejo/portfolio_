@@ -19,9 +19,9 @@ export const DOORS = FLOORS.map((f, k) => {
 });
 
 /* the way in from the street, and the hearth corner (people sit there, out of the path) */
-export const FRONT_AZ = 285;
+export const FRONT_AZ = 288;
 export const FRONT = { az: FRONT_AZ, center: polar(FRONT_AZ, APO, DOOR.h / 2), out: [Math.sin(FRONT_AZ * D), 0, Math.cos(FRONT_AZ * D)] };
-export const HEARTH_AZ = 215;
+export const HEARTH_AZ = 216;
 export const HEARTH = { az: HEARTH_AZ, center: polar(HEARTH_AZ, APO, 150) };
 
 const add = (a, b, k) => [a[0] + b[0] * k, a[1] + b[1] * k, a[2] + b[2] * k];
