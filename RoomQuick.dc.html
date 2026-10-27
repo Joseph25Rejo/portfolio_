@@ -50,7 +50,8 @@ body{margin:0}
       <h1 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(48px,6vw,84px);line-height:.95;font-weight:500;letter-spacing:-.01em">Joseph<br>Rejo Mathew</h1>
       <p style="margin:20px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,2.2vw,28px);line-height:1.25;font-weight:500;color:#6A4E1B">Full-stack developer. Founding Engineer Intern at Lume.</p>
       <p style="margin:18px 0 0;font-size:16.5px;line-height:1.6;color:#3A372F;max-width:440px">I build products end to end and ship them: a hackathon-winning platform, and guest apps running at three resorts.</p>
-      <p style="margin:14px 0 0;font-size:15px;line-height:1.55;color:#4A463E">Bengaluru, India. B.E. in AI and ML, RV College of Engineering, CGPA 9.16.</p>
+      <p style="margin:16px 0 0;font-size:15.5px;line-height:1.55;color:#2F2D28"><strong style="font-weight:600">Stack:</strong> Next.js, React, Node.js, Flask, FastAPI, MongoDB</p>
+      <p style="margin:10px 0 0;font-size:15px;line-height:1.55;color:#4A463E">Bengaluru, India. B.E. in AI and ML, RV College of Engineering, CGPA 9.16.</p>
 
       <div style="margin-top:30px;display:flex;flex-wrap:wrap;gap:12px">
         <a class="qv-btn solid" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf" style="border-bottom:1px solid #292925"><span>Download résumé</span><span aria-hidden="true">↓</span></a>
@@ -79,12 +80,14 @@ body{margin:0}
                   <span style="font-size:15px;color:#4A463E">{{ p.kind }}</span>
                 </div>
                 <p style="margin:0;font-size:16px;line-height:1.55;color:#2F2D28;max-width:62ch">{{ p.line }}</p>
+                <p style="margin:0;font-size:15px;line-height:1.6;color:#3A372F;max-width:62ch"><strong style="font-weight:600">My part:</strong> {{ p.part }}</p>
                 <p style="margin:0;font-size:14.5px;line-height:1.6;color:#4A463E;max-width:62ch">{{ p.stack }}</p>
                 <p style="margin:2px 0 0;font-size:15px;line-height:1.7;color:#3A372F">
                   <sc-if value="{{ p.hasLive }}" hint-placeholder-val="{{ true }}"><a href="{{ p.live }}" target="_blank" rel="noopener">Live demo ↗</a></sc-if>
                   <sc-if value="{{ p.both }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="margin:0 10px;color:#4A463E">·</span></sc-if>
                   <sc-if value="{{ p.hasRepo }}" hint-placeholder-val="{{ true }}"><a href="{{ p.repo }}" target="_blank" rel="noopener">GitHub ↗</a></sc-if>
-                  <sc-if value="{{ p.noLinks }}" hint-placeholder-val="{{ false }}"><span>No public demo or repository. Patent details are below.</span></sc-if>
+                  <sc-if value="{{ p.anyLink }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="margin:0 10px;color:#4A463E">·</span></sc-if><a href="{{ p.arch }}" target="_blank" rel="noopener">Architecture ↗</a>
+                  
                 </p>
               </div>
             </article>
@@ -111,7 +114,7 @@ body{margin:0}
                 <span style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,2.2vw,27px);line-height:1.15;font-weight:500">{{ r.title }}</span>
                 <span style="font-size:14.5px;color:#4A463E">{{ r.when }}</span>
               </div>
-              <span style="font-size:15.5px;line-height:1.55;color:#3A372F;max-width:62ch">{{ r.body }}</span>
+              <span style="font-size:15.5px;line-height:1.55;color:#3A372F;max-width:62ch">{{ r.body }}<sc-if value="{{ r.hasLink }}" hint-placeholder-val="{{ true }}"> <a href="{{ r.href }}" target="_blank" rel="noopener">{{ r.label }} ↗</a></sc-if></span>
             </li>
           </sc-for>
         </ul>
@@ -146,19 +149,21 @@ body{margin:0}
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
 class Component extends DCLogic {
   renderVals() {
-    const mk = (name, kind, cover, line, stack, live, repo) => ({ name, kind, cover, line, stack: stack.join(', '), live, repo, hasLive: !!live, hasRepo: !!repo, both: !!live && !!repo, noLinks: !live && !repo });
+    const mk = (name, kind, cover, arch, line, part, stack, live, repo) => ({ name, kind, cover, arch, line, part, stack: stack.join(', '), live, repo, hasLive: !!live, hasRepo: !!repo, both: !!live && !!repo, anyLink: !!live || !!repo });
     const projects = [
-      mk('QuarksFinance', 'Stock analysis and strategy platform', './assets/projects/Quarks/quarks-finance-cover.webp', 'Backtesting, live signals and sentiment in one place, on real market data through the yFinance API.', ['Python', 'Flask', 'SQLite', 'React', 'Next.js', 'Vercel'], 'https://quarks-nu.vercel.app', 'https://github.com/Joseph25Rejo/QuarksFinance'),
-      mk('Hatch', 'Hackathon management platform', './assets/projects/hatch/hatch-cover.webp', 'Runs a hackathon from registration to judging. It won WhiteHack 1.0, and its admin panels cut manual coordination effort by 40%.', ['Next.js', 'TypeScript', 'Flask', 'MongoDB', 'Firebase'], 'https://hatch-iota.vercel.app/', 'https://github.com/AdityaKaushik295/Hatch'),
-      mk('ParkNGo', 'Smart parking with dynamic pricing', './assets/projects/Parkngo/parkngo-cover.jpg', 'Booking, QR entry and exit, and billing, with ML-based demand prediction. JWT authentication and role-based access across 3 roles.', ['React Native', 'Node.js', 'Express.js', 'FastAPI', 'MongoDB Atlas', 'RazorPay'], '', 'https://github.com/Joseph25Rejo/ParknGo-appln'),
-      mk('ORION', 'AI grocery management', './assets/projects/ORION/orion-cover.png', 'Links what people consume with live inventory through demand forecasting and anomaly detection. I am a co-inventor on the patent application.', ['FastAPI', 'Kubernetes', 'Scikit-learn', 'Pandas', 'MongoDB'], '', '')
+      mk('QuarksFinance', 'Stock analysis and strategy platform', './assets/projects/Quarks/quarks-finance-cover.webp', './assets/projects/Quarks/quarksfinance-arch.png', 'Backtesting, live signals and sentiment in one place, on real market data through the yFinance API.', 'Integrated the yFinance API with a Flask and SQLite backend and a React and Next.js frontend on Vercel. Designed modular strategy pipelines for comparative backtesting.', ['Python', 'Flask', 'SQLite', 'React', 'Next.js', 'Vercel'], 'https://quarks-nu.vercel.app', 'https://github.com/Joseph25Rejo/QuarksFinance'),
+      mk('Hatch', 'Hackathon management platform', './assets/projects/hatch/hatch-cover.webp', './assets/projects/hatch/hatch-arch.png', 'Runs a hackathon from registration to judging. It won WhiteHack 1.0.', 'Delivered the full-stack platform with Flask and MongoDB across 5 workflows. The Flask APIs and admin panels cut manual coordination effort by 40%.', ['Next.js', 'TypeScript', 'Flask', 'MongoDB', 'Firebase'], 'https://hatch-iota.vercel.app/', 'https://github.com/AdityaKaushik295/Hatch'),
+      mk('ParkNGo', 'Smart parking with dynamic pricing', './assets/projects/Parkngo/parkngo-cover.jpg', './assets/projects/Parkngo/parkngo-arch.png', 'Booking, QR entry and exit, and billing, with prices that respond to ML-predicted demand.', 'Engineered the platform across React Native, Express.js, FastAPI and MongoDB with Cloudinary. Implemented JWT authentication and role-based access across 3 roles.', ['React Native', 'Node.js', 'Express.js', 'FastAPI', 'MongoDB Atlas', 'RazorPay'], '', 'https://github.com/Joseph25Rejo/ParknGo-appln'),
+      mk('ORION', 'AI grocery management', './assets/projects/ORION/orion-cover.png', './assets/projects/ORION/orion-arch.png', 'Links what people consume with live inventory through demand forecasting and anomaly detection.', 'Co-inventor on the patent application, filed in India in March 2026.', ['FastAPI', 'Kubernetes', 'Scikit-learn', 'Pandas', 'MongoDB'], '', '')
     ];
     const proof = [
-      { title: 'Winner, WhiteHack 1.0', when: 'Aug 2025', body: 'National online web development hackathon, won with Hatch.' },
+      { title: 'Winner, WhiteHack 1.0', when: 'Jul 2025', body: 'First prize, won with Hatch. Organized by White Devils Tech Community.', href: './assets/awards/whitehack.webp', label: 'Certificate' },
       { title: 'Runner-Up, ExploreLikeALocal Hackathon', when: 'Sep 2024', body: 'Tourism web app.' },
-      { title: 'Patent application, ORION', when: 'Filed Mar 2026', body: 'India, No. 202641030238, published in the Patent Office Journal on 29 May 2026. Co-inventor.' },
-      { title: 'Publication', when: 'Jan 2025', body: 'AI-Driven Pathogen Profiling in Scientific Literature using NLP. DOI 10.37896/sr12.1/006.' }
-    ];
+      { title: 'Finalist, Mindscape Hackathon', when: 'Jul 2025', body: 'BNM Institute of Technology, with IBM SkillsBuild.', href: './assets/awards/mindscape.webp', label: 'Certificate' },
+      { title: 'Top Five, Ctrl + Alt + Compete Hackathon', when: 'Jun 2025', body: 'RV College of Engineering, Electronics and Telecommunication Engineering.', href: './assets/awards/ctrl-alt-compete.webp', label: 'Certificate' },
+      { title: 'Patent application, ORION', when: 'Filed Mar 2026', body: 'India, No. 202641030238, published in the Patent Office Journal on 29 May 2026. Co-inventor.', href: './assets/CERTIFICATES/Patent_ORION.pdf#page=3', label: 'Journal entry' },
+      { title: 'Publication', when: 'Jan 2025', body: 'AI-Driven Pathogen Profiling in Scientific Literature using NLP.', href: 'https://doi.org/10.37896/sr12.1/006', label: 'DOI 10.37896/sr12.1/006' }
+    ].map((r) => Object.assign({ hasLink: !!r.href }, r));
     const groups = [
       { label: 'Languages', items: 'Python, Java, C, JavaScript, TypeScript, HTML, CSS' },
       { label: 'Backend and web', items: 'Node.js, Express.js, Flask, FastAPI, Spring Boot, JWT authentication, RBAC' },

@@ -760,7 +760,7 @@ class Component extends DCLogic {
     this._reduce = reduce;
     this.mountProps();
     /* WebGL scene by default; ?gl=0 forces the older CSS 3D scene, which is also the fallback */
-    if (/[?&]gl=0/.test(location.search)) this.later(() => this.bakePaint(0), 250); else this.later(() => this.initGL(), 400);
+    if (/[?&]gl=0/.test(location.search)) this.later(() => this.bakePaint(0), 250); else if (/^#quick/.test(location.hash)) this._glDeferred = true; /* a visitor on the quick view is reading: boot the 3D house only when they go back to it */ else this.later(() => this.initGL(), 400);
     this.hashOpen();
     const tick = (now) => {
       if (!this._alive) return;
@@ -904,6 +904,7 @@ class Component extends DCLogic {
     this.setBgInert(false);
     this.setHash(null);
     this.setState({ roomVis: false });
+    if (this._glDeferred) { this._glDeferred = false; this.later(() => this.initGL(), 700); }
     this.later(() => { this.setState({ room: null }); const q = document.getElementById('hs-quick-btn'); if (q && q.offsetParent !== null) q.focus({ preventScroll: true }); }, 520);
   }
   closeRoom() {

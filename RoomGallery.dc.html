@@ -14,96 +14,136 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 body{margin:0}
-.gl-a{color:#292925;text-decoration:none;border-bottom:1px solid rgba(125,95,40,.55);transition:color .2s,border-color .2s}
-.gl-a:hover,.gl-a:focus-visible{color:#6A4E1B;border-color:#6A4E1B;outline:none}
+.gl ::selection{background:#D9BC7C;color:#292925}
+.gl-a{color:#292925;text-decoration:none;border-bottom:1px solid rgba(125,95,40,.55);text-underline-offset:3px;transition:color .2s,border-color .2s}
+.gl-a:hover,.gl-a:focus-visible{color:#5C4314;border-color:#5C4314}
+.gl a:focus-visible{outline:2px solid #5C4314;outline-offset:3px}
+.gl h2{margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(30px,3.2vw,40px);line-height:1.05;font-weight:500}
+.gl-cert{display:block;line-height:0;background:#fff;box-shadow:0 0 0 1px rgba(41,41,37,.2),0 14px 22px -14px rgba(41,41,37,.6);transition:box-shadow .2s}
+.gl-cert img{display:block;width:100%;height:auto}
+.gl-cert:hover,.gl-cert:focus-visible{box-shadow:0 0 0 2px #5C4314,0 16px 24px -14px rgba(41,41,37,.65)}
+.gl-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(300px,100%),1fr));gap:40px 32px;align-items:start}
+.gl-two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr));gap:32px;align-items:stretch}
+.gl-doc{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(320px,100%),1fr));gap:24px clamp(32px,5vw,72px);align-items:start;box-sizing:border-box;padding:clamp(24px,3.2vw,44px)}
+.gl-frame{aspect-ratio:4/3;box-sizing:border-box;padding:10px;background:linear-gradient(180deg,#C9AF86,#A98B5E);box-shadow:0 18px 26px -18px rgba(41,41,37,.65)}
+.gl-frame > *{height:100%;width:100%;box-sizing:border-box}
+.gl-frame .gl-cert{display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px rgba(41,41,37,.18)}
+.gl-frame .gl-cert img{width:100%;height:100%;object-fit:contain}
+.gl-frame .gl-cert:hover,.gl-frame .gl-cert:focus-visible{box-shadow:inset 0 0 0 2px #5C4314}
 </style>
 </helmet>
 
-<div style="position:relative;min-height:900px;box-sizing:border-box;padding:clamp(88px,11vh,120px) clamp(20px,4.4vw,72px) 120px;background:radial-gradient(ellipse 60% 40% at 50% 0%,#EFE9DD 0%,rgba(239,233,221,0) 75%),linear-gradient(180deg,#D8D1C3,#CBC3B3);font-family:'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925">
+<div class="gl" style="position:relative;min-height:900px;box-sizing:border-box;padding:clamp(88px,11vh,120px) clamp(20px,4.4vw,72px) 120px;background:radial-gradient(ellipse 60% 40% at 50% 0%,#EFE9DD 0%,rgba(239,233,221,0) 75%),linear-gradient(180deg,#D8D1C3,#CBC3B3);font-family:'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925">
+ <div style="max-width:1240px;margin:0 auto">
 
   <header style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px 36px;border-bottom:1px solid rgba(125,95,40,.55);padding-bottom:26px">
-    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(56px,8vw,104px);line-height:.8;color:#6A4E1B;font-weight:500">05</div>
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(56px,8vw,104px);line-height:.8;color:#5C4314;font-weight:500">05</div>
     <div style="flex:1 1 320px;min-width:0">
-      <h2 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(40px,5.4vw,68px);line-height:1;font-weight:500;letter-spacing:-.01em">The Gallery</h2>
-      <p style="margin:12px 0 0;font-size:16px;line-height:1.55;color:#3E3A33;max-width:600px">Awards, a publication and a patent application, hung by weight.</p>
+      <h1 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(40px,5.4vw,68px);line-height:1;font-weight:500;letter-spacing:-.01em">The Gallery</h1>
+      <p style="margin:12px 0 0;font-size:16px;line-height:1.55;color:#3E3A33;max-width:600px">Awards, a publication and a patent application, each with its document.</p>
     </div>
   </header>
 
-  <div style="margin-top:64px;display:flex;flex-wrap:wrap;gap:72px 64px;align-items:flex-start">
-
-    <!-- Winner -->
-    <figure style="flex:5 1 460px;min-width:0;margin:0">
-      <div style="display:flex;justify-content:center;margin-bottom:-2px" aria-hidden="true"><div style="width:120px;height:10px;background:linear-gradient(180deg,#C9A862,#8E6D33);border-radius:5px 5px 0 0;box-shadow:0 2px 3px rgba(41,41,37,.3)"></div></div>
-      <div aria-hidden="true" style="height:70px;margin:0 auto;width:78%;background:linear-gradient(180deg,rgba(255,236,190,.55),rgba(255,236,190,0));clip-path:polygon(40% 0,60% 0,100% 100%,0 100%)"></div>
-      <div style="margin-top:-60px;padding:16px;background:linear-gradient(180deg,#34332D,#242320);box-shadow:0 26px 34px -18px rgba(41,41,37,.7)">
-        <div style="padding:6px;background:linear-gradient(135deg,#D9BC7C,#9A7835 55%,#C9A862)">
-          <div style="padding:clamp(28px,5vw,56px) clamp(24px,4vw,52px);background:#F3EEE2;text-align:center;box-shadow:inset 0 0 0 1px rgba(41,41,37,.18)">
-            <div style="font:500 13px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6A4E1B">Aug 2025</div>
-            <div style="margin-top:18px;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(40px,5vw,64px);line-height:1;font-weight:500">Winner</div>
-            <div style="margin-top:14px;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(24px,2.6vw,34px);line-height:1.15;font-weight:500">WhiteHack 1.0</div>
-            <div style="margin-top:10px;font-size:15.5px;line-height:1.5;color:#3A372F">National Online Web Development Hackathon</div>
-            <div style="margin:22px auto 0;width:48px;height:1px;background:#B28F4E"></div>
-            <div style="margin-top:18px;font-size:15px;line-height:1.5;color:#3A372F">Built <strong style="font-weight:600">Hatch</strong>, the hackathon management platform shown in The Workshop.</div>
+  <!-- the winner, as the one large piece -->
+  <section aria-labelledby="gl-win" style="margin-top:64px">
+    <h2 id="gl-win" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Winner, WhiteHack 1.0</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(380px,100%),1fr));gap:40px clamp(32px,5vw,72px);align-items:center">
+      <div>
+        <div style="display:flex;justify-content:center;margin-bottom:-2px" aria-hidden="true"><div style="width:120px;height:10px;background:linear-gradient(180deg,#C9A862,#8E6D33);border-radius:5px 5px 0 0;box-shadow:0 2px 3px rgba(41,41,37,.3)"></div></div>
+        <div style="padding:16px;background:linear-gradient(180deg,#34332D,#242320);box-shadow:0 26px 34px -18px rgba(41,41,37,.7)">
+          <div style="padding:6px;background:linear-gradient(135deg,#D9BC7C,#9A7835 55%,#C9A862)">
+            <div style="padding:clamp(32px,5vw,60px) clamp(24px,4vw,52px);background:#F3EEE2;text-align:center;box-shadow:inset 0 0 0 1px rgba(41,41,37,.18)">
+              <div style="font-size:14px;color:#5C4314;font-weight:500">Jul 2025</div>
+              <div style="margin-top:14px;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(44px,5vw,66px);line-height:1;font-weight:500">Winner</div>
+              <div style="margin-top:14px;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(26px,2.6vw,34px);line-height:1.15;font-weight:500">WhiteHack 1.0</div>
+              <div style="margin-top:10px;font-size:15.5px;line-height:1.5;color:#3A372F">First prize, organized by White Devils Tech Community</div>
+              <div style="margin:22px auto 0;width:48px;height:1px;background:#B28F4E"></div>
+              <div style="margin-top:18px;font-size:15px;line-height:1.55;color:#3A372F">Built <strong style="font-weight:600">Hatch</strong>, the hackathon management platform shown in The Workshop.</div>
+            </div>
           </div>
         </div>
       </div>
-      <figcaption style="margin-top:14px;font-size:12.5px;color:#3E3A33">Certificate image: to be supplied.</figcaption>
-    </figure>
-
-    <!-- Runner-up + milestone -->
-    <div style="flex:3 1 340px;min-width:0;display:flex;flex-direction:column;gap:56px">
       <figure style="margin:0">
-        <div style="padding:12px;background:linear-gradient(180deg,#C9AF86,#A98B5E);box-shadow:0 20px 28px -18px rgba(41,41,37,.65)">
-          <div style="padding:30px 26px;background:#F3EEE2;text-align:center;box-shadow:inset 0 0 0 1px rgba(41,41,37,.18)">
-            <div style="font:500 13px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6A4E1B">Sep 2024</div>
-            <div style="margin-top:14px;font-family:'Cormorant Garamond',Georgia,serif;font-size:36px;line-height:1;font-weight:500">Runner-Up</div>
-            <div style="margin-top:10px;font-family:'Cormorant Garamond',Georgia,serif;font-size:23px;line-height:1.15;font-weight:500">ExploreLikeALocal Hackathon</div>
-            <div style="margin-top:8px;font-size:15px;color:#3A372F">Tourism web app</div>
-          </div>
-        </div>
-        <figcaption style="margin-top:12px;font-size:12.5px;color:#3E3A33">Certificate image: to be supplied.</figcaption>
-      </figure>
-
-      <figure style="margin:0">
-        <div style="padding:26px 24px;background:#EDE7DA;box-shadow:0 14px 22px -16px rgba(41,41,37,.6),inset 0 0 0 1px rgba(41,41,37,.16)">
-          <div style="font:500 13px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6A4E1B">Jun 2026 to present</div>
-          <div style="margin-top:12px;font-family:'Cormorant Garamond',Georgia,serif;font-size:27px;line-height:1.15;font-weight:500">Founding Engineer Intern, Lume</div>
-          <p style="margin:10px 0 0;font-size:15px;line-height:1.55;color:#3A372F">The founding engineer at a bootstrapped hospitality-tech startup. The product runs in production across 3 resort properties.</p>
-        </div>
+        <a class="gl-cert" href="./assets/awards/whitehack.webp" target="_blank" rel="noopener" aria-label="Open the WhiteHack 1.0 first prize certificate"><img src="./assets/awards/whitehack.webp" alt="Certificate: first prize, WhiteHack 1.0, White Devils Tech Community, 20 to 29 July 2025" width="1500" height="1060" loading="lazy" decoding="async"></a>
+        <figcaption style="margin-top:14px;font-size:14.5px;line-height:1.5;color:#3E3A33">Held 20 to 29 July 2025. <a class="gl-a" href="./assets/awards/whitehack.webp" target="_blank" rel="noopener">Open the certificate ↗</a></figcaption>
       </figure>
     </div>
+  </section>
 
-    <!-- Publication -->
-    <figure style="flex:4 1 400px;min-width:0;margin:0">
-      <div style="position:relative;padding:34px clamp(22px,3vw,40px) 36px;background:linear-gradient(180deg,#FBF9F3,#EFE9DB);box-shadow:0 22px 30px -18px rgba(41,41,37,.6),inset 0 0 0 1px rgba(41,41,37,.12)">
-        <div style="font:500 13px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6A4E1B">Publication · Jan 2025</div>
-        <h3 style="margin:16px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(28px,2.8vw,36px);line-height:1.12;font-weight:500">AI-Driven Pathogen Profiling in Scientific Literature using NLP</h3>
-        <p style="margin:18px 0 0;font-size:15px;line-height:1.55;color:#3A372F">I. S. Prasad, J. R. Mathew, G. Agarwalla, M. Kumar K, G. Vijaya Kumar</p>
-        <p style="margin:14px 0 0;font-size:15px;line-height:1.55">DOI <a class="gl-a" href="https://doi.org/10.37896/sr12.1/006" target="_blank" rel="noopener">10.37896/sr12.1/006</a></p>
-      </div>
-      <figcaption style="margin-top:12px;font-size:12.5px;color:#3E3A33">Journal name is not in the résumé. Add it here if you want it shown.</figcaption>
-    </figure>
+  <!-- the other awards: three equal pieces -->
+  <section aria-labelledby="gl-more" style="margin-top:88px">
+    <h2 id="gl-more">Also recognised</h2>
+    <div class="gl-grid" style="margin-top:28px">
+      <sc-for list="{{ awards }}" as="a" hint-placeholder-count="3">
+        <figure style="margin:0">
+          <div class="gl-frame">
+            <sc-if value="{{ a.hasImg }}" hint-placeholder-val="{{ true }}">
+              <a class="gl-cert" href="{{ a.img }}" target="_blank" rel="noopener" aria-label="Open the certificate: {{ a.title }}"><img src="{{ a.img }}" alt="Certificate: {{ a.title }}, {{ a.org }}" width="1500" height="1125" loading="lazy" decoding="async"></a>
+            </sc-if>
+            <sc-if value="{{ a.noImg }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:18px;background:#F3EEE2;text-align:center;box-shadow:inset 0 0 0 1px rgba(41,41,37,.18)">
+                <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(34px,3.4vw,44px);line-height:1;font-weight:500">{{ a.word }}</div>
+                <div style="width:40px;height:1px;background:#B28F4E;margin:6px 0"></div>
+                <div style="font-size:15px;color:#3A372F">{{ a.when }}</div>
+              </div>
+            </sc-if>
+          </div>
+          <figcaption style="margin-top:18px">
+            <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;line-height:1.15;font-weight:500">{{ a.title }}</div>
+            <div style="margin-top:6px;font-size:15px;line-height:1.5;color:#3A372F">{{ a.org }}</div>
+            <div style="margin-top:6px;font-size:14.5px;color:#4A463E">{{ a.when }}</div>
+          </figcaption>
+        </figure>
+      </sc-for>
+    </div>
+  </section>
 
-    <!-- Patent -->
-    <figure style="flex:5 1 440px;min-width:0;margin:0">
-      <div style="padding:14px;background:linear-gradient(180deg,#F4F0E6,#E2DBC9);box-shadow:0 22px 30px -18px rgba(41,41,37,.6)">
-        <div style="padding:clamp(24px,3vw,40px);background:#FAF8F2;box-shadow:inset 0 0 0 1px rgba(41,41,37,.22);background-image:repeating-linear-gradient(0deg,rgba(41,41,37,.045) 0 1px,rgba(41,41,37,0) 1px 28px),repeating-linear-gradient(90deg,rgba(41,41,37,.045) 0 1px,rgba(41,41,37,0) 1px 28px)">
-          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;font:500 13px/1.3 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6A4E1B"><span>Patent application · India · Filed Mar 2026</span><span>No. 202641030238</span></div>
-          <h3 style="margin:18px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(44px,5vw,64px);line-height:1;font-weight:500;letter-spacing:.01em">ORION</h3>
-          <p style="margin:16px 0 0;font-size:16px;line-height:1.6;max-width:560px;color:#2F2D28">A closed-loop retail intelligence system that links consumer consumption behaviour with real-time inventory control, through predictive demand forecasting and role-specific alerts.</p>
-          <p style="margin:18px 0 0;font-size:15px;line-height:1.55;color:#3A372F"><span style="font-weight:600">Inventors:</span> S. Nandi, B. Sathish Babu, Chirag H, J. R. Mathew</p>
-          <p style="margin:6px 0 0;font-size:15px;line-height:1.55;color:#3A372F">Published in the Patent Office Journal, 29 May 2026.</p>
+  <!-- documents: the patent and the publication -->
+  <section aria-labelledby="gl-docs" style="margin-top:88px">
+    <h2 id="gl-docs">Patent and publication</h2>
+    <div style="margin-top:28px;display:flex;flex-direction:column;gap:28px">
+      <article class="gl-doc" style="background:#FAF8F2;box-shadow:0 22px 30px -18px rgba(41,41,37,.6),inset 0 0 0 1px rgba(41,41,37,.2);background-image:repeating-linear-gradient(0deg,rgba(41,41,37,.04) 0 1px,rgba(41,41,37,0) 1px 28px),repeating-linear-gradient(90deg,rgba(41,41,37,.04) 0 1px,rgba(41,41,37,0) 1px 28px)">
+        <div>
+          <div style="font-size:14.5px;line-height:1.4;color:#5C4314;font-weight:500">Patent application · India · Filed 13 Mar 2026</div>
+          <h3 style="margin:14px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(48px,5.4vw,68px);line-height:1;font-weight:500;letter-spacing:.01em">ORION</h3>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.5;color:#4A463E;max-width:44ch">Bidirectional Consumption-Driven Retail Inventory and Demand Intelligence System</p>
+          <p style="margin:12px 0 0;font-size:15px;line-height:1.5;color:#3A372F">Application No. 202641030238</p>
         </div>
-      </div>
-      <figcaption style="margin-top:12px;font-size:12.5px;color:#3E3A33">A link to the journal entry can go here once you have it.</figcaption>
-    </figure>
-  </div>
+        <div>
+          <p style="margin:0;font-size:16px;line-height:1.6;color:#2F2D28;max-width:60ch">A closed-loop retail intelligence system that links consumer consumption behaviour with real-time inventory control, through predictive demand forecasting and role-specific alerts.</p>
+          <p style="margin:18px 0 0;font-size:15px;line-height:1.65;color:#3A372F"><span style="font-weight:600">Inventors:</span> S. Nandi, B. Sathish Babu, Chirag H, J. R. Mathew<br><span style="font-weight:600">Applicant:</span> RV College of Engineering<br>Published in the Patent Office Journal, issue 22/2026, on 29 May 2026.</p>
+          <p style="margin:14px 0 0;font-size:15px"><a class="gl-a" href="./assets/CERTIFICATES/Patent_ORION.pdf#page=3" target="_blank" rel="noopener" style="white-space:nowrap">Read the journal entry ↗</a></p>
+        </div>
+      </article>
+
+      <article class="gl-doc" style="background:linear-gradient(180deg,#FBF9F3,#EFE9DB);box-shadow:0 22px 30px -18px rgba(41,41,37,.6),inset 0 0 0 1px rgba(41,41,37,.12)">
+        <div>
+          <div style="font-size:14.5px;line-height:1.4;color:#5C4314;font-weight:500">Publication · Jan 2025</div>
+          <h3 style="margin:14px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(28px,3vw,38px);line-height:1.12;font-weight:500">AI-Driven Pathogen Profiling in Scientific Literature using NLP</h3>
+        </div>
+        <div>
+          <p style="margin:0;font-size:15px;line-height:1.65;color:#3A372F"><span style="font-weight:600">Authors:</span> I. S. Prasad, J. R. Mathew, G. Agarwalla, M. Kumar K, G. Vijaya Kumar</p>
+          <p style="margin:14px 0 0;font-size:15px">DOI <a class="gl-a" href="https://doi.org/10.37896/sr12.1/006" target="_blank" rel="noopener">10.37896/sr12.1/006</a></p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <p style="margin:72px 0 0;font-size:15.5px;line-height:1.6;color:#3A372F;max-width:62ch">Currently the Founding Engineer Intern at Lume, where the product runs in production across 3 resort properties. The story is on the second floor, in The Experience.</p>
+ </div>
 </div>
 </x-dc>
 
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1900}}'>
 class Component extends DCLogic {
-  renderVals() { return {}; }
+  renderVals() {
+    const awards = [
+      { title: 'Runner-Up', word: 'Runner-Up', org: 'ExploreLikeALocal Hackathon, a tourism web app', when: 'Sep 2024' },
+      { title: 'Finalist', org: 'Mindscape Hackathon, BNM Institute of Technology with IBM SkillsBuild', when: 'Jul 2025', img: './assets/awards/mindscape.webp' },
+      { title: 'Top Five', org: 'Ctrl + Alt + Compete Hackathon, RV College of Engineering', when: 'Jun 2025', img: './assets/awards/ctrl-alt-compete.webp' }
+    ].map((a) => Object.assign({ hasImg: !!a.img, noImg: !a.img }, a));
+    return { awards };
+  }
 }
 </script>
 </body>
