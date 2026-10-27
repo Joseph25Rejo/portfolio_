@@ -55,6 +55,7 @@ kernel.addTick((now, dt) => {
   return moving || signBusy;
 });
 kernel.addTick((now, dt) => shell.hall.tick(now, dt));
+kernel.addTick((now) => shell.chandelier.tick(now));
 window.addEventListener('scroll', kernel.invalidate, { passive: true });
 if (/#s(\d+)/.test(location.hash)) { cur = rail.scrollOf(+RegExp.$1); window.scrollTo(0, cur); }
 

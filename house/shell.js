@@ -6,6 +6,7 @@ import { Builder } from './builder.js';
 import { addLight, shade, mix, hex, grain, INT, extAmb } from './light.js';
 import { exteriorLights, buildExterior } from './exterior.js';
 import { hallLights, buildHall } from './hall.js';
+import { chandelierLights, buildChandelier } from './chandelier.js';
 import { D, RISE, FH, NS, DTH, RI, RO, APO, NF, TOP, DOOR, DOORS, FRONT, HEARTH, FLOORS } from './layout.js';
 
 const FW = 2 * APO * Math.tan(9 * D) + 1.5, WT = 2860, WALL = 30, RR = 254;
@@ -29,7 +30,7 @@ export function buildShell(scene, kernel) {
   const t0 = performance.now();
   /* ---------- lights, placed first so every surface bakes them in ---------- */
   const sconces = [], ex = exteriorLights();
-  hallLights();
+  hallLights(); chandelierLights();
   for (let k = 0; k < NF; k++) {
     const az = k % 2 ? 180 : 0;
     [-18, 18].forEach((o) => { sconces.push({ az: az + o, y: FH * k + 335 }); addLight(fp(az + o, 0, FH * k + 335, APO - 40), [1, 0.82, 0.55], 1.25, 430); });
@@ -119,6 +120,7 @@ export function buildShell(scene, kernel) {
 
   const exterior = buildExterior(scene, B, { slab, fp }, ex);
   const hall = buildHall(scene, B, { slab, fp }, kernel);
+  const chandelier = buildChandelier(scene, kernel);
 
   /* ---------- floors: coffee tile in polar cells ---------- */
   const tile = (ra, rb, azA, azB, y, up) => {
@@ -261,7 +263,7 @@ export function buildShell(scene, kernel) {
   if (document.fonts && document.fonts.load) document.fonts.load('600 40px "Cormorant Garamond"').then(() => { drawPlaques(); atex.needsUpdate = true; if (api.onChange) api.onChange(); });
 
   const api = {
-    exterior, hall,
+    exterior, hall, chandelier,
     leafMatrix(i, out) { leaf.getMatrixAt(i, out); return out; },
     meshes: { shell: shellMesh, treads, bal, leaf, body, glow, plaques },
     tris: B.tris + LB.tris / 1 * (NF + 1) + NT * 12 * 2,
