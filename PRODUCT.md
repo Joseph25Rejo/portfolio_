@@ -43,11 +43,11 @@ The owner works from Bengaluru and keeps older portfolio versions (Portfolio-1 t
 ## Evidence on Hand
 - Lume: runs in production across 3 resort properties; 30+ Figma screens converted to React; one deployment per property on Railway, guest app on Vercel; analytics on PostHog.
 - Education: RV College of Engineering, B.E. in AI and ML, Aug 2023 to present, CGPA 9.16/10.
-- Awards: Winner (first prize), WhiteHack 1.0, organized by White Devils Tech Community, held 20 to 29 July 2025, with Hatch; Runner-Up, ExploreLikeALocal Hackathon (Sep 2024); Finalist, Mindscape Hackathon (BNM Institute of Technology with IBM SkillsBuild, 25 and 26 July 2025); Top Five, Ctrl + Alt + Compete Hackathon (RV College of Engineering, Electronics and Telecommunication, 8 June 2025). Certificates for the last three are in `assets/CERTIFICATES/`, with upright images in `assets/awards/`.
+- Awards: Winner (first prize), WhiteHack 1.0, organized by White Devils Tech Community, held 20 to 29 July 2025, with Hatch; Finalist, Mindscape Hackathon (BNM Institute of Technology with IBM SkillsBuild, 25 and 26 July 2025); Top Five, Ctrl + Alt + Compete Hackathon (RV College of Engineering, Electronics and Telecommunication, 8 June 2025). Certificates for the last three are in `assets/CERTIFICATES/`, with upright images in `assets/awards/`.
 - Publication: "AI-Driven Pathogen Profiling in Scientific Literature using NLP", Jan 2025, DOI 10.37896/sr12.1/006.
 - Patent application: ORION ("Bidirectional Consumption-Driven Retail Inventory and Demand Intelligence System"), India, No. 202641030238, filed 13 Mar 2026, published in the Patent Office Journal issue 22/2026 on 29 May 2026. Applicant: RV College of Engineering. Inventors: Somesh Nandi, B. Sathish Babu, Chirag H, Joseph Rejo Mathew. The journal entry is `assets/CERTIFICATES/Patent_ORION.pdf` (page 3).
 - Assets: résumé PDF; project covers and architecture diagrams; a QuarksFinance demo video at https://youtu.be/pCVa_T0C6t4.
-- Not available, so do not fabricate: demo videos for Hatch, ParkNGo and ORION; the ExploreLikeALocal certificate; the publication's journal name; the Instagram handle; product screenshots from Lume.
+- Not available, so do not fabricate: demo videos for Hatch, ParkNGo and ORION; the publication's journal name; the Instagram handle; product screenshots from Lume.
 
 ## Product Principles
 1. The journey must never block the goal. Every room, the résumé and the contact route stay reachable in one step from anywhere, by keyboard or touch, without climbing.

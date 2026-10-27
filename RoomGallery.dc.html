@@ -73,7 +73,7 @@ body{margin:0}
   <!-- the other awards: three equal pieces -->
   <section aria-labelledby="gl-more" style="margin-top:88px">
     <h2 id="gl-more">Also recognised</h2>
-    <div class="gl-grid" style="margin-top:28px">
+    <div class="gl-grid" style="margin-top:28px;max-width:900px">
       <sc-for list="{{ awards }}" as="a" hint-placeholder-count="3">
         <figure style="margin:0">
           <div class="gl-frame">
@@ -111,7 +111,7 @@ body{margin:0}
         </div>
         <div>
           <p style="margin:0;font-size:16px;line-height:1.6;color:#2F2D28;max-width:60ch">A closed-loop retail intelligence system that links consumer consumption behaviour with real-time inventory control, through predictive demand forecasting and role-specific alerts.</p>
-          <p style="margin:18px 0 0;font-size:15px;line-height:1.65;color:#3A372F"><span style="font-weight:600">Inventors:</span> S. Nandi, B. Sathish Babu, Chirag H, J. R. Mathew<br><span style="font-weight:600">Applicant:</span> RV College of Engineering<br>Published in the Patent Office Journal, issue 22/2026, on 29 May 2026.</p>
+          <p style="margin:18px 0 0;font-size:15px;line-height:1.65;color:#3A372F"><span style="font-weight:600">Inventors:</span> Somesh Nandi, B. Sathish Babu, Chirag H, Joseph Rejo Mathew<br><span style="font-weight:600">Applicant:</span> RV College of Engineering<br>Published in the Patent Office Journal, issue 22/2026, on 29 May 2026.</p>
           <p style="margin:14px 0 0;font-size:15px"><a class="gl-a" href="./assets/CERTIFICATES/Patent_ORION.pdf#page=3" target="_blank" rel="noopener" style="white-space:nowrap">Read the journal entry ↗</a></p>
         </div>
       </article>
@@ -138,7 +138,6 @@ body{margin:0}
 class Component extends DCLogic {
   renderVals() {
     const awards = [
-      { title: 'Runner-Up', word: 'Runner-Up', org: 'ExploreLikeALocal Hackathon, a tourism web app', when: 'Sep 2024' },
       { title: 'Finalist', org: 'Mindscape Hackathon, BNM Institute of Technology with IBM SkillsBuild', when: 'Jul 2025', img: './assets/awards/mindscape.webp' },
       { title: 'Top Five', org: 'Ctrl + Alt + Compete Hackathon, RV College of Engineering', when: 'Jun 2025', img: './assets/awards/ctrl-alt-compete.webp' }
     ].map((a) => Object.assign({ hasImg: !!a.img, noImg: !a.img }, a));
