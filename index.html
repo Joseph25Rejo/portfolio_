@@ -5,20 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#120F0A">
 <title>Joseph R.M. — The House</title>
-<script>
-/* when WebGL is available the CSS 3D copy of the house is never painted (it only stays as invisible door hit targets) */
-(function () {
-  try {
-    if (/[?&]gl=0/.test(location.search)) return;
-    var c = document.createElement('canvas'), g = c.getContext('webgl2') || c.getContext('webgl');
-    if (!g) return;
-    var x = g.getExtension('WEBGL_lose_context'); if (x) x.loseContext();
-    var st = document.createElement('style'); st.id = 'hs-glcss';
-    st.textContent = '#hs-rig{visibility:hidden}#hs-rig .hs-door-btn{visibility:visible;background:transparent !important;box-shadow:none !important}#hs-rig .hs-door-btn *{visibility:hidden}';
-    document.head.appendChild(st);
-  } catch (e) {}
-})();
-</script>
 <script src="./vendor/react.js"></script>
 <script src="./vendor/react-dom.js"></script>
 <script src="./support.js"></script>
@@ -31,9 +17,8 @@
 <style>
 body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
 .hs-vh{height:100vh;height:100dvh}
-.hs-track{height:calc(100vh + 7440px);height:calc(100dvh + 7440px)}
+.hs-track{height:calc(100vh + 10120px);height:calc(100dvh + 10120px)}
 #hs-scroller{scrollbar-width:none}
-#hs-rig > div{will-change:transform}
 #hs-scroller::-webkit-scrollbar{display:none}
 .hs-serif{font-family:'Cormorant Garamond','Cormorant',Georgia,'Times New Roman',serif}
 .hs-sans{font-family:'Instrument Sans','Helvetica Neue',Arial,sans-serif}
@@ -85,6 +70,8 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
 .hs-moving .hs-fire,.hs-moving .hs-fl,.hs-moving .hs-gl,.hs-moving .hs-sp{animation-play-state:paused !important}
 .hs-hero{position:absolute;left:0;bottom:0;top:0;width:min(640px,100%);display:flex;flex-direction:column;justify-content:flex-end;padding:0 clamp(24px,4.4vw,72px) clamp(40px,8vh,88px);box-sizing:border-box;background:linear-gradient(90deg,rgba(244,240,232,.94) 0%,rgba(244,240,232,.78) 55%,rgba(244,240,232,0) 100%)}
 .hs-name{margin:0;font-weight:400;font-size:clamp(46px,6.6vw,104px);line-height:.94;letter-spacing:-.012em;color:#292925;text-shadow:0 1px 0 rgba(255,255,255,.7),0 -1px 0 rgba(41,41,37,.10)}
+.hs-cap.hs-welcome{top:92px;bottom:auto;width:min(330px,calc(100% - 48px));opacity:0;visibility:hidden;transform:translateY(14px);pointer-events:none;transition:opacity .45s ease,transform .45s ease,visibility .45s}
+.hs-cap.hs-welcome.on{opacity:1;visibility:visible;transform:none;pointer-events:auto}
 .hs-cap{z-index:6;isolation:isolate;-webkit-transform:translateZ(0);position:absolute;left:clamp(24px,4.4vw,72px);bottom:clamp(36px,7vh,76px);width:min(440px,calc(100% - 48px));background:rgba(244,240,232,.9);padding:28px 30px 30px;box-sizing:border-box}
 .hs-dir{z-index:8;position:absolute;top:22px;right:clamp(16px,2.6vw,36px)}
 /* short desktop windows (or zoomed browsers): shrink the hero by height so it never runs under the logo */
@@ -114,7 +101,11 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
   .hs-rail{display:none !important}
   .hs-bar{display:flex !important}
   .hs-dir{top:calc(14px + env(safe-area-inset-top,0px));right:12px}
-  .hs-dir .hs-dir-quick{display:none}
+  .hs-cap.hs-welcome{top:calc(66px + env(safe-area-inset-top,0px));bottom:auto;left:16px;right:16px;width:auto;padding:14px 16px;box-shadow:0 10px 30px rgba(10,6,2,.45)}
+  .hs-cap.hs-welcome .hs-capline{font-size:14px !important;margin-top:4px !important}
+  .hs-cap.hs-welcome .hs-captitle{font-size:24px !important}
+  .hs-cap.hs-welcome .hs-capbtn{display:none}
+  .hs-dir .hs-dir-resume{display:none}
   .hs-logo{top:calc(16px + env(safe-area-inset-top,0px))}
   .hs-cap{bottom:calc(76px + env(safe-area-inset-bottom,0px));padding:16px 16px 16px;display:flex;flex-direction:column}
   .hs-cap .hs-capline{margin-top:6px !important;font-size:15px !important;line-height:1.45 !important}
@@ -146,7 +137,6 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
   .hs-cap{width:min(420px,calc(100% - 32px));left:16px;right:auto}
 }
 @media (max-width:760px){
-  #hs-rig > div{will-change:auto}
 }
 @media (pointer:coarse){.hs-btn{min-height:44px}.hs-link{padding:6px 0;display:inline-block}}
 </style>
@@ -158,48 +148,8 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
     <div class="hs-track" style="position:relative">
       <div id="hs-sticky" class="hs-vh" style="position:sticky;top:0;overflow:hidden">
 
-        <!-- 3D house -->
-        <div id="hs-stage" style="z-index:0;isolation:isolate;position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;perspective:1100px;perspective-origin:50% 50%;background:linear-gradient(180deg,#0B0E24,#15131A)">
-          <div id="hs-rig" style="position:absolute;left:50%;top:50%;width:0;height:0;transform-style:preserve-3d;transform-origin:0 0 1100px;transform:rotateX(10deg) rotateY(145deg) translate3d(-190px,170px,1480px)">
-            <sc-for list="{{ paint }}" as="p" hint-placeholder-count="0"><div class="hs-paint" style="{{ p.s }}"><sc-for list="{{ p.kids }}" as="c" hint-placeholder-count="0"><div style="{{ c }}"></div></sc-for></div></sc-for>
-            <sc-for list="{{ world }}" as="w" hint-placeholder-count="0"><div class="{{ w.c }}" style="{{ w.s }}"></div></sc-for>
-
-            <sc-for list="{{ doors }}" as="d" hint-placeholder-count="0">
-              <div style="{{ d.group }}">
-                <!-- recess (the room beyond) -->
-                <div style="position:absolute;left:-75px;top:-300px;width:150px;height:300px;transform:translateZ(-70px);background:radial-gradient(ellipse at 50% 78%,#FFF4DC 0%,#F6D9A2 38%,#D3A765 78%,#A9793A 100%)"></div>
-                <div style="position:absolute;left:-35px;top:-300px;width:70px;height:300px;transform:translate3d(-75px,0,-35px) rotateY(90deg);background:linear-gradient(90deg,#E9DFCB,#D9B77F 70%,#C79B55)"></div>
-                <div style="position:absolute;left:-35px;top:-300px;width:70px;height:300px;transform:translate3d(75px,0,-35px) rotateY(90deg);background:linear-gradient(90deg,#C79B55,#D9B77F 30%,#E9DFCB)"></div>
-                <div style="position:absolute;left:-75px;top:-35px;width:150px;height:70px;transform:translate3d(0,-300px,-35px) rotateX(90deg);background:linear-gradient(180deg,#D8CDB8,#E9D0A2)"></div>
-                <div style="position:absolute;left:-75px;top:-35px;width:150px;height:70px;transform:translate3d(0,0,-35px) rotateX(90deg);background:linear-gradient(180deg,#E8D4AA,#BF9156)"></div>
-                <!-- warm light spill on the landing -->
-                <div style="{{ d.spill }}"></div>
-                <!-- architrave -->
-                <div style="position:absolute;left:-87px;top:-312px;width:12px;height:312px;transform:translateZ(4px);background:linear-gradient(90deg,#C9AE84,#B99763)"></div>
-                <div style="position:absolute;left:75px;top:-312px;width:12px;height:312px;transform:translateZ(4px);background:linear-gradient(90deg,#B99763,#C9AE84)"></div>
-                <div style="position:absolute;left:-87px;top:-312px;width:174px;height:12px;transform:translateZ(4px);background:linear-gradient(180deg,#D4BA90,#B99763)"></div>
-                <!-- plaque -->
-                <div style="position:absolute;left:-72px;top:-358px;width:144px;height:36px;transform:translateZ(3px);display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(180deg,#EEE8DA,#D8CFBB);box-shadow:0 1px 0 rgba(255,255,255,.7) inset,0 3px 6px rgba(41,41,37,.18)">
-                  <span class="hs-serif" style="font-size:17px;color:#6E521F;font-weight:600">{{ d.num }}</span><span class="hs-serif" style="font-size:15px;color:#292925;font-weight:500;white-space:nowrap">{{ d.title }}</span>
-                </div>
-                <!-- the leaf -->
-                <div style="{{ d.leaf }}">
-                  <button type="button" class="hs-door-btn" aria-label="{{ d.aria }}" onClick="{{ d.click }}" onMouseEnter="{{ d.enter }}" onMouseLeave="{{ d.leave }}" onFocus="{{ d.enter }}" onBlur="{{ d.leave }}" style="{{ d.front }}">
-                    <span style="position:absolute;left:0;top:0;width:100%;height:100%;background:repeating-linear-gradient(90deg,rgba(120,84,44,.10) 0 2px,rgba(255,255,255,0) 2px 9px),repeating-linear-gradient(90deg,rgba(255,240,215,.10) 0 1px,rgba(255,255,255,0) 1px 13px)"></span>
-                    <span style="position:absolute;left:12px;top:12px;width:1px;height:276px;background:rgba(90,60,28,.28)"></span>
-                    <span style="position:absolute;left:112px;top:132px;width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#F1DDA6,#B28F4E 55%,#7E5F2B);box-shadow:0 2px 3px rgba(60,40,10,.35)"></span>
-                    <span style="position:absolute;left:78px;top:138px;width:48px;height:8px;border-radius:4px;background:linear-gradient(180deg,#F0D99B,#A9873F 60%,#7A5C28);box-shadow:0 2px 3px rgba(60,40,10,.35)"></span>
-                    <span style="position:absolute;left:-2px;top:30px;width:7px;height:34px;background:linear-gradient(90deg,#C9A862,#8E6D33)"></span>
-                    <span style="position:absolute;left:-2px;top:236px;width:7px;height:34px;background:linear-gradient(90deg,#C9A862,#8E6D33)"></span>
-                  </button>
-                  <div style="{{ d.back }}"></div>
-                  <div style="{{ d.edge }}"></div>
-                </div>
-              </div>
-            </sc-for>
-            <div id="hs-props" aria-hidden="true" style="position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d;pointer-events:none"></div>
-          </div>
-        </div>
+        <!-- 3D house: the canvas is mounted here by house/mount.js; until it is ready (or if WebGL is missing) the poster shows -->
+        <div id="hs-stage" style="z-index:0;isolation:isolate;position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;background:#0B0E24 url(./assets/house-poster.webp) center/cover no-repeat"></div>
 
         <div id="hs-glow" aria-hidden="true" style="position:absolute;left:0;top:0;right:0;bottom:0;pointer-events:none;opacity:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(140,170,255,.34),rgba(140,170,255,0) 70%)"></div>
         <!-- paper grain + vignette -->
@@ -217,6 +167,13 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
               <span class="hs-sans" style="font-size:13px;color:#4A463E;flex-basis:100%">A 30-second overview, or scroll to climb the house. <a class="hs-qlink" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf" style="text-decoration:none;white-space:nowrap">Résumé (PDF)</a></span>
             </div>
           </div>
+        </div>
+
+        <!-- Welcome: shown at the hearth, where the portrait hangs -->
+        <div id="hs-welcome" class="hs-cap hs-welcome" aria-live="polite">
+          <span class="hs-serif hs-captitle" style="font-size:30px;line-height:1.05;color:#292925;font-weight:500">Welcome in</span>
+          <p class="hs-sans hs-capline" style="margin:12px 0 0;font-size:15px;line-height:1.5;color:#3A372F">That is me above the fire, with a few friends. Make yourself at home, then scroll on: the first door, by the staircase, is About.</p>
+          <div class="hs-capbtn" style="margin-top:18px"><button type="button" class="hs-btn" onClick="{{ toFirst }}" tabindex="-1"><span>To the first door</span><span aria-hidden="true">↓</span></button></div>
         </div>
 
         <!-- Landing caption -->
@@ -249,7 +206,7 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
         <!-- Directory -->
         <div class="hs-dir" style="z-index:8;display:flex;gap:10px;align-items:flex-start">
           <button type="button" class="hs-btn hs-btn-solid hs-dir-quick" onClick="{{ openQuick }}"><span>Quick view</span><span aria-hidden="true">→</span></button>
-          <a class="hs-btn" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf" style="text-decoration:none"><span>Résumé</span><span aria-hidden="true">↓</span></a>
+          <a class="hs-btn hs-dir-resume" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf" style="text-decoration:none"><span>Résumé</span><span aria-hidden="true">↓</span></a>
           <button type="button" class="hs-btn" aria-expanded="{{ dirOpen }}" onClick="{{ toggleDir }}"><span>Directory</span></button>
           <sc-if value="{{ dirOpen }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute;top:54px;right:0;width:min(300px,calc(100vw - 32px));box-sizing:border-box;background:rgba(244,240,232,.97);border:1px solid rgba(41,41,37,.18);padding:10px 8px">
@@ -311,448 +268,26 @@ class Component extends DCLogic {
     ];
   }
 
-  /* ---------- geometry ---------- */
-  build() {
-    const lite = typeof window !== 'undefined' && window.innerWidth < 700;
-    if (this._cache && this._cache.lite === lite) return this._cache;
-    const W = [], PAINT = [];
-    const R = Math.PI / 180;
-    const NF = 7;
-    const RISE = 27.5, FH = 440, NS = 16, DTH = 10, RI = 250, RO = 650, APO = 655, TOP = 3240, WT = 2860;
-    const hex = (h) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
-    const toHex = (a) => '#' + a.map((v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join('');
-    const mix = (a, b, t) => { const x = hex(a), y = hex(b); return toHex(x.map((v, i) => v + (y[i] - v) * t)); };
-    const sun = (az) => 0.5 + 0.5 * Math.cos((az - 265) * R);
-    const place = (az, x, y, r, tail, w, h, css) =>
-      'position:absolute;left:' + (-w / 2) + 'px;top:' + (-h / 2) + 'px;width:' + w + 'px;height:' + h + 'px;transform:rotateY(' + az + 'deg) translate3d(' + x + 'px,' + (-y) + 'px,' + r + 'px) ' + tail + ';' + css;
-    const add = (s, g) => W.push({ s, c: g === undefined ? '' : 'g' + g });
-    const sg = (y) => 100 + Math.floor(y / 1080);
-    const wallAt = (az, y) => {
-      const t = Math.pow(sun(az), 0.9);
-      const base = mix('#A89D86', '#DBD0B8', t);
-      const v = y / TOP;
-      return mix(mix(base, '#6B5F4C', 0.5 * (1 - v) * (1 - v)), '#E8DEC6', 0.16 * v);
-    };
-    const wallBg = (az, y0, y1) => 'background:linear-gradient(180deg,' + wallAt(az, y1) + ',' + wallAt(az, y0) + ');';
-    const clip = 'clip-path:polygon(30.5% 0,69.5% 0,100% 100%,0 100%);';
-    /* the tread wedge as a pre-drawn SVG: a clip-path gives every tread its own mask surface, which is what stalls the climb */
-    const wedge = (stops) => 'background:url("data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">' + stops.map((q) => '<stop offset="' + q[0] + '" stop-color="' + q[1] + '"/>').join('') + '</linearGradient></defs><polygon points="30.5,0 69.5,0 100,100 0,100" fill="url(#g)"/></svg>') + '") 0 0/100% 100% no-repeat;';
-    const GROUT = 'repeating-linear-gradient(0deg,rgba(16,8,3,.62) 0 2px,transparent 2px 75px),repeating-linear-gradient(90deg,rgba(16,8,3,.62) 0 2px,transparent 2px 75px)';
-
-    /* coffee-tile ground floor + night skylight */
-    add('position:absolute;left:-760px;top:-760px;width:1520px;height:1520px;border-radius:50%;transform:translate3d(0,0,0) rotateX(90deg);background:radial-gradient(circle,rgba(255,206,142,.20) 0,rgba(255,206,142,0) 52%),radial-gradient(circle,rgba(0,0,0,0) 56%,rgba(8,4,1,.6) 100%),repeating-linear-gradient(0deg,rgba(16,8,3,.72) 0 2px,transparent 2px 130px),repeating-linear-gradient(90deg,rgba(16,8,3,.72) 0 2px,transparent 2px 130px),repeating-conic-gradient(#4A3022 0 25%,#5A3C2A 0 50%) 0 0/260px 260px');
-    add('position:absolute;left:-250px;top:-250px;width:500px;height:500px;border-radius:50%;transform:translate3d(0,-1px,0) rotateX(90deg);background:radial-gradient(circle,rgba(176,143,78,0) 0 46%,rgba(214,176,98,.95) 46.5% 47.5%,rgba(176,143,78,0) 48%)');
-    add('position:absolute;left:-760px;top:-760px;width:1520px;height:1520px;border-radius:50%;transform:translate3d(0,' + (-(TOP + 30)) + 'px,0) rotateX(90deg);background:radial-gradient(circle at 30% 40%,#fff 0 1.2px,transparent 1.8px) 0 0/97px 113px,radial-gradient(circle at 60% 70%,rgba(255,255,255,.8) 0 1px,transparent 1.6px) 30px 20px/71px 89px,radial-gradient(circle,#1D2A56 0,#121C42 38%,#0A112C 72%,#060A1C 100%)');
-    for (let i = 0; i < 6; i++) add('position:absolute;left:-760px;top:-5px;width:1520px;height:10px;transform:translate3d(0,' + (-(TOP + 26)) + 'px,0) rotateX(90deg) rotateZ(' + (i * 30) + 'deg);background:linear-gradient(180deg,#7A6238,#3F3220)');
-    add('position:absolute;left:-690px;top:-690px;width:1380px;height:1380px;border-radius:50%;transform:translate3d(0,' + (-(TOP + 22)) + 'px,0) rotateX(90deg);background:radial-gradient(circle,rgba(0,0,0,0) 0 90%,rgba(0,0,0,.4) 100%)');
-
-    /* walls: 20 facets of 18deg (tall facets are cut into short strips so every browser rasterises them) */
-    const SEG = 540;
-    const tall = (az, x, w, y0, y1, mk) => {
-      const n = Math.max(1, Math.ceil((y1 - y0) / SEG));
-      for (let i = 0; i < n; i++) { const a = y0 + (y1 - y0) * i / n, b = y0 + (y1 - y0) * (i + 1) / n; add(place(az, x, (a + b) / 2, APO + (i % 3) * 0.7, 'rotateY(180deg)', w, b - a + 1, mk(a, b)), sg((a + b) / 2)); }
-    };
-    const FW = 2 * APO * Math.tan(9 * R) + 1.5;
-    const doorYs = (az) => [0, 1, 2, 3, 4, 5, 6].filter((k) => (k % 2 ? 180 : 0) === az).map((k) => FH * k);
-    for (let m = 0; m < 20; m++) {
-      const az = m * 18;
-      const isDoor = az === 0 || az === 180;
-      const isWin = [72, 90, 108, 252, 270, 288].indexOf(az) >= 0;
-      const isOak = [36, 324, 144, 216].indexOf(az) >= 0;
-      if (isDoor) {
-        const ys = doorYs(az);
-        const sl = (FW - 150) / 2;
-        [-1, 1].forEach((sg) => tall(az, sg * (75 + sl / 2), sl, 0, TOP, (a, b) => wallBg(az, a, b)));
-        let prev = 0;
-        ys.concat([TOP + 300]).forEach((y) => {
-          const y0 = prev, y1 = Math.min(y, TOP);
-          if (y1 > y0 + 1) add(place(az, 0, (y0 + y1) / 2, APO, 'rotateY(180deg)', 150, y1 - y0, wallBg(az, y0, y1)), sg((y0 + y1) / 2));
-          prev = y + 300;
-        });
-      } else if (isWin) {
-        const jh = WT - 70, jc = (WT + 70) / 2;
-        add(place(az, 0, 35, APO, 'rotateY(180deg)', FW, 70, wallBg(az, 0, 70)));
-        add(place(az, 0, (WT + TOP) / 2, APO, 'rotateY(180deg)', FW, TOP - WT, wallBg(az, WT, TOP)));
-        [-1, 1].forEach((sg) => add(place(az, sg * (FW / 2 - 5), jc, APO - 6, 'rotateY(180deg)', 10, jh, 'background:linear-gradient(90deg,#8E7650,#B79F73);')));
-        add(place(az, 0, jc, APO - 9, 'rotateY(180deg)', 7, jh, 'background:linear-gradient(90deg,#5A4426,#9C8052,#5A4426);'));
-        for (let q = 1; q <= 6; q++) add(place(az, 0, FH * q, APO - 9, 'rotateY(180deg)', FW - 12, 9, 'background:linear-gradient(180deg,#8A7248,#4F3D22);'), sg(FH * q));
-      } else if (isOak) {
-        tall(az, 0, FW, 0, TOP, (a, b) => 'background:linear-gradient(180deg,rgba(255,236,200,' + (0.10 + 0.0 * a).toFixed(2) + '),rgba(40,26,12,' + (0.36 - 0.26 * (a / TOP)).toFixed(2) + ')),repeating-linear-gradient(90deg,#BFA680 0 9px,#7E6644 9px 11px,#C9B28B 11px 20px);');
-      } else {
-        tall(az, 0, FW, 0, TOP, (a, b) => 'background:linear-gradient(90deg,rgba(30,20,8,.07),rgba(30,20,8,0) 22%,rgba(30,20,8,0) 78%,rgba(30,20,8,.07)),linear-gradient(180deg,' + wallAt(az, b) + ',' + wallAt(az, a) + ');');
-      }
-    }
-
-    /* lamplight: brass sconces on the plaster either side of every door */
-    for (let k = 0; k < NF; k++) {
-      const az = k % 2 ? 180 : 0;
-      [-18, 18].forEach((o) => {
-        if (k === 0 && o === -18) return; /* that wall carries the fireplace */
-        add(place(az + o, 0, FH * k + 335, APO - 3, 'rotateY(180deg)', 200, 240, 'background:radial-gradient(ellipse at 50% 50%,rgba(255,222,160,.62) 0,rgba(255,206,130,.26) 32%,rgba(255,200,120,0) 68%);backface-visibility:hidden;'), k);
-        if (!lite) add(place(az + o, 0, FH * k + 335, APO - 4, 'rotateY(180deg)', 14, 38, 'background:linear-gradient(180deg,#FFF1CB,#F0CE86 55%,#9B7A3A);box-shadow:0 0 14px 4px rgba(255,216,150,.7);border-radius:7px 7px 3px 3px;backface-visibility:hidden;'), k);
-      });
-    }
-
-    /* stair: coffee-brown tile treads */
-    const nodes = [];
-    for (let k = 0; k < NF - 1; k++) {
-      const H = FH * k;
-      for (let j = 1; j <= NS; j++) {
-        const a0 = 180 * k + 10 + DTH * (j - 1), am = a0 + DTH / 2, h = H + RISE * j;
-        const t = sun(am);
-        const top = mix('#4A3123', '#6A4A36', t);
-        const wO = 2 * RO * Math.sin(DTH / 2 * R) * 1.012;
-        add(place(am, 0, h, 450, 'rotateX(90deg)', wO, 400, wedge([[0, mix(top, '#D2AC82', .34)], [.38, top], [1, mix(top, '#1B0F08', .5)]])), k);
-        add(place(a0, 0, h - RISE / 2, 450, 'rotateY(90deg)', 400, RISE, 'background:linear-gradient(90deg,' + mix('#2E1D13', '#4C3324', t) + ',' + mix('#25170F', '#3E281B', t) + ');backface-visibility:hidden;'), k);
-        add(place(am, 0, h - 26, 249, 'rotateY(180deg)', 46, 52, 'background:linear-gradient(180deg,' + mix('#4A3123', '#6A4A36', t) + ',' + mix('#2B1B11', '#3A2619', t) + ');backface-visibility:hidden;'), k);
-        if (!lite) add(place(am, 0, h - 52, 450, 'rotateX(90deg)', wO, 400, wedge([[0, '#2D1D13'], [1, '#1B110A']])), k);
-        if (!lite || j % 2 === 0) add(place(am, 0, h + 65, 254, 'rotateY(180deg)', 4, 130, 'background:linear-gradient(90deg,#46443E,#1F1E1B);backface-visibility:hidden;'), k);
-      }
-    }
-    /* rail */
-    const rn = [];
-    for (let k = 0; k < NF - 1; k++) {
-      const H = FH * k;
-      if (k > 0) { rn.push({ az: 180 * k - 9, h: H }); rn.push({ az: 180 * k, h: H }); rn.push({ az: 180 * k + 9, h: H }); }
-      for (let j = 1; j <= NS; j++) rn.push({ az: 180 * k + 10 + DTH * (j - 1) + DTH / 2, h: H + RISE * j });
-    }
-    const RR = 254;
-    for (let i = 0; i < rn.length - 1; i++) {
-      const a = rn[i], b = rn[i + 1];
-      const p1 = [RR * Math.sin(a.az * R), RR * Math.cos(a.az * R)], p2 = [RR * Math.sin(b.az * R), RR * Math.cos(b.az * R)];
-      const pm = [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2];
-      const azm = Math.atan2(pm[0], pm[1]) / R, apo = Math.hypot(pm[0], pm[1]);
-      const ch = Math.hypot(p2[0] - p1[0], p2[1] - p1[1]), dh = b.h - a.h;
-      const L = Math.hypot(ch, dh) + 1, ang = Math.atan2(dh, ch) / R, hm = (a.h + b.h) / 2 + 130;
-      add(place(azm, 0, hm, apo, 'rotateY(180deg) rotateZ(' + ang.toFixed(2) + 'deg)', L, 9, 'background:linear-gradient(180deg,#D2A872,#9C6E3E);backface-visibility:hidden;'), Math.max(0, Math.min(5, Math.floor((a.h + b.h) / 2 / FH))));
-    }
-    /* landings 1..6: coffee tile with grout */
-    for (let k = 1; k < NF; k++) {
-      const H = FH * k, az = 180 * k;
-      const w = 2 * RO * Math.sin(10 * R) * 1.012;
-      add(place(az, 0, H, 450, 'rotateX(90deg)', w, 400, 'background:' + GROUT + ',linear-gradient(180deg,#3A261A 0%,#5C3E2C 30%,#6E4C37 100%);' + clip), k);
-      add(place(az, 0, H - 30, 246, 'rotateY(180deg)', 89, 60, 'background:linear-gradient(180deg,#4A3123,#2B1B11);backface-visibility:hidden;'), k);
-      [-9, 0, 9].forEach((o) => add(place(az + o, 0, H + 65, 254, 'rotateY(180deg)', 4, 130, 'background:linear-gradient(90deg,#46443E,#1F1E1B);backface-visibility:hidden;'), k));
-    }
-
-    /* the night outside: a painted city behind each window slit + garden planes in front */
-    const rnd = (sd) => { let x = sd >>> 0; return () => { x = (Math.imul(x, 1664525) + 1013904223) >>> 0; return x / 4294967296; }; };
-    const maskH = (a, p) => 'mask-image:repeating-linear-gradient(0deg,#000 0 ' + a + 'px,transparent ' + a + 'px ' + p + 'px);-webkit-mask-image:repeating-linear-gradient(0deg,#000 0 ' + a + 'px,transparent ' + a + 'px ' + p + 'px);';
-    const maskV = (a, p) => 'mask-image:repeating-linear-gradient(90deg,#000 0 ' + a + 'px,transparent ' + a + 'px ' + p + 'px);-webkit-mask-image:repeating-linear-gradient(90deg,#000 0 ' + a + 'px,transparent ' + a + 'px ' + p + 'px);';
-    const PWW = FW + 70, PHH = 2800;
-    const win = (az, i) => {
-      const r = rnd(101 + i * 37), K = [];
-      K.push('position:absolute;left:0;bottom:500px;width:100%;height:' + (PHH - 500) + 'px;background:radial-gradient(circle,#fff 0 1.2px,transparent 1.8px) ' + (i * 23) + 'px 0/89px 131px,radial-gradient(circle,rgba(255,255,255,.8) 0 1px,transparent 1.6px) 30px ' + (i * 11) + 'px/61px 97px,radial-gradient(circle,rgba(190,210,255,.9) 0 1.5px,transparent 2.2px) 10px 40px/127px 173px;mask-image:linear-gradient(0deg,transparent,#000 500px);-webkit-mask-image:linear-gradient(0deg,transparent,#000 500px);');
-      if (i === 1) {
-        K.push('position:absolute;left:10px;bottom:1330px;width:250px;height:250px;background:radial-gradient(circle,rgba(190,205,255,.34) 0,rgba(190,205,255,.12) 40%,rgba(190,205,255,0) 70%);');
-        K.push('position:absolute;left:68px;bottom:1388px;width:134px;height:134px;border-radius:50%;background:radial-gradient(circle at 62% 58%,rgba(160,150,118,.45) 0 9%,transparent 10%),radial-gradient(circle at 34% 66%,rgba(160,150,118,.35) 0 6%,transparent 7%),radial-gradient(circle at 45% 28%,rgba(160,150,118,.3) 0 7%,transparent 8%),radial-gradient(circle at 38% 36%,#FFFDF1 0,#F6EDCB 55%,#DACE9F 100%);box-shadow:0 0 30px 8px rgba(255,244,205,.45);');
-      }
-      K.push('position:absolute;left:-40px;bottom:' + (900 + r() * 1300).toFixed(0) + 'px;width:' + (PWW + 80) + 'px;height:120px;background:radial-gradient(ellipse at 50% 50%,rgba(130,142,190,.26),rgba(130,142,190,0) 70%);');
-      let fx = -30;
-      while (fx < PWW) { const w = 70 + r() * 90, h = 500 + r() * 1300; K.push('position:absolute;left:' + fx.toFixed(0) + 'px;bottom:0;width:' + w.toFixed(0) + 'px;height:' + h.toFixed(0) + 'px;background:linear-gradient(0deg,#1D2346,#171C3A);'); fx += w * (0.55 + r() * 0.5); }
-      let x = -20 + r() * 40;
-      while (x < PWW - 40) {
-        const w = 90 + r() * 80, h = 900 + Math.pow(r(), 1.3) * 1800;
-        const col = ['#0B1124', '#0F162B', '#0A0E1E', '#121A32'][Math.floor(r() * 4)];
-        const base = 'position:absolute;left:' + (x + 8).toFixed(0) + 'px;bottom:30px;width:' + (w - 16).toFixed(0) + 'px;height:' + (h - 60).toFixed(0) + 'px;';
-        K.push('position:absolute;left:' + x.toFixed(0) + 'px;bottom:0;width:' + w.toFixed(0) + 'px;height:' + h.toFixed(0) + 'px;background:linear-gradient(90deg,' + col + ',#0C1327);');
-        K.push(base + 'background:repeating-linear-gradient(90deg,rgba(255,208,132,.9) 0 5px,transparent 5px 12px);' + maskH(7, 19));
-        K.push(base + 'background:' + col + ';' + maskH(12 + Math.floor(r() * 20), 44 + Math.floor(r() * 40)));
-        K.push(base + 'background:' + col + ';' + maskV(5 + Math.floor(r() * 8), 28 + Math.floor(r() * 30)));
-        if (r() < 0.5) K.push('position:absolute;left:' + (x + w / 2 - 2).toFixed(0) + 'px;bottom:' + h.toFixed(0) + 'px;width:4px;height:' + (70 + r() * 90).toFixed(0) + 'px;background:' + col + ';box-shadow:0 -2px 8px 3px rgba(255,70,70,.85);');
-        x += w + 6 + r() * 70;
-      }
-      PAINT.push({ s: place(az, 0, 1465, APO + 46, 'rotateY(180deg)', PWW, PHH, 'overflow:hidden;background:linear-gradient(0deg,rgba(255,160,90,.3) 0,rgba(255,160,90,0) 700px),linear-gradient(0deg,#261F3B 0,#171F45 500px,#0F1738 1400px,#0A1029 2300px,#060A1B 100%);'), kids: K });
-      const G = [];
-      G.push('position:absolute;left:0;bottom:0;width:100%;height:80px;background:linear-gradient(180deg,#0A100C,#050806);');
-      for (let t = 0; t < 2; t++) {
-        const cx = 10 + t * 170 + r() * 40, th = 150 + r() * 200, cw = 150 + r() * 90, ch = 150 + r() * 100;
-        G.push('position:absolute;left:' + (cx + cw / 2 - 6).toFixed(0) + 'px;bottom:70px;width:12px;height:' + th.toFixed(0) + 'px;background:#060806;');
-        G.push('position:absolute;left:' + cx.toFixed(0) + 'px;bottom:' + (70 + th - 40).toFixed(0) + 'px;width:' + cw.toFixed(0) + 'px;height:' + ch.toFixed(0) + 'px;border-radius:50%;background:radial-gradient(ellipse at 40% 32%,#12261C 0,#0A160F 60%,#050A07 100%);box-shadow:inset 0 12px 26px rgba(255,196,120,.10);');
-      }
-      G.push('position:absolute;left:' + (150 + r() * 60).toFixed(0) + 'px;bottom:30px;width:100px;height:100px;background:radial-gradient(circle,rgba(255,236,190,.98) 0 4px,rgba(255,206,130,.34) 10px,rgba(255,200,120,0) 48px);');
-      PAINT.push({ s: place(az, 0, 400, APO + 200, 'rotateY(180deg)', PWW + 150, 800, 'overflow:hidden;'), kids: G });
-    };
-    [72, 90, 108, 252, 270, 288].forEach((az, i) => win(az, i));
-
-    this._cache = { world: W, paint: PAINT, lite };
-    return this._cache;
-  }
-
-  /* ---------- set pieces: the hearth and its company (floor 0), the chandelier (top floor) ----------
-     Built as markup once and mounted into #hs-props. Hearth pieces live in a frame that sits on the wall
-     facet at az 342: local +z points into the room, local y is up from the floor. People and the chandelier
-     are flat sprites that turn to face the camera every frame (see updateProps). 1 world px ~ 0.7 cm. */
-  propsHTML(lite) {
-    const R = Math.PI / 180;
-    const AZ = 342, WALLR = 655, TOPY = 3270;
-    const grp = 'position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d;';
-    /* vertical plane: bottom-centre at (x, y) on depth z */
-    const pl = (x, y, z, w, h, css, inner) => '<div style="position:absolute;left:' + (x - w / 2) + 'px;top:' + (-y - h) + 'px;width:' + w + 'px;height:' + h + 'px;transform:translateZ(' + z + 'px);' + (css || '') + '">' + (inner || '') + '</div>';
-    /* side face spanning depth z0..z0+d at lateral position x */
-    const sd = (x, y, z0, d, h, css) => '<div style="position:absolute;left:' + (-d / 2) + 'px;top:' + (-y - h) + 'px;width:' + d + 'px;height:' + h + 'px;transform:translate3d(' + x + 'px,0,' + (z0 + d / 2) + 'px) rotateY(90deg);' + (css || '') + '"></div>';
-    /* horizontal plane at height y spanning depth z0..z0+d */
-    const ph = (x, y, z0, w, d, css, inner) => '<div style="position:absolute;left:' + (-w / 2) + 'px;top:' + (-d / 2) + 'px;width:' + w + 'px;height:' + d + 'px;transform:translate3d(' + x + 'px,' + (-y) + 'px,' + (z0 + d / 2) + 'px) rotateX(90deg);' + (css || '') + '">' + (inner || '') + '</div>';
-    /* 2D child inside a plane, positioned from its bottom-left */
-    const bx = (l, b, w, h, css, inner, cls) => '<div' + (cls ? ' class="' + cls + '"' : '') + ' style="position:absolute;left:' + l + 'px;bottom:' + b + 'px;width:' + w + 'px;height:' + h + 'px;' + (css || '') + '">' + (inner || '') + '</div>';
-
-    const plaster = 'background:linear-gradient(0deg,#C9B994,#B2A585 35%,#8A7F68 72%,#615844);';
-    const stone = 'background:repeating-linear-gradient(115deg,rgba(110,90,70,.10) 0 1px,transparent 1px 11px),linear-gradient(90deg,#CFC2A8,#C2B496 55%,#B2A486);box-shadow:inset 0 0 0 1px rgba(60,45,25,.38);';
-    const oak = 'background:linear-gradient(180deg,#6E4A31,#3C2518);';
-    const brick = 'background:radial-gradient(ellipse at 50% 100%,rgba(255,150,50,.55),rgba(255,120,30,0) 70%),repeating-linear-gradient(0deg,rgba(0,0,0,.4) 0 2px,transparent 2px 9px),repeating-linear-gradient(90deg,rgba(0,0,0,.28) 0 2px,transparent 2px 19px),#3A1D12;';
-    const soot = 'background:linear-gradient(0deg,#3B1B0F,#120A06);';
-
-    /* ---- fire: scrolling noise pushed through a contrast filter gives ragged, living flames (after the CodePen
-       "pure CSS fire" technique, with a local noise tile); logs, embers and sparks are 2D children of one plane ---- */
-    const log = (rot, extra) => 'border-radius:6px;transform:rotate(' + rot + 'deg);background:repeating-linear-gradient(90deg,rgba(0,0,0,.4) 0 2px,transparent 2px 6px),linear-gradient(180deg,#52361F,#22140B 62%,#0E0704);box-shadow:inset 0 -3px 4px rgba(255,125,35,.8),inset 0 1px 1px rgba(255,200,140,.18),0 0 9px 1px rgba(255,100,20,.55);' + (extra || '');
-    let q = 7; const rn = () => (q = (q * 16807) % 2147483647) / 2147483647;
-    let sparks = '';
-    for (let i = 0, n = lite ? 8 : 18; i < n; i++) {
-      const x = 16 + rn() * 66, y0 = 14 + rn() * 26, ry = -(52 + rn() * 90), sx = (rn() - 0.5) * 44, dur = 1.5 + rn() * 2.6, dl = -rn() * 4, len = 3 + rn() * 4.5;
-      sparks += bx(x.toFixed(1), y0.toFixed(1), 1.4, len.toFixed(1), '--sx:' + sx.toFixed(1) + 'px;--ry:' + ry.toFixed(1) + 'px;--rot:' + (sx * 0.9).toFixed(0) + 'deg;animation-duration:' + dur.toFixed(2) + 's;animation-delay:' + dl.toFixed(2) + 's;', '', 'hs-sp');
-    }
-    const fire = pl(0, 6, 12, 100, 92, 'overflow:visible;' + brick,
-      bx(0, 0, 100, 92, 'background:radial-gradient(ellipse at 50% 100%,rgba(255,170,70,.55),rgba(255,110,25,.25) 42%,rgba(255,110,25,0) 78%);', '', 'hs-gl') +
-      bx(16, 24, 70, 11, log(6), '') +
-      bx(8, 5, 84, 84, '', '', 'hs-fire') +
-      bx(-6, 27, 62, 11, log(-47), '') + bx(40, 33, 54, 10, log(71), '') +
-      bx(3, 0, 94, 15, 'background:radial-gradient(ellipse at 50% 100%,#FFD58A,#FF8A2A 40%,#8A2A0C 74%,rgba(60,10,0,0));', '', 'hs-gl') +
-      bx(2, 0, 96, 14, 'background:radial-gradient(circle,#FFE2A0 0 .7px,transparent 1.3px) 0 0/5px 4px,radial-gradient(circle,#FF8A2A 0 .6px,transparent 1.2px) 2px 2px/6px 5px;opacity:.85;', '', 'hs-gl') +
-      bx(5, 2, 90, 14, log(-2, 'box-shadow:inset 0 -3px 4px rgba(255,125,35,.9),0 0 12px 2px rgba(255,110,25,.6);'), bx(76, 1, 12, 12, 'border-radius:50%;background:radial-gradient(circle,#D4A56C 0 22%,#8A5E34 24% 40%,#B9894F 42% 56%,#4A2D18 58%);', '')) +
-      sparks);
-
-    /* ---- the chimney breast, firebox, hearth ---- */
-    let h = '';
-    const panel = bx(7, 44, 28, 300, 'box-shadow:inset 0 0 0 1.5px rgba(255,235,200,.16),inset 0 0 0 3.5px rgba(0,0,0,.14);') + bx(0, 0, 42, 130, 'background:linear-gradient(0deg,rgba(255,150,60,.34),rgba(255,150,60,0));', '', 'hs-gl');
-    h += pl(-71, 0, 30, 42, 430, plaster, panel) + pl(71, 0, 30, 42, 430, plaster, panel) + pl(0, 0, 30, 100, 6, plaster);
-    h += pl(0, 98, 30, 100, 332, plaster,
-      bx(8, 40, 84, 160, 'background:linear-gradient(135deg,#E9CF8E,#B28F4E 45%,#7A5A22);box-shadow:0 2px 6px rgba(0,0,0,.35);',
-        bx(6, 6, 72, 148, 'background:linear-gradient(180deg,#1A2347 0,#4A3A64 42%,#D88A4B 70%,#3A2417 71%,#1A100B);box-shadow:inset 0 0 8px rgba(0,0,0,.6);',
-          bx(48, 96, 14, 14, 'border-radius:50%;background:radial-gradient(circle at 40% 40%,#FFF8DC,#E8D9A0);box-shadow:0 0 8px 2px rgba(255,240,190,.5);') +
-          bx(0, 0, 72, 40, 'background:linear-gradient(180deg,rgba(255,170,80,0),rgba(255,160,70,.28));'))) +
-      bx(0, 326, 100, 6, 'background:linear-gradient(180deg,#C9BDA0,#8F8369);') + bx(0, 0, 100, 60, 'background:linear-gradient(0deg,rgba(18,9,4,.55),rgba(18,9,4,0));'));
-    h += sd(-92, 0, 0, 30, 430, 'background:linear-gradient(90deg,#8F8369,#B5A98E);') + sd(92, 0, 0, 30, 430, 'background:linear-gradient(90deg,#B5A98E,#8F8369);');
-    h += ph(0, 430, 0, 184, 30, 'background:#A99D84;') + pl(0, 421, 34, 200, 11, 'background:linear-gradient(180deg,#EFE6D2,#B7AA8F);box-shadow:0 3px 6px rgba(40,25,10,.35);');
-    const glowL = bx(0, 0, 24, 104, 'background:linear-gradient(90deg,rgba(255,140,50,0) 20%,rgba(255,140,50,.5));', '', 'hs-gl');
-    const glowR = bx(0, 0, 24, 104, 'background:linear-gradient(270deg,rgba(255,140,50,0) 20%,rgba(255,140,50,.5));', '', 'hs-gl');
-    h += pl(-62, 6, 33, 24, 104, stone, glowL) + pl(62, 6, 33, 24, 104, stone, glowR) +
-      pl(0, 98, 33, 152, 24, stone, bx(0, 0, 152, 24, 'background:linear-gradient(0deg,rgba(255,140,50,.62),rgba(255,140,50,0) 62%);', '', 'hs-gl') + bx(69, 0, 14, 24, 'background:linear-gradient(180deg,#DDD1B5,#A99B7C);clip-path:polygon(12% 0,88% 0,100% 100%,0 100%);')) +
-      pl(0, 118, 35, 160, 5, 'background:repeating-linear-gradient(90deg,rgba(50,38,22,.6) 0 4px,transparent 4px 9px),#B8AA8B;') +
-      pl(0, 106, 35, 152, 16, 'background:linear-gradient(180deg,rgba(0,0,0,.5),rgba(0,0,0,0));');
-    /* firebox */
-    h += pl(0, 6, 4, 100, 92, brick) + sd(-50, 6, 4, 26, 92, brick) + sd(50, 6, 4, 26, 92, brick) + ph(0, 98, 4, 100, 26, soot) + ph(0, 6, 4, 100, 26, 'background:linear-gradient(180deg,#2A160C,#4A2410);');
-    h += fire;
-    /* mantelshelf with its things */
-    h += pl(0, 122, 62, 208, 12, oak) + ph(0, 134, 30, 208, 32, 'background:linear-gradient(0deg,#86603F,#5A3C27);') + sd(-104, 122, 30, 32, 12, oak) + sd(104, 122, 30, 32, 12, oak);
-    const cs = (l) => bx(l, 0, 12, 40, 'background:linear-gradient(90deg,#8E6D33,#F0DB9C,#8E6D33);clip-path:polygon(0 100%,18% 86%,38% 86%,42% 30%,34% 22%,66% 22%,58% 30%,62% 86%,82% 86%,100% 100%);') +
-      bx(l + 2, 40, 8, 20, 'background:linear-gradient(90deg,#E9DEC0,#FFF6DA,#D9CBA6);border-radius:1px;') +
-      bx(l - 1, 58, 14, 24, 'animation-duration:.9s;animation-delay:' + (l / 40) + 's;', '', 'hs-fl') +
-      bx(l - 22, 40, 56, 56, 'background:radial-gradient(circle,rgba(255,206,130,.5),rgba(255,206,130,0) 68%);', '', 'hs-gl');
-    h += pl(0, 134, 46, 196, 90,
-      '', cs(14) + cs(168) +
-      bx(44, 0, 34, 7, 'background:linear-gradient(180deg,#6B2A22,#3E1712);') + bx(47, 7, 30, 6, 'background:linear-gradient(180deg,#2F4A3A,#1B2C22);') +
-      bx(84, 0, 30, 40, 'background:linear-gradient(90deg,#3A2418,#6B4630,#3A2418);border-radius:15px 15px 3px 3px;',
-        bx(4, 16, 22, 22, 'border-radius:50%;background:radial-gradient(circle,#F6EFDD 0 60%,#C9B27A 62% 72%,#8A6A2E 73%);', bx(10, 10, 1.5, 7, 'background:#3A2418;') + bx(10, 10, 6, 1.5, 'background:#3A2418;'))) +
-      bx(132, 0, 18, 30, 'border-radius:45% 45% 30% 30%/50% 50% 20% 20%;background:linear-gradient(90deg,#9DB3C9,#F1F4F8 45%,#8DA2B8);'));
-    h += pl(0, 6, 56, 128, 14, 'background:linear-gradient(180deg,#F0DB9C 0 12%,transparent 12% 100%),repeating-linear-gradient(90deg,#B28F4E 0 3px,transparent 3px 11px);');
-    /* hearth slab */
-    h += ph(0, 7, 30, 214, 62, 'background:radial-gradient(ellipse at 50% 0%,rgba(255,160,70,.55),rgba(255,160,70,0) 70%),linear-gradient(180deg,#B5A68A,#D5C8AC);box-shadow:inset 0 0 0 1px rgba(60,40,20,.3);') +
-         pl(0, 0, 92, 214, 7, 'background:linear-gradient(180deg,#A29579,#7C705A);') + sd(-107, 0, 30, 62, 7, 'background:#8E8168;') + sd(107, 0, 30, 62, 7, 'background:#8E8168;');
-    /* light thrown into the room */
-    if (!lite) h += pl(0, 0, 3, 300, 430, 'background:radial-gradient(ellipse at 50% 24%,rgba(255,170,80,.30),rgba(255,170,80,0) 62%);', '', '').replace('style="', 'class="hs-gl" style="');
-    h += ph(0, 0.6, 20, 440, 330, 'background:radial-gradient(ellipse at 50% 22%,rgba(255,176,86,.46),rgba(255,176,86,.14) 45%,rgba(255,176,86,0) 72%);').replace('<div style="', '<div class="hs-gl" style="');
-    /* rug */
-    h += ph(0, 0.4, 92, 410, 250, 'background:radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 0 36%,rgba(20,6,4,.28) 100%),repeating-linear-gradient(45deg,rgba(236,214,160,.13) 0 5px,transparent 5px 15px),repeating-linear-gradient(-45deg,rgba(236,214,160,.10) 0 5px,transparent 5px 15px),radial-gradient(ellipse at 50% 50%,#8E2B24,#6A1E1A 70%);box-shadow:inset 0 0 0 5px #3E1210,inset 0 0 0 9px rgba(222,186,110,.85),inset 0 0 0 20px #4E1713,inset 0 0 0 22px rgba(222,186,110,.55);');
-
-    /* ---- people: sprites that face the camera, each with a contact shadow ---- */
-    const BR = '<div style="position:absolute;left:0;top:0;width:0;height:0;transform:rotateY(0deg)" class="hs-pp">';
-    const armchair = (wc, c1, c2, c3) => {
-      const L = (wc - 150) / 2;
-      return bx(L + 14, 60, 122, 118, 'border-radius:22px 22px 6px 6px;background:linear-gradient(180deg,' + c2 + ',' + c1 + ' 40%,' + c3 + ');box-shadow:inset 0 0 14px rgba(0,0,0,.5);') +
-        bx(L, 34, 34, 80, 'border-radius:16px 16px 6px 6px;background:linear-gradient(90deg,' + c3 + ',' + c1 + ' 60%,' + c2 + ');') + bx(L + 116, 34, 34, 80, 'border-radius:16px 16px 6px 6px;background:linear-gradient(90deg,' + c2 + ',' + c1 + ' 40%,' + c3 + ');') +
-        bx(L + 24, 8, 102, 58, 'background:linear-gradient(180deg,' + c1 + ',' + c3 + ');') + bx(L + 20, 60, 110, 14, 'border-radius:6px;background:linear-gradient(180deg,' + c2 + ',' + c1 + ');');
-    };
-    const pouf = (wc) => bx((wc - 104) / 2, 0, 104, 68, 'border-radius:14px 14px 10px 10px/22px 22px 10px 10px;background:linear-gradient(90deg,#6B4426,#A8774A 45%,#5A3A20);box-shadow:inset 0 10px 10px rgba(255,214,150,.25);');
-    const people = [
-      /* sprite, x, z, w (display), h (display), seat */
-      ['stand', -92, 104, 87, 255, ''],
-      ['mug', -222, 222, 116, 188, armchair(170, '#6B2A22', '#8A3B2E', '#3E1712')],
-      ['woman', -108, 210, 125, 205, armchair(170, '#B07A2C', '#CFA050', '#7A5016')],
-      ['girl', 92, 214, 109, 200, pouf(170)],
-      ['guitar', 198, 236, 104, 188, armchair(170, '#355744', '#4E7560', '#1F3328')]
-    ];
-    this._bb = [];
-    people.forEach((p, i) => {
-      const wc = 170;
-      h += ph(p[1], 0.9, p[2] - 38, p[3] + 60, 76, 'background:radial-gradient(ellipse,rgba(8,3,1,.62) 0,rgba(8,3,1,0) 68%);');
-      h += '<div style="' + grp + 'transform:translate3d(' + p[1] + 'px,0,' + p[2] + 'px)">' + BR.replace('class="hs-pp"', 'class="hs-pp" data-i="' + i + '"') +
-        '<div style="position:absolute;left:' + (-wc / 2) + 'px;top:' + (-p[4]) + 'px;width:' + wc + 'px;height:' + p[4] + 'px">' + p[5] +
-        '<img src="./assets/people/sprite-' + p[0] + '.webp" alt="" draggable="false" style="filter:sepia(.22) saturate(.86) contrast(.95) brightness(.94);position:absolute;left:' + ((wc - p[3]) / 2) + 'px;bottom:0;width:' + p[3] + 'px;height:' + p[4] + 'px"></div></div></div>';
-      this._bb.push({ x: p[1], z: p[2], deg: 1e9 });
-    });
-    const hearth = '<div class="g0" id="hs-hearth" style="' + grp + 'transform:rotateY(' + AZ + 'deg) translate3d(0,0,' + WALLR + 'px) rotateY(180deg)">' + h + '</div>';
-
-    /* ---- the chandelier: one SVG sprite on the stair axis, lit as you arrive ---- */
-    const W = 250, H = 335, cx = W / 2;
-    const scale = lite ? 0.74 : 1;
-    const tiers = lite ? [[150, 58, 11, 6]] : [[118, 40, 8, 6], [166, 74, 13, 8], [214, 104, 18, 12]];
-    let back = '', front = '';
-    const candle = (px, py) => '<path d="M' + (px - 5) + ' ' + (py + 4) + 'L' + (px - 3.5) + ' ' + py + 'H' + (px + 3.5) + 'L' + (px + 5) + ' ' + (py + 4) + 'Z" fill="url(#br)"/><rect x="' + (px - 2.8) + '" y="' + (py - 20) + '" width="5.6" height="20" fill="url(#wx)"/>' +
-      '<g class="hs-cf"><circle cx="' + px + '" cy="' + (py - 31) + '" r="22" fill="url(#gl)"/><path d="M' + px + ' ' + (py - 44) + 'C' + (px + 5) + ' ' + (py - 36) + ' ' + (px + 5) + ' ' + (py - 24) + ' ' + px + ' ' + (py - 21) + 'C' + (px - 5) + ' ' + (py - 24) + ' ' + (px - 5) + ' ' + (py - 36) + ' ' + px + ' ' + (py - 44) + 'Z" fill="#FFB347"/><path d="M' + px + ' ' + (py - 38) + 'C' + (px + 2.4) + ' ' + (py - 33) + ' ' + (px + 2.4) + ' ' + (py - 26) + ' ' + px + ' ' + (py - 24) + 'C' + (px - 2.4) + ' ' + (py - 26) + ' ' + (px - 2.4) + ' ' + (py - 33) + ' ' + px + ' ' + (py - 38) + 'Z" fill="#FFF6C8"/></g>';
-    const drop = (px, py, s) => '<path d="M' + px + ' ' + py + 'L' + (px + 2.6 * s) + ' ' + (py + 4 * s) + 'L' + px + ' ' + (py + 13 * s) + 'L' + (px - 2.6 * s) + ' ' + (py + 4 * s) + 'Z" fill="url(#cr)" stroke="rgba(255,255,255,.55)" stroke-width=".5"/><path d="M' + px + ' ' + (py - 3) + 'V' + py + '" stroke="#C9A24F" stroke-width=".8"/>';
-    tiers.forEach((t) => {
-      const yc = t[0], rx = t[1], ry = t[2], n = t[3];
-      const items = [];
-      for (let i = 0; i < n; i++) {
-        const th = (i / n) * Math.PI * 2 + 0.3, d = Math.cos(th);
-        items.push({ d, x: cx + rx * Math.sin(th), y: yc - ry * d });
-      }
-      items.forEach((it) => {
-        const arm = '<path d="M' + cx + ' ' + (yc + 12) + 'C' + (cx + (it.x - cx) * 0.25) + ' ' + (yc + 20) + ' ' + (cx + (it.x - cx) * 0.85) + ' ' + (yc + 16 + (it.y - yc) * 0.3) + ' ' + it.x + ' ' + (it.y + 4) + '" fill="none" stroke="url(#br)" stroke-width="' + (it.d >= 0 ? 3.2 : 2.6) + '" stroke-linecap="round"/>';
-        const seg = arm + candle(it.x, it.y) + (lite ? '' : drop(it.x, it.y + 6, 1));
-        if (it.d < 0) back += seg; else front += seg;
-      });
-      const ring = '<ellipse cx="' + cx + '" cy="' + yc + '" rx="' + rx + '" ry="' + ry + '" fill="none" stroke="url(#br)" stroke-width="2"/>';
-      back += ring;
-      if (!lite) for (let i = 0; i < n * 2; i++) { const th = (i / (n * 2)) * Math.PI * 2, d = Math.cos(th); const dr = drop(cx + rx * 0.98 * Math.sin(th), yc - ry * d + 3, 0.9 + 0.3 * (d > 0 ? 1 : 0)); if (d < 0) back += dr; else front += dr; }
-    });
-    const stem = '<path d="M' + cx + ' 0V108" stroke="url(#br)" stroke-width="3" stroke-dasharray="6 3" fill="none"/><path d="M' + (cx - 11) + ' 0H' + (cx + 11) + 'L' + (cx + 6) + ' 9H' + (cx - 6) + 'Z" fill="url(#br)"/>' +
-      '<ellipse cx="' + cx + '" cy="116" rx="13" ry="10" fill="url(#br)"/><rect x="' + (cx - 3.5) + '" y="124" width="7" height="' + (tiers[tiers.length - 1][0] - 118) + '" fill="url(#br)"/>' +
-      '<ellipse cx="' + cx + '" cy="' + (lite ? 134 : 146) + '" rx="12" ry="12" fill="url(#br)"/>' + (lite ? '' : '<ellipse cx="' + cx + '" cy="192" rx="15" ry="14" fill="url(#br)"/><ellipse cx="' + cx + '" cy="238" rx="18" ry="16" fill="url(#br)"/>') +
-      '<path d="M' + cx + ' ' + (tiers[tiers.length - 1][0] + 20) + 'L' + (cx + 8) + ' ' + (tiers[tiers.length - 1][0] + 38) + 'L' + cx + ' ' + (tiers[tiers.length - 1][0] + 80) + 'L' + (cx - 8) + ' ' + (tiers[tiers.length - 1][0] + 38) + 'Z" fill="url(#cr)" stroke="rgba(255,255,255,.6)" stroke-width=".7"/>';
-    const svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + (W * scale) + '" height="' + (H * scale) + '" style="display:block;overflow:visible"><defs>' +
-      '<linearGradient id="br" x1="0" x2="1"><stop offset="0" stop-color="#7A5A22"/><stop offset=".35" stop-color="#F0DB9C"/><stop offset=".7" stop-color="#B28F4E"/><stop offset="1" stop-color="#6E521F"/></linearGradient>' +
-      '<linearGradient id="wx" x1="0" x2="1"><stop offset="0" stop-color="#D9CBA6"/><stop offset=".5" stop-color="#FFF6DA"/><stop offset="1" stop-color="#CDBE96"/></linearGradient>' +
-      '<linearGradient id="cr" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".5" stop-color="#CFE0F5" stop-opacity=".55"/><stop offset="1" stop-color="#FFE9B8" stop-opacity=".8"/></linearGradient>' +
-      '<radialGradient id="gl"><stop offset="0" stop-color="#FFDC96" stop-opacity=".75"/><stop offset=".45" stop-color="#FFB45A" stop-opacity=".25"/><stop offset="1" stop-color="#FFB45A" stop-opacity="0"/></radialGradient></defs>' +
-      back + stem + front + '</svg>';
-    const CH = 2985, CZ = 380; /* hung over the final landing, in front of the door */
-    const chand = '<div class="g6" id="hs-chand" style="' + grp + 'transform:translate3d(0,' + (-CH) + 'px,' + CZ + 'px)"><div class="hs-pp" id="hs-chandbb" style="position:absolute;left:0;top:0;width:0;height:0">' +
-      '<div class="hs-gl" style="position:absolute;left:-330px;top:' + (-H * scale - 120) + 'px;width:660px;height:' + (H * scale + 330) + 'px;background:radial-gradient(ellipse at 50% 46%,rgba(255,200,120,.5),rgba(255,190,110,.16) 42%,rgba(255,190,110,0) 70%);opacity:var(--lit,0)"></div>' +
-      '<div style="position:absolute;left:' + (-W * scale / 2) + 'px;top:' + (-H * scale) + 'px;width:' + (W * scale) + 'px;height:' + (H * scale) + 'px">' + svg + '</div></div></div>' +
-      '<div class="g6" style="' + grp + 'transform:translate3d(0,-2641px,430px) rotateX(90deg)"><div class="hs-gl" style="position:absolute;left:-260px;top:-190px;width:520px;height:380px;opacity:calc(var(--lit,0) * .8);background:radial-gradient(ellipse,rgba(255,196,120,.42),rgba(255,196,120,0) 70%)"></div></div>';
-    return hearth + chand;
-  }
-
-  mountProps() {
-    const host = document.getElementById('hs-props');
-    if (!host || host.firstChild) return;
-    const lite = window.innerWidth < 700;
-    const flame = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 100"><defs><linearGradient id="a" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FF5A14"/><stop offset=".45" stop-color="#FF9A2A"/><stop offset="1" stop-color="#FFD36A"/></linearGradient><linearGradient id="b" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFE9A0"/><stop offset="1" stop-color="#FFFBE0"/></linearGradient></defs><path d="M30 99C10 99 4 78 12 60C18 48 20 38 18 22C28 30 32 40 31 50C36 44 38 36 37 24C50 42 56 62 50 80C46 92 40 99 30 99Z" fill="url(#a)" opacity=".96"/><path d="M30 99C20 99 17 86 22 74C25 66 27 60 26 52C32 58 36 68 36 78C37 90 34 99 30 99Z" fill="url(#b)"/></svg>';
-    const st = document.createElement('style');
-    st.textContent = '.hs-fl{background-image:url("data:image/svg+xml,' + encodeURIComponent(flame) + '")}';
-    document.head.appendChild(st);
-    this._fxStyle = st;
-    if (this._reduce) host.classList.add('hs-still');
-    host.innerHTML = this.propsHTML(lite);
-    this._host = host;
-    this._hearthBB = Array.prototype.slice.call(host.querySelectorAll('#hs-hearth .hs-pp'));
-    this._chandBB = document.getElementById('hs-chandbb');
-    this._chand = document.getElementById('hs-chand');
-    this._litV = -1;
-  }
-
-  /* turn the flat sprites toward the camera; ramp the chandelier's candles with the climb */
-  updateProps(Cx, Cz) {
-    if (!this._host) return;
-    const R = Math.PI / 180, u = this._u;
-    if (u < 2.6 && this._hearthBB) {
-      const c = Math.cos(342 * R), s = Math.sin(342 * R);
-      const lx = -(Cx * c - Cz * s), lz = 655 - (Cx * s + Cz * c);
-      for (let i = 0; i < this._hearthBB.length; i++) {
-        const b = this._bb[i];
-        const d = Math.round(Math.atan2(lx - b.x, lz - b.z) / R * 4) / 4;
-        if (d !== b.deg) { b.deg = d; this._hearthBB[i].style.transform = 'rotateY(' + d + 'deg)'; }
-      }
-    }
-    const lit = Math.round(Math.max(0, Math.min(1, (u - 4.7) / 1.3)) * 100) / 100;
-    if (lit !== this._litV) { this._litV = lit; this._host.style.setProperty('--lit', lit); }
-    if (u > 4.2 && this._chandBB) {
-      const d = Math.round(Math.atan2(Cx, Cz - 380) / R * 4) / 4;
-      if (d !== this._chandDeg) { this._chandDeg = d; this._chandBB.style.transform = 'rotateY(' + d + 'deg)'; }
-    }
-  }
-
-  /* ---------- camera ---------- */
-  pose(U, narrow) {
-    const R = Math.PI / 180, FH = 440;
-    const sm = (x) => { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); };
-    const hero = narrow ? { psi: 200, r: 470, h: 175, beta: 16, pitch: 15, pk: 0.74 } : { psi: 206, r: 470, h: 175, beta: 13, pitch: 14, pk: 0.78 };
-    let ue, f = 0;
-    if (U <= 0) { ue = 0; } else {
-      const k = Math.min(5, Math.floor(U)); f = U - k;
-      const g = sm((f - 0.16) / 0.68);
-      ue = k + g; f = g;
-    }
-    const land = {
-      psi: 180 * (ue + 1), r: 240, h: FH * ue + 300,
-      beta: 180 * ue + (narrow ? 0 : 7) - (narrow ? 10 : 15) * Math.max(0, 1 - ue),
-      pitch: -6 + 10 * Math.sin(Math.PI * f) + (narrow ? 17 : 13) * sm(ue - 5), pk: narrow ? 0.9 + 0.22 * Math.max(0, Math.min(1, ((this._hh || 844) - 640) / 200)) : 0.92
-    };
-    if (U >= 0) return land;
-    const t = sm(1 + U / 0.625);
-    const mixv = (a, b) => a + (b - a) * t;
-    return { psi: mixv(hero.psi, land.psi), r: mixv(hero.r, land.r), h: mixv(hero.h, land.h), beta: mixv(hero.beta, land.beta), pitch: mixv(hero.pitch, land.pitch), pk: mixv(hero.pk, land.pk) };
-  }
+  /* ---------- the house: Three.js, mounted from house/mount.js ---------- */
+  /* scroll px -> floor coordinate. u = 0 at door 00's stop and one unit per floor; the porch and the hall are negative. */
+  px2u(px) { return (px - this._d0) / 1120; }
 
   applyCamera() {
-    const rig = document.getElementById('hs-rig'), st = document.getElementById('hs-stage');
-    if (!rig || !st) return;
-    const Hh = st.clientHeight || 900;
-    this._hh = Hh;
-    const R = Math.PI / 180;
-    const narrow = (st.clientWidth || 1440) < 700;
-    const p = this.pose(this._u, narrow);
-    const P = Hh * 1.22 * p.pk;
-    let X = p.r * Math.sin(p.psi * R), Z = p.r * Math.cos(p.psi * R), h = p.h, pitch = p.pitch, beta = p.beta;
-    const d = this._dolly;
-    if (d > 0) {
-      /* the landing view carries a composition yaw offset; the dolly must not. Steer to a point just in front of the door and turn square to it. */
-      const dk = this.state.openK !== null ? this.state.openK : Math.max(0, Math.min(6, Math.round(this._u)));
-      const az = (dk % 2 ? 180 : 0) * R;
-      const tx = 640 * Math.sin(az), tz = 640 * Math.cos(az);
-      const vx = tx - X, vz = tz - Z;
-      const yaw = az / R;
-      X += vx * d; Z += vz * d; h -= d * 90; pitch *= (1 - d);
-      beta += (((yaw - beta + 540) % 360) - 180) * d;
-    }
-    const alpha = 180 - beta;
-    st.style.perspective = P.toFixed(1) + 'px';
-    const lift = narrow ? 6 * Math.max(0, Math.min(1, this._u - 5)) : 0;
-    st.style.perspectiveOrigin = narrow ? '50% ' + (36 - lift) + '%' : '50% 50%';
-    rig.style.top = narrow ? (36 - lift) + '%' : '50%';
-    rig.style.transformOrigin = '0 0 ' + P.toFixed(1) + 'px';
-    rig.style.transform = 'rotateX(' + pitch.toFixed(3) + 'deg) rotateY(' + alpha.toFixed(3) + 'deg) translate3d(' + (-X).toFixed(2) + 'px,' + h.toFixed(2) + 'px,' + (P - Z).toFixed(2) + 'px)';
-    if (this._gl) this._gl.render({ P, pitch, alpha, X, h, Z, W: st.clientWidth || 1440, Hh, frac: narrow ? (36 - lift) / 100 : 0.5 });
-    this.updateProps(X, Z);
+    const px = this._px, hero = document.getElementById('hs-hero'), wel = document.getElementById('hs-welcome');
+    if (this._gl) this._gl.render(px, this._dolly, this.state.openK);
     const glow = document.getElementById('hs-glow');
     if (glow) { const go = Math.max(0, Math.min(1, (this._u - 4.7) / 1.3)); glow.style.opacity = go.toFixed(3); glow.style.visibility = go > 0 ? 'visible' : 'hidden'; }
-    const hero = document.getElementById('hs-hero');
-    if (hero) { const o = Math.max(0, Math.min(1, (this._u + 0.18) / -0.4)); hero.style.opacity = o.toFixed(3); hero.style.visibility = o < 0.02 ? 'hidden' : 'visible'; hero.style.display = o < 0.02 ? 'none' : ''; }
+    /* the hero greets the visitor outside, and gives way as they walk up to the door */
+    if (hero) { const o = this._fb ? 1 : Math.max(0, Math.min(1, 1 - px / 520)); hero.style.opacity = o.toFixed(3); hero.style.visibility = o < 0.02 ? 'hidden' : 'visible'; hero.style.display = o < 0.02 ? 'none' : ''; }
+    if (wel) { const on = !this._fb && this.state.openK === null && !this.state.roomVis && Math.abs(px - this._hearth) < 150; if (on !== this._welOn) { this._welOn = on; wel.classList.toggle('on', on); wel.querySelectorAll('button').forEach((b) => { b.tabIndex = on ? 0 : -1; }); } }
   }
 
-  scrollTarget(U) {
-    const sc = document.getElementById('hs-scroller');
-    return (U + 0.625) * 1120;
-  }
-
-  /* ---------- culling: only the flights and wall strips near the camera are drawn ---------- */
-  cull() {
-    const near = Math.max(0, Math.min(6, Math.round(this._u)));
-    if (this._cullKey === near || !this._cullEl) return;
-    this._cullKey = near;
-    const hc = 440 * near + 300, off = [];
-    for (let k = 0; k < 7; k++) if (k < near - (window.__cb || 2) || k > near + (window.__cf || 1)) off.push('#hs-rig .g' + k);
-    for (let i = 0; i < 3; i++) if (1080 * (i + 1) < hc - 1300 || 1080 * i > hc + 1700) off.push('#hs-rig .g' + (100 + i));
-    this._cullEl.textContent = off.length ? off.join(',') + '{display:none}' : '';
-    if (this._gl) this._gl.setHidden(off.map((o) => o.replace('#hs-rig .', '')));
-  }
+  scrollTarget(U) { return this._d0 + U * 1120; }
 
   /* ---------- lifecycle ---------- */
   componentDidMount() {
     document.addEventListener('keydown', this.onKey);
     this._alive = true;
-    this._cullEl = document.createElement('style'); document.head.appendChild(this._cullEl);
     try {
       const gc = document.createElement('canvas'); gc.width = gc.height = 160;
       const gx = gc.getContext('2d'), gd = gx.createImageData(160, 160);
@@ -764,110 +299,58 @@ class Component extends DCLogic {
     let last = performance.now();
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this._reduce = reduce;
-    this.mountProps();
-    /* WebGL scene by default; ?gl=0 forces the older CSS 3D scene, which is also the fallback */
-    if (/[?&]gl=0/.test(location.search)) this.later(() => this.bakePaint(0), 250); else if (/^#quick/.test(location.hash)) this._glDeferred = true; /* a visitor on the quick view is reading: boot the 3D house only when they go back to it */ else this.later(() => this.initGL(), 400);
+    this._d0 = 3400; this._hearth = 2400; this._total = 10120; /* the rail's own numbers replace these once the house is up */
+    /* the house loads straight away, except for a visitor on the quick view, who is reading: it boots when they go back */
+    if (/[?&]gl=0/.test(location.search)) this.later(() => this.fallbackPoster(), 60); else if (/^#quick/.test(location.hash)) this._glDeferred = true; else this.later(() => this.initGL(), 60);
     this.hashOpen();
     const tick = (now) => {
       if (!this._alive) return;
       const dt = Math.min(0.1, (now - last) / 1000); last = now;
       const sc = document.getElementById('hs-scroller');
-      if (sc && this.state.openK === null) {
-        const tU = Math.max(-0.625, Math.min(6, sc.scrollTop / 1120 - 0.625));
-        this._tU = tU;
-      }
-      if (this._tU === undefined) this._tU = this._u;
-      const k = reduce ? 1 : 1 - Math.exp(-dt * 6.5);
-      this._u += (this._tU - this._u) * k;
-      if (Math.abs(this._tU - this._u) < 0.0004) this._u = this._tU;
+      if (sc && this.state.openK === null && !this._fb) this._tPx = Math.max(0, Math.min(this._total, sc.scrollTop));
+      if (this._tPx === undefined) this._tPx = this._px;
+      this._px += (this._tPx - this._px) * (reduce ? 1 : 1 - Math.exp(-dt * 6.5));
+      if (Math.abs(this._tPx - this._px) < 0.3) this._px = this._tPx;
+      this._u = this.px2u(this._px);
       if (this._anim) {
-        const a = this._anim, t = Math.min(1, (now - a.t0) / a.dur);
+        const a = this._anim, t = Math.min(1, (now - a.t0) / (reduce ? 1 : a.dur));
         const e = t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
         this._dolly = a.from + (a.to - a.from) * e;
         if (t >= 1) { const cb = a.done; this._anim = null; if (cb) cb(); }
       }
-      const moving = !!this._anim || this._u !== this._tU;
-      if (moving !== this._moving && this._host) { this._moving = moving; this._host.classList.toggle('hs-moving', moving); }
-      if (this._gl && this._gl.step(now)) this._camKey = null;
-      const ck = this._u + '|' + this._dolly + '|' + window.innerWidth + 'x' + window.innerHeight;
+      const ck = this._px + '|' + this._dolly + '|' + this.state.openK + '|' + this.state.roomVis + '|' + window.innerWidth + 'x' + window.innerHeight + '|' + !!this._gl;
       if (ck !== this._camKey) { this._camKey = ck; this.applyCamera(); }
-      this.cull();
       const near = Math.max(0, Math.min(6, Math.round(this._u)));
-      const at = Math.abs(this._u - near) < 0.11 && this._u > -0.2 ? near : -1;
+      const at = !this._fb && Math.abs(this._u - near) < 0.11 && this._u > -0.2 ? near : -1;
       if (at !== this.state.at || near !== this.state.near) this.setState({ at, near });
       this._raf = requestAnimationFrame(tick);
     };
+    this._px = 0; this._u = this.px2u(0);
     this._raf = requestAnimationFrame(tick);
     this.applyCamera();
   }
-  /* WebGL scene: rebuild the CSS rig in Three.js (see vendor/hs-gl.js). The DOM rig stays as invisible hit targets for the door buttons. */
-  fallbackCSS() { this._gl = null; this._glOn = false; const gs = document.getElementById('hs-glcss'); if (gs) gs.remove(); const rig = document.getElementById('hs-rig'); if (rig) rig.style.visibility = ''; this._camKey = null; this.setState({ glReady: false }); this.later(() => this.bakePaint(0), 300); }
 
-  initGL(tries) {
-    const rig = document.getElementById('hs-rig'), st = document.getElementById('hs-stage');
-    if (!rig || !st) return;
-    const papers = Array.prototype.slice.call(rig.querySelectorAll(':scope > .hs-paint'));
-    if (!papers.length && (tries || 0) < 10) { this.later(() => this.initGL((tries || 0) + 1), 250); return; }
-    const ser = new XMLSerializer(), paints = new Map();
-    const draw = (el) => new Promise((ok) => {
-      const w = parseFloat(el.style.width), h = parseFloat(el.style.height);
-      const box = document.createElement('div'); box.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
-      box.style.cssText = 'position:relative;width:' + w + 'px;height:' + h + 'px;overflow:hidden';
-      box.innerHTML = el.innerHTML;
-      const img = new Image();
-      img.onload = () => { paints.set(el, img); ok(); }; img.onerror = () => ok();
-      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="' + w * 2 + '" height="' + h * 2 + '" viewBox="0 0 ' + w + ' ' + h + '"><foreignObject x="0" y="0" width="' + w + '" height="' + h + '">' + ser.serializeToString(box) + '</foreignObject></svg>');
-    });
-    const fonts = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
-    const propsEl = document.getElementById('hs-props');
-    const propMod = import('./vendor/hs-gl-props.js');
-    Promise.all([import('./vendor/hs-gl.js'), fonts, Promise.all(papers.map(draw)), propMod.then((m) => m.bakeProps(propsEl))]).then((r) => {
+  initGL() {
+    const st = document.getElementById('hs-stage');
+    if (!st) return;
+    import('./house/mount.js').then((m) => {
       if (!this._alive) return;
-      const tb = performance.now();
-      const gl = r[0].createGL(st, rig, { props: { el: propsEl, baked: r[3] }, paints, onLost: () => this.fallbackCSS() });
-      if (!gl) { this.fallbackCSS(); return; }
-      gl.warm(st.clientWidth || 1440, st.clientHeight || 800).then(() => {
-        if (!this._alive) return;
-        this._gl = gl; window.__hsgl = gl;
-        this._glOn = true; this.setState({ glReady: true }); /* the CSS copy of the walls is no longer rendered */
-        this._cullKey = null; this._camKey = null;
-        this.later(() => { gl.canvas.style.opacity = 1; }, 60);
-      });
-    }).catch((e) => { try { console.warn('WebGL scene unavailable, keeping CSS scene', e); } catch (_) {} this.fallbackCSS(); });
+      const ctl = m.mountHouse(st, { reduce: this._reduce, resumeHref: './assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf', onQuick: () => this.openQuick(), onDoor: (k) => this.activate(k), onLost: () => this.fallbackPoster() });
+      if (!ctl) { this.fallbackPoster(); return; }
+      this._gl = ctl; this._d0 = ctl.doorPx(0); this._hearth = ctl.hearthPx(); this._total = ctl.total;
+      const tr = document.querySelector('.hs-track'); if (tr) tr.style.height = 'calc(100dvh + ' + ctl.total + 'px)';
+      this._camKey = null;
+      const sc = document.getElementById('hs-scroller'); if (sc && this._wantPx !== undefined) { sc.scrollTop = this._wantPx; this._px = this._tPx = this._wantPx; }
+    }).catch((e) => { try { console.warn('The 3D house is unavailable, showing the poster', e); } catch (_) {} this.fallbackPoster(); });
   }
 
-  /* the painted city behind each window is hundreds of masked divs; draw each once into an image so the climb only moves flat bitmaps */
-  bakePaint(tries) {
-    const els = Array.prototype.slice.call(document.querySelectorAll('#hs-rig > .hs-paint'));
-    if (!els.length) { if (tries < 10) this.later(() => this.bakePaint(tries + 1), 250); return; }
-    const S = 1.25, ser = new XMLSerializer();
-    const bake = (el) => new Promise((ok, fail) => {
-      const w = parseFloat(el.style.width), h = parseFloat(el.style.height);
-      if (!w || !h || el.dataset.baked) return ok();
-      const box = document.createElement('div');
-      box.setAttribute('xmlns', 'http://www.w3.org/1999/xhtml');
-      box.style.cssText = 'position:relative;width:' + w + 'px;height:' + h + 'px;overflow:hidden';
-      box.innerHTML = el.innerHTML;
-      const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '"><foreignObject x="0" y="0" width="' + w + '" height="' + h + '">' + ser.serializeToString(box) + '</foreignObject></svg>';
-      const img = new Image();
-      img.onerror = fail;
-      img.onload = () => {
-        try {
-          const cv = document.createElement('canvas'); cv.width = Math.ceil(w * S); cv.height = Math.ceil(h * S);
-          cv.getContext('2d').drawImage(img, 0, 0, cv.width, cv.height);
-          cv.toBlob((b) => {
-            if (!b || !this._alive) return ok();
-            const url = URL.createObjectURL(b);
-            (this._blobs = this._blobs || []).push(url);
-            el.innerHTML = '<div style="position:absolute;left:0;top:0;width:100%;height:100%;background:url(' + url + ') 0 0/100% 100% no-repeat"></div>';
-            el.dataset.baked = '1';
-            ok();
-          });
-        } catch (e) { fail(e); }
-      };
-      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
-    });
-    els.reduce((p, el) => p.then(() => bake(el)).catch(() => {}), Promise.resolve());
+  /* no WebGL, or the context was lost: a still poster, with every control still working (they open the rooms directly) */
+  fallbackPoster() {
+    if (this._gl) { try { this._gl.dispose(); } catch (e) {} this._gl = null; }
+    this._fb = true; this._px = this._tPx = 0; this._u = this.px2u(0); this._camKey = null;
+    const tr = document.querySelector('.hs-track'); if (tr) tr.style.height = '100%';
+    const sc = document.getElementById('hs-scroller'); if (sc) sc.scrollTop = 0;
+    this.setState({ fb: true, at: -1 });
   }
   onKey = (e) => { if (e.key === 'Escape' && this.state.roomVis) this.closeRoom(); };
   componentWillUnmount() { (this._blobs || []).forEach((u) => URL.revokeObjectURL(u)); document.removeEventListener('keydown', this.onKey); this._alive = false; cancelAnimationFrame(this._raf); if (this._cullEl && this._cullEl.parentNode) this._cullEl.parentNode.removeChild(this._cullEl); this._timers.forEach(clearTimeout); }
@@ -881,23 +364,25 @@ class Component extends DCLogic {
     try { h = (location.hash || '').replace('#', ''); k = this.slugs().indexOf(h); } catch (e) {}
     if (h === 'quick') { this.later(() => this.openQuick(), 400); return; }
     if (k < 0) return;
-    this.later(() => { const sc = document.getElementById('hs-scroller'); if (sc) sc.scrollTop = this.scrollTarget(k); this._u = k; this.later(() => this.openDoor(k), 700); }, 400);
+    this.later(() => { const sc = document.getElementById('hs-scroller'), px = this.scrollTarget(k); this._wantPx = px; if (sc && !this._fb) sc.scrollTop = px; this._px = this._tPx = this._fb ? 0 : px; this._u = this.px2u(this._px); this.later(() => this.openDoor(k), 700); }, 400);
   }
 
   /* ---------- interactions ---------- */
   goTo(k, then) {
     const sc = document.getElementById('hs-scroller');
     if (!sc) return;
-    sc.scrollTo({ top: this.scrollTarget(k), behavior: 'smooth' });
+    if (this._fb) { if (then) then(); else this.openDoor(k); return; }
+    sc.scrollTo({ top: this.scrollTarget(k), behavior: this._reduce ? 'auto' : 'smooth' });
     if (then) this.later(then, 1300);
   }
   openDoor(k) {
     if (this.state.openK !== null) return;
     this.setHash(k);
     this.setState({ openK: k, dirOpen: false });
-    this.later(() => { this._anim = { from: 0, to: 1, t0: performance.now(), dur: 1500, done: () => { this.setState({ room: k, roomVis: true }); this.setBgInert(true); this.later(() => { const b = document.getElementById('hs-back'); if (b) b.focus({ preventScroll: true }); }, 60); } }; }, 800);
+    const go = () => { this._anim = { from: 0, to: 1, t0: performance.now(), dur: 1500, done: () => { this.setState({ room: k, roomVis: true }); this.setBgInert(true); this.later(() => { const b = document.getElementById('hs-back'); if (b) b.focus({ preventScroll: true }); }, 60); } }; };
+    if (this._fb) { this.setState({ room: k, roomVis: true }); this.setBgInert(true); this.later(() => { const b = document.getElementById('hs-back'); if (b) b.focus({ preventScroll: true }); }, 60); } else this.later(go, 250);
   }
-  setBgInert(on) { ['hs-hero', 'hs-logo', 'hs-dir', 'hs-cap'].forEach(c => document.querySelectorAll('#' + c + ',.' + c).forEach(el => { if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert'); })); document.querySelectorAll('.hs-rail,.hs-bar').forEach(el => { if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert'); }); }
+  setBgInert(on) { if (this._gl) this._gl.setSignEnabled(!on);  ['hs-hero', 'hs-logo', 'hs-dir', 'hs-cap', 'hs-welcome'].forEach(c => document.querySelectorAll('#' + c + ',.' + c).forEach(el => { if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert'); })); document.querySelectorAll('.hs-rail,.hs-bar').forEach(el => { if (on) el.setAttribute('inert', ''); else el.removeAttribute('inert'); }); }
   /* the quick view is a plain overlay: no climb, no door swing */
   openQuick() {
     if (this.state.openK !== null || this.state.room !== null) return;
@@ -924,10 +409,11 @@ class Component extends DCLogic {
       this._anim = { from: this._dolly, to: 0, t0: performance.now(), dur: 1100, done: () => this.setState({ openK: null }) };
     }, 520);
   }
+  /* the floor rail and the Directory walk you there; without the 3D house they open the room straight away */
+  activateFloor(k) { if (this._fb) this.openDoor(k); else this.goTo(k); }
   activate(k) {
     if (this.state.openK !== null) return;
-    const near = Math.round(this._u);
-    if (Math.abs(this._u - k) < 0.12) this.openDoor(k);
+    if (this._fb || Math.abs(this._u - k) < 0.12) this.openDoor(k);
     else this.goTo(k, () => this.openDoor(k));
   }
 
@@ -935,26 +421,6 @@ class Component extends DCLogic {
   renderVals() {
     const s = this.state, FH = 440;
     const floors = this.floorsData();
-    const geo = this.build();
-    const doors = floors.map((fl, k) => {
-      const az = k % 2 ? 180 : 0, H = FH * k;
-      const open = s.openK === k, hov = s.hoverK === k && s.openK === null;
-      const ang = open ? -72 : hov ? -5 : 0;
-      const ease = this._reduce ? 'transition:none;' : 'transition:transform 1.15s cubic-bezier(.55,0,.2,1);';
-      return {
-        group: (Math.abs(k - s.near) > 2 ? 'display:none;' : '') + 'position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d;transform:rotateY(' + az + 'deg) translate3d(0,' + (-H) + 'px,655px) rotateY(180deg)',
-        leaf: 'position:absolute;left:-75px;top:-300px;width:150px;height:300px;transform-style:preserve-3d;transform-origin:0 50%;transform:translateZ(-3px) rotateY(' + ang + 'deg);' + ease,
-        front: 'position:absolute;left:0;top:0;width:150px;height:300px;transform:translateZ(4px);backface-visibility:hidden;pointer-events:' + (open ? 'none' : 'auto') + ';background:linear-gradient(90deg,' + (hov ? '#E2D0AE' : '#D3BE98') + ',' + (hov ? '#EBDBBC' : '#DCC9A4') + ' 45%,' + (hov ? '#D8C39B' : '#C9B085') + ');box-shadow:' + (hov ? '0 0 0 2px rgba(178,143,78,.8)' : 'none') + ';',
-        back: 'position:absolute;left:0;top:0;width:150px;height:300px;transform:translateZ(-4px) rotateY(180deg);backface-visibility:hidden;background:linear-gradient(90deg,#BFA47C,#CDB48C);',
-        edge: 'position:absolute;left:146px;top:0;width:8px;height:300px;transform:translateX(-4px) rotateY(90deg);background:#A98B62;',
-        spill: 'position:absolute;left:-95px;top:-130px;width:190px;height:260px;transform:translate3d(0,-1px,125px) rotateX(90deg);opacity:' + (open ? 1 : (hov ? .35 : 0)) + ';transition:opacity 1s ease;background:radial-gradient(ellipse at 50% 0%,rgba(255,226,168,.95),rgba(255,226,168,.0) 72%)',
-        num: fl.num, title: fl.title,
-        aria: (open ? 'Door open: ' : 'Open the door to ') + fl.title,
-        click: () => this.activate(k),
-        enter: () => this.setState({ hoverK: k }),
-        leave: () => this.setState({ hoverK: null })
-      };
-    });
     const at = s.at, shown = at >= 0 ? at : (this._last.at === undefined ? 0 : this._last.at);
     if (at >= 0) this._last.at = at;
     const cap = floors[shown];
@@ -962,18 +428,19 @@ class Component extends DCLogic {
       num: f.num, title: f.num + ' · ' + f.title,
       cls: 'hs-floor' + (s.near === k && s.at >= 0 ? ' on' : ''),
       aria: 'Go to ' + f.num + ', ' + f.title,
-      go: () => this.goTo(k),
-      goDir: () => { this.setState({ dirOpen: false }); this.goTo(k); },
+      go: () => this.activateFloor(k),
+      goDir: () => { this.setState({ dirOpen: false }); this.activateFloor(k); },
       barStyle: 'min-width:44px;min-height:44px;border:0;background:none;cursor:pointer;font:' + (s.near === k ? '600' : '500') + ' 19px/1 \'Cormorant Garamond\',Georgia,serif;color:' + (s.near === k ? '#292925' : 'rgba(41,41,37,.74)') + ';border-bottom:2px solid ' + (s.near === k ? '#B28F4E' : 'transparent')
     }));
     const roomOn = s.roomVis;
     return {
-      world: this._glOn ? [] : geo.world, paint: this._glOn ? [] : geo.paint, doors, floors: fl, cap,
+      floors: fl, cap,
       capStyle: 'opacity:' + (at >= 0 && s.openK === null ? 1 : 0) + ';transform:translateY(' + (at >= 0 && s.openK === null ? 0 : 14) + 'px);transition:opacity .45s ease,transform .45s ease;pointer-events:' + (at >= 0 && s.openK === null ? 'auto' : 'none') + ';visibility:' + (at >= 0 && s.openK === null ? 'visible' : 'hidden'),
       capTab: at >= 0 ? 0 : -1,
       capOpen: () => this.activate(shown),
-      scrollMode: s.openK === null ? 'auto' : 'hidden',
-      begin: () => this.goTo(0),
+      scrollMode: s.openK === null && !s.fb ? 'auto' : 'hidden',
+      begin: () => (this._fb ? this.openDoor(0) : this.goTo(0)),
+      toFirst: () => this.goTo(0),
       toggleDir: () => this.setState({ dirOpen: !s.dirOpen }),
       dirOpen: s.dirOpen,
       leave: () => this.closeRoom(),

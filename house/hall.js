@@ -190,6 +190,7 @@ export function buildHall(scene, B, H, kernel) {
     people, fire, sparks, frame,
     /* the fire only animates while the hall is around the camera */
     tick(now, dt) {
+      if (kernel.reduce) return false; /* reduced motion: the fire stays as the first frame */
       const cam = kernel.camera.position;
       if (cam.y > 650 || cam.distanceTo(hp) > 1300) return false;
       kernel.camera.getWorldDirection(fwd); to.copy(hp).sub(cam).normalize();

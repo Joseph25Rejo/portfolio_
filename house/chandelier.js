@@ -69,6 +69,7 @@ export function buildChandelier(scene, kernel) {
     body, points, y: Y,
     /* the flames only shimmer while the chandelier is near the camera and in front of it */
     tick(now) {
+      if (kernel.reduce) return false;
       const cam = kernel.camera.position;
       if (Math.abs(cam.y - c0.y) > 900) return false;
       const dx = c0.x - cam.x, dy = c0.y - cam.y, dz = c0.z - cam.z, l = Math.hypot(dx, dy, dz) || 1, f = kernel.camera.getWorldDirection(fwd);
