@@ -2,7 +2,7 @@
   "name": "Joseph Rejo Mathew",
   "short": "Joseph R.M.",
   "tagline": "Developer · Builder",
-  "concept": "JRM set in Cormorant Garamond, the site's own display face, with a gold staircase stroke rising beneath it: the house you climb, one step per room.",
+  "concept": "The JRM monogram: interlocking J, R and M letterforms with a sweeping flourish. Source artwork is assets/logo.png; the SVGs in brand/ are traced from it.",
   "colors": {
     "ink": "#292925",
     "paper": "#F4F0E8",
@@ -28,7 +28,7 @@
     { "file": "apple-touch-icon.png", "size": 180, "from": "favicon.svg" },
     { "file": "icon-192.png", "size": 192, "from": "favicon.svg" },
     { "file": "icon-512.png", "size": 512, "from": "favicon.svg" },
-    { "file": "og-image.png", "size": [1200, 630], "from": "logo-mark.svg centred on a paper background", "use": "link previews (LinkedIn, X, WhatsApp)" },
+    { "file": "og-image.png", "size": [1200, 630], "from": "logo-mark.svg centred on a paper background; the live copy is assets/og-image.jpg", "use": "link previews (LinkedIn, X, WhatsApp)" },
     { "file": "github-avatar.png", "size": 500, "from": "favicon.svg" },
     { "file": "linkedin-banner.png", "size": [1584, 396], "from": "logo-mark-dark.svg" }
   ],
@@ -49,6 +49,6 @@
   "siteNeeds": {
     "rooms": ["Entrance (About)", "Workshop (Projects)", "Experience", "Study (Skills)", "Library (Writing + GitHub)", "Gallery (Achievements)", "Final Landing (Contact)"],
     "hosting": "static HTTP server; fetch() of Room*.dc.html fails on file://",
-    "todo": ["Replace header monogram in Main.dc.html with logo-mark + name", "Add favicon + OG tags", "Export PNGs listed above"]
+    "todo": []
   }
 }
