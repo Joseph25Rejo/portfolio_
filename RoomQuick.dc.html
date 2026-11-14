@@ -50,7 +50,16 @@ body{margin:0}
       <p style="margin:20px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,2.2vw,28px);line-height:1.25;font-weight:500;color:#6A4E1B">Full-stack developer. Founding Engineer Intern at Lume.</p>
       <p style="margin:10px 0 0;font-size:16px;line-height:1.5;font-weight:600;color:#292925">Open to internships and full-time roles.</p>
       <p style="margin:18px 0 0;font-size:16.5px;line-height:1.6;color:#3A372F;max-width:440px">I build products end to end and ship them: a hackathon-winning platform, and guest apps running at three resorts.</p>
-      <p style="margin:16px 0 0;font-size:15.5px;line-height:1.55;color:#2F2D28"><strong style="font-weight:600">Stack:</strong> Next.js, React, Node.js, Flask, FastAPI, MongoDB</p>
+      <p style="margin:16px 0 0;font-size:15.5px;line-height:1.55;color:#2F2D28"><strong style="font-weight:600">Strongest in:</strong> React, Next.js and Node.js.</p>
+      <p style="margin:10px 0 0;font-size:15.5px;line-height:1.55;color:#2F2D28"><strong style="font-weight:600">Also:</strong> Flask, FastAPI, MongoDB</p>
+      <div style="margin:22px 0 0;padding:14px 0 0;border-top:1px solid rgba(41,41,37,.25)">
+        <p style="margin:0 0 8px;font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;line-height:1.2;font-weight:500">Start with these three</p>
+        <ul style="margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:15.5px;line-height:1.5;color:#3A372F">
+          <li><a href="https://www.lume-cxm.com/" target="_blank" rel="noopener">Lume CXM ↗</a>, live at three resorts</li>
+          <li><a href="https://hatch-iota.vercel.app/" target="_blank" rel="noopener">Hatch ↗</a>, won WhiteHack 1.0</li>
+          <li><a href="https://quarks-nu.vercel.app" target="_blank" rel="noopener">QuarksFinance ↗</a>, stock strategy platform</li>
+        </ul>
+      </div>
       <p style="margin:10px 0 0;font-size:15px;line-height:1.55;color:#4A463E">Bengaluru, India. B.E. in AI and ML, RV College of Engineering, CGPA 9.16.</p>
 
       <div style="margin-top:30px;display:flex;flex-wrap:wrap;gap:12px">
@@ -86,6 +95,7 @@ body{margin:0}
                   <sc-if value="{{ p.hasLive }}" hint-placeholder-val="{{ true }}"><a href="{{ p.live }}" target="_blank" rel="noopener">Live demo ↗</a></sc-if>
                   <sc-if value="{{ p.both }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="margin:0 10px;color:#4A463E">·</span></sc-if>
                   <sc-if value="{{ p.hasRepo }}" hint-placeholder-val="{{ true }}"><a href="{{ p.repo }}" target="_blank" rel="noopener">GitHub ↗</a></sc-if>
+                  <sc-if value="{{ p.hasDoc }}" hint-placeholder-val="{{ false }}"><a href="{{ p.doc }}" target="_blank" rel="noopener">Patent ↗</a></sc-if>
                   <sc-if value="{{ p.anyLink }}" hint-placeholder-val="{{ true }}"><span aria-hidden="true" style="margin:0 10px;color:#4A463E">·</span></sc-if><a href="{{ p.arch }}" target="_blank" rel="noopener">Architecture ↗</a>
                   
                 </p>
@@ -149,12 +159,12 @@ body{margin:0}
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1500}}'>
 class Component extends DCLogic {
   renderVals() {
-    const mk = (name, kind, cover, arch, line, part, stack, live, repo) => ({ name, kind, cover, arch, line, part, stack: stack.join(', '), live, repo, hasLive: !!live, hasRepo: !!repo, both: !!live && !!repo, anyLink: !!live || !!repo });
+    const mk = (name, kind, cover, arch, line, part, stack, live, repo, doc) => ({ name, kind, cover, arch, line, part, stack: stack.join(', '), live, repo, doc: doc || '', hasDoc: !!doc, hasLive: !!live, hasRepo: !!repo, both: !!live && !!repo, anyLink: !!live || !!repo || !!doc });
     const projects = [
       mk('QuarksFinance', 'Stock analysis and strategy platform', './assets/projects/Quarks/quarks-finance-cover.webp', './assets/projects/Quarks/quarksfinance-arch.png', 'Backtesting, live signals and sentiment in one place, on real market data through the yFinance API.', 'Integrated the yFinance API with a Flask and SQLite backend and a React and Next.js frontend on Vercel. Designed modular strategy pipelines for comparative backtesting.', ['Python', 'Flask', 'SQLite', 'React', 'Next.js', 'Vercel'], 'https://quarks-nu.vercel.app', 'https://github.com/Joseph25Rejo/QuarksFinance'),
       mk('Hatch', 'Hackathon management platform', './assets/projects/hatch/hatch-cover.webp', './assets/projects/hatch/hatch-arch.png', 'Runs a hackathon from registration to judging. It won WhiteHack 1.0.', 'Delivered the full-stack platform with Flask and MongoDB across 5 workflows. The Flask APIs and admin panels cut manual coordination effort by 40%.', ['Next.js', 'TypeScript', 'Flask', 'MongoDB', 'Firebase'], 'https://hatch-iota.vercel.app/', 'https://github.com/AdityaKaushik295/Hatch'),
       mk('ParkNGo', 'Smart parking with dynamic pricing', './assets/projects/Parkngo/parkngo-cover.jpg', './assets/projects/Parkngo/parkngo-arch.png', 'Booking, QR entry and exit, and billing, with prices that respond to ML-predicted demand.', 'Engineered the platform across React Native, Express.js, FastAPI and MongoDB with Cloudinary. Implemented JWT authentication and role-based access across 3 roles.', ['React Native', 'Node.js', 'Express.js', 'FastAPI', 'MongoDB Atlas', 'RazorPay'], '', 'https://github.com/Joseph25Rejo/ParknGo-appln'),
-      mk('ORION', 'Retail inventory and demand intelligence', './assets/projects/ORION/orion-cover.png', './assets/projects/ORION/orion-arch.png', 'Links what people consume with live inventory through demand forecasting and anomaly detection.', 'Co-inventor on the patent application, filed in India in March 2026.', ['FastAPI', 'Kubernetes', 'Scikit-learn', 'Pandas', 'MongoDB'], '', '')
+      mk('ORION', 'Retail inventory and demand intelligence', './assets/projects/ORION/orion-cover.png', './assets/projects/ORION/orion-arch.png', 'Links what people consume with live inventory through demand forecasting and anomaly detection.', 'Co-inventor on the patent application (India No. 202641030238), filed in March 2026.', ['FastAPI', 'Kubernetes', 'Scikit-learn', 'Pandas', 'MongoDB'], '', '', './assets/CERTIFICATES/Patent_ORION.pdf#page=3')
     ];
     const proof = [
       { title: 'Winner, WhiteHack 1.0', when: 'Jul 2025', body: 'First prize, won with Hatch. Organized by White Devils Tech Community.', href: './assets/awards/whitehack.webp', label: 'Certificate' },

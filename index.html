@@ -545,18 +545,20 @@ class Component extends DCLogic {
 }
 </script>
 <script>
-/* Résumé preview: every résumé link opens the PDF in a viewer first; Download lives inside it. */
+/* Previews: résumé, patent PDF and architecture diagrams open in a viewer on the page instead of a new tab. */
 (function () {
-  var PDF = './assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf', NAME = 'Joseph_Rejo_Mathew_Resume.pdf', box = null, prev = null;
+  var RES = 'e347ca2a9ec4bb8d9925776a0b9444c4.pdf', NAME = 'Joseph_Rejo_Mathew_Resume.pdf', box = null, prev = null;
   var css = document.createElement('style');
   css.textContent = '#rv{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;background:rgba(30,26,20,.72);padding:3vh 3vw;font-family:"Instrument Sans","Helvetica Neue",Arial,sans-serif}'
     + '#rv .rv-p{display:flex;flex-direction:column;width:min(920px,100%);height:100%;background:#F4F0E8;box-shadow:0 20px 60px rgba(0,0,0,.45)}'
-    + '#rv .rv-h{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid rgba(41,41,37,.2);color:#292925}'
-    + '#rv .rv-t{flex:1;font:600 15px/1.3 inherit;font-family:inherit}'
+    + '#rv.rv-img .rv-p{width:min(1200px,100%)}'
+    + '#rv .rv-h{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid rgba(41,41,37,.2);color:#292925;flex-wrap:wrap}'
+    + '#rv .rv-t{flex:1;font:600 15px/1.3 inherit;font-family:inherit;min-width:160px}'
     + '#rv .rv-b{min-height:40px;padding:0 16px;display:inline-flex;align-items:center;gap:8px;font:600 14px/1 inherit;font-family:inherit;text-decoration:none;color:#F4F0E8;background:#292925;border:1px solid #292925;cursor:pointer}'
     + '#rv .rv-b.rv-x{background:transparent;color:#292925}'
     + '#rv .rv-b:focus-visible{outline:3px solid #B28F4E;outline-offset:2px}'
     + '#rv iframe{flex:1;width:100%;border:0;background:#fff}'
+    + '#rv .rv-i{flex:1;overflow:auto;background:#fff;display:flex;align-items:flex-start;justify-content:center;padding:12px}#rv .rv-i img{max-width:100%;height:auto;display:block}'
     + '#rv .rv-f{padding:10px 14px;font-size:13px;color:#4A463E}#rv .rv-f a{color:#292925}';
   document.head.appendChild(css);
   function close() { if (!box) return; box.remove(); box = null; document.removeEventListener('keydown', key, true); if (prev && prev.focus) prev.focus(); }
@@ -565,13 +567,13 @@ class Component extends DCLogic {
     if (e.key === 'Tab' && box) { var f = box.querySelectorAll('a,button'); if (!f.length) return; var a = f[0], z = f[f.length - 1];
       if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); } else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); } }
   }
-  function open() {
+  function open(kind, url, title) {
     if (box) return; prev = document.activeElement;
-    box = document.createElement('div'); box.id = 'rv'; box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', 'Résumé preview');
-    box.innerHTML = '<div class="rv-p"><div class="rv-h"><span class="rv-t">Résumé · Joseph Rejo Mathew</span>'
-      + '<a class="rv-b" href="' + PDF + '" download="' + NAME + '">Download PDF ↓</a><button type="button" class="rv-b rv-x">Close</button></div>'
-      + '<iframe src="' + PDF + '#view=FitH" title="Résumé preview"></iframe>'
-      + '<div class="rv-f">Preview not showing? <a href="' + PDF + '" target="_blank" rel="noopener">Open it in a new tab</a>.</div></div>';
+    var clean = url.split('#')[0], isRes = clean.indexOf(RES) > -1, esc = function (t) { return String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); };
+    box = document.createElement('div'); box.id = 'rv'; box.className = kind === 'img' ? 'rv-img' : ''; box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', title);
+    var act = isRes ? '<a class="rv-b" href="' + esc(clean) + '" download="' + NAME + '">Download PDF ↓</a>' : '<a class="rv-b" href="' + esc(url) + '" target="_blank" rel="noopener">Open in new tab ↗</a>';
+    var body = kind === 'img' ? '<div class="rv-i"><img src="' + esc(url) + '" alt="' + esc(title) + '"></div>' : '<iframe src="' + esc(url) + (url.indexOf('#') > -1 ? '' : '#view=FitH') + '" title="' + esc(title) + '"></iframe><div class="rv-f">Preview not showing? <a href="' + esc(url) + '" target="_blank" rel="noopener">Open it in a new tab</a>.</div>';
+    box.innerHTML = '<div class="rv-p"><div class="rv-h"><span class="rv-t">' + esc(title) + '</span>' + act + '<button type="button" class="rv-b rv-x">Close</button></div>' + body + '</div>';
     box.addEventListener('click', function (e) { if (e.target === box || e.target.classList.contains('rv-x')) close(); });
     document.body.appendChild(box); document.addEventListener('keydown', key, true);
     box.querySelector('.rv-b').focus();
@@ -587,9 +589,14 @@ class Component extends DCLogic {
     window.open('https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(to) + '&su=' + encodeURIComponent(su), '_blank', 'noopener');
   }, true);
   document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('a[href*="e347ca2a9ec4bb8d9925776a0b9444c4.pdf"]');
+    var a = e.target.closest && e.target.closest('a[href]');
     if (!a || (box && box.contains(a)) || e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
-    e.preventDefault(); e.stopPropagation(); open();
+    var h = a.getAttribute('href') || '', kind = null, title = '';
+    if (h.indexOf(RES) > -1) { kind = 'pdf'; title = 'Résumé · Joseph Rejo Mathew'; }
+    else if (/Patent_ORION\.pdf/.test(h)) { kind = 'pdf'; title = 'ORION patent, India No. 202641030238'; }
+    else if (/-arch\.png$/.test(h)) { kind = 'img'; title = (/orion/i.test(h) ? 'ORION' : /parkngo/i.test(h) ? 'ParkNGo' : /hatch/i.test(h) ? 'Hatch' : 'QuarksFinance') + ' architecture'; }
+    if (!kind) return;
+    e.preventDefault(); e.stopPropagation(); open(kind, h, title);
   }, true);
 })();
 </script>
