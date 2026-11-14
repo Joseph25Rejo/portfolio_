@@ -574,6 +574,16 @@ class Component extends DCLogic {
     document.body.appendChild(box); document.addEventListener('keydown', key, true);
     box.querySelector('.rv-b').focus();
   }
+  /* mailto: does nothing on a desktop with no mail app set up, so on desktop open Gmail's composer instead (phones keep mailto) */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href^="mailto:"]');
+    if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.button || (window.matchMedia && matchMedia('(pointer:coarse)').matches)) return;
+    var u; try { u = new URL(a.getAttribute('href')); } catch (_) { return; }
+    var to = decodeURIComponent(u.pathname), su = u.searchParams.get('subject') || '';
+    e.preventDefault(); e.stopPropagation();
+    try { if (navigator.clipboard) navigator.clipboard.writeText(to); } catch (_) {}
+    window.open('https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(to) + '&su=' + encodeURIComponent(su), '_blank', 'noopener');
+  }, true);
   document.addEventListener('click', function (e) {
     var a = e.target.closest && e.target.closest('a[href*="e347ca2a9ec4bb8d9925776a0b9444c4.pdf"]');
     if (!a || (box && box.contains(a)) || e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
