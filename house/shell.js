@@ -159,12 +159,24 @@ export function buildShell(scene, kernel) {
   /* ---------- ceiling, ribs, skylight lantern and roof ---------- */
   { const P = (az, r) => [r * sinz(az), TOP, r * cosz(az)]; for (let i = 0; i < 40; i++) for (let j = 0; j < 3; j++) { const r0 = 400 + j * 88, r1 = r0 + 88; B.quad(P(i * 9, r0), P(i * 9 + 9, r0), P(i * 9 + 9, r1), P(i * 9, r1), lit(C('#CDBFA2')), 1, 1, DOWN); } }
   for (let i = 0; i < 6; i++) slab(i * 30, -6, 6, TOP - 14, TOP, 0, APO, lit(C('#7A6238')), 'bltr');
-  const roofC = ext(C('#5E5748'));
-  { const P = (az, r, y) => [r * sinz(az), y, r * cosz(az)]; for (let i = 0; i < 40; i++) {
-      B.quad(P(i * 9, 700, TOP), P(i * 9 + 9, 700, TOP), P(i * 9 + 9, 300, TOP + 420), P(i * 9, 300, TOP + 420), roofC, 1, 2, [sinz(i * 9 + 4.5), 0.5, cosz(i * 9 + 4.5)]);
-      B.quad(P(i * 9, 300, TOP + 420), P(i * 9 + 9, 300, TOP + 420), P(i * 9 + 9, 300, TOP + 470), P(i * 9, 300, TOP + 470), () => [210, 225, 255], 1, 1, [sinz(i * 9 + 4.5), 0, cosz(i * 9 + 4.5)]);
-      B.quad(P(i * 9, 0, TOP + 470), P(i * 9 + 9, 300, TOP + 470), P(i * 9 + 9, 300, TOP + 470), P(i * 9, 0, TOP + 470), () => [190, 210, 250], 1, 1, UP);
-    } }
+  /* a lighthouse roof: a steep conical cap with a small overhang, a lit lantern room, and a pointed finial */
+  const roofC = ext(C('#5A2F28')), roofIn = lit(C('#3A2A22')), glassC = () => [214, 186, 132], brassC = lit(C('#B8914A')), railC = () => [58, 46, 36];
+  { const P = (az, r, y) => [r * sinz(az), y, r * cosz(az)];
+    const ring = (r0, y0, r1, y1, col, colIn, up) => { for (let i = 0; i < 40; i++) {
+        const m = i * 9 + 4.5, h = [sinz(m) * up[0], up[1], cosz(m) * up[0]];
+        B.quad(P(i * 9, r0, y0), P(i * 9 + 9, r0, y0), P(i * 9 + 9, r1, y1), P(i * 9, r1, y1), col, 1, 2, h);
+        if (colIn) B.quad(P(i * 9, r0, y0), P(i * 9 + 9, r0, y0), P(i * 9 + 9, r1, y1), P(i * 9, r1, y1), colIn, 1, 2, h.map((v) => -v));
+      } };
+    ring(730, TOP - 8, 730, TOP + 8, roofC, null, [1, 0]);                    /* the eave's edge */
+    ring(730, TOP + 8, 250, TOP + 640, roofC, roofIn, [0.8, 0.6]);            /* the slanted roof, a broad low cone */
+    /* the gallery: a ring with a rail round the lantern room */
+    ring(250, TOP + 640, 250, TOP + 660, brassC, null, [1, 0]);
+    ring(250, TOP + 660, 250, TOP + 700, railC, null, [1, 0]);
+    ring(250, TOP + 700, 250, TOP + 712, brassC, null, [1, 0]);
+    ring(190, TOP + 660, 190, TOP + 800, glassC, null, [1, 0]);               /* the lantern room, wider and dimmer so it reads as glass, not a bulb */
+    ring(250, TOP + 800, 190, TOP + 812, roofC, roofIn, [0.8, 0.6]);          /* the lantern roof's eave */
+    ring(190, TOP + 812, 3, TOP + 1060, roofC, roofIn, [0.8, 0.6]);           /* a tall, sharp spire */
+  }
 
   const shellMesh = new THREE.Mesh(B.geometry(), new THREE.MeshBasicMaterial({ vertexColors: true }));
   scene.add(shellMesh);

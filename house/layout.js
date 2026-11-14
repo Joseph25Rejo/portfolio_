@@ -36,8 +36,9 @@ export function buildKeyframes() {
   const at = (id, label, stop, pos, look, px, extra) => kf.push(Object.assign({ id, label, stop, pos, look, px: px || 0 }, extra));
 
   const eye = (v, y) => [v[0], y, v[2]];
-  at('outside', 'Outside', true, eye(add(add(F.center, F.out, 1700), side, 240), 170), add(F.center, [0, 1, 0], 40), 0);
-  at('door', 'The front door', true, eye(add(F.center, F.out, 560), 185), add(F.center, [0, 1, 0], 55), 900);
+  /* the establishing shot: far enough back and low enough to see the whole tower, roof and all, with the lawn and the path in front */
+  at('outside', 'Outside', true, eye(add(add(F.center, F.out, 4700), side, 560), 420), add(add([0, 0, 0], side, 340), [0, 1, 0], 1850), 0);
+  at('door', 'The front door', true, eye(add(F.center, F.out, 560), 185), add(F.center, [0, 1, 0], 55), 1300);
   at('threshold', 'Threshold', false, eye(add(F.center, F.out, -70), 210), add(F.center, F.out, -700), 0);
   at('hall', 'The hearth', true, wallPt(HEARTH_AZ, 0, 190, APO - 690), wallPt(HEARTH_AZ, 0, 165, APO - 60), 1500);
   at('turn', 'Turn', false, polar(200, 250, 215), polar(320, APO, 150), 0);
