@@ -189,6 +189,20 @@ export function buildShell(scene, kernel) {
       railPts.push([az, h]); ti++;
     }
   }
+  /* the top landing: the handrail carries on round its open inner edge and down the open side, so it reads as a floor, not a ledge */
+  const topY = FH * (NF - 1), landPts = [], landBal = [];
+  for (let a = 1068; a <= 1090; a += 2.75) landPts.push([RR * Math.sin(a * D), RR * Math.cos(a * D)]);
+  const sideA = 1090 * D; for (let r = RR + 40; r <= APO - 20; r += 30) landPts.push([r * Math.sin(sideA), r * Math.cos(sideA)]);
+  landPts.push([(APO + 6) * Math.sin(sideA), (APO + 6) * Math.cos(sideA)]); /* the rail runs into the wall, so it has no loose end */
+  landPts.forEach((pt, i) => { if (i % 2 === 0 && i < landPts.length - 1) landBal.push(pt); });
+  const lbm = new THREE.InstancedMesh(new THREE.BoxGeometry(4, 130, 4), new THREE.MeshBasicMaterial({ color: 0xffffff }), landBal.length);
+  landBal.forEach((pt, i) => { lbm.setMatrixAt(i, m4.compose(ps.set(pt[0], topY + 65, pt[1]), q.identity(), sc.set(1, 1, 1))); const Lb = shade([70, 68, 62], [pt[0], topY + 65, pt[1]], [0, 0, 1], INT); lbm.setColorAt(i, col.setRGB(Lb[0] / 255, Lb[1] / 255, Lb[2] / 255)); });
+  const lrail = new THREE.CatmullRomCurve3(landPts.map((pt) => new THREE.Vector3(pt[0], topY + 130, pt[1])), false, 'centripetal');
+  const ltube = new THREE.TubeGeometry(lrail, landPts.length * 2, 4, 6, false);
+  { const pos = ltube.attributes.position, nor = ltube.attributes.normal, cc = new Float32Array(pos.count * 3);
+    for (let i = 0; i < pos.count; i++) { const L = shade([201, 163, 90], [pos.getX(i), pos.getY(i), pos.getZ(i)], [nor.getX(i), nor.getY(i), nor.getZ(i)], INT); cc[i * 3] = L[0] / 255; cc[i * 3 + 1] = L[1] / 255; cc[i * 3 + 2] = L[2] / 255; }
+    ltube.setAttribute('color', new THREE.BufferAttribute(cc, 3)); }
+  scene.add(lbm, new THREE.Mesh(ltube, new THREE.MeshBasicMaterial({ vertexColors: true })));
   scene.add(treads, bal);
   const rail = new THREE.CatmullRomCurve3(railPts.map((r) => new THREE.Vector3(RR * Math.sin(r[0] * D), r[1] + 130, RR * Math.cos(r[0] * D))), false, 'centripetal');
   const tube = new THREE.TubeGeometry(rail, railPts.length * 2, 4, 6, false);
