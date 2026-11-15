@@ -3,5 +3,3 @@ Allow: /
 Disallow: /api/
 
 Sitemap: https://josephrm.pages.dev/sitemap.xml
-
-Agentmap: https://josephrm.pages.dev/.well-known/ard.json
