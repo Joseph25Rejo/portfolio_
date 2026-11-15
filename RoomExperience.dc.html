@@ -12,7 +12,18 @@
 <x-dc>
 <helmet>
 <link rel="stylesheet" href="./assets/fonts/fonts.css">
-<style>body{margin:0}</style>
+<style>
+body{margin:0}
+.xp-row{display:grid;grid-template-columns:210px minmax(0,1fr) 30px;gap:6px 26px;align-items:baseline;padding:18px 4px;width:100%;text-align:left;font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.xp-row:hover{background:rgba(249,244,232,.6)}
+.xp-row:focus-visible,.xp-pl:focus-visible,.xp-chip:focus-visible{outline:3px solid #292925;outline-offset:2px}
+.xp-det{padding:4px 4px 26px 240px}
+.xp-chip{font:500 13px/1 'Instrument Sans',Arial,sans-serif;padding:9px 12px;border:1px solid rgba(41,41,37,.4);background:transparent;color:#292925;cursor:pointer}
+.xp-chip[aria-pressed="true"]{background:#292925;color:#F4F0E8;border-color:#292925}
+.xp-pl{all:unset;box-sizing:border-box;cursor:pointer;display:block;padding:8px;background:linear-gradient(135deg,#D9BC7C,#9A7835 55%,#C9A862);box-shadow:0 18px 26px -18px rgba(41,41,37,.65)}
+.xp-pl:focus-visible{outline:3px solid #292925;outline-offset:3px}
+@media(max-width:760px){.xp-row{grid-template-columns:minmax(0,1fr) 26px}.xp-row .xp-dt{grid-column:1/-1}.xp-det{padding-left:4px}}
+</style>
 </helmet>
 
 <div style="position:relative;min-height:900px;box-sizing:border-box;padding:clamp(88px,11vh,120px) clamp(20px,4.4vw,72px) 110px;background:radial-gradient(ellipse 70% 45% at 15% 0%,#F8F4EA 0%,rgba(248,244,234,0) 70%),linear-gradient(180deg,#EDE6D8,#E1D8C5);font-family:'Instrument Sans','Helvetica Neue',Arial,sans-serif;color:#292925">
@@ -25,23 +36,21 @@
     </div>
   </header>
 
-  <!-- timeline: shown only when there is more than one role -->
-  <sc-if value="{{ hasTimeline }}" hint-placeholder-val="{{ false }}">
-    <nav aria-label="Roles" style="margin-top:44px;display:flex;flex-wrap:wrap;gap:10px 12px">
-      <sc-for list="{{ roles }}" as="r" hint-placeholder-count="2">
-        <button type="button" aria-pressed="{{ r.on }}" onClick="{{ r.pick }}" style="{{ r.style }}">
-          <span style="display:block;font-family:'Cormorant Garamond',Georgia,serif;font-size:24px;line-height:1.1;font-weight:500">{{ r.company }}</span>
-          <span style="display:block;margin-top:4px;font-size:13.5px;line-height:1.35;opacity:.85">{{ r.title }}</span>
-          <span style="display:block;margin-top:2px;font-size:13px;line-height:1.35;opacity:.75">{{ r.range }}</span>
-        </button>
+  <!-- headline numbers: only the ones that mean something at this stage -->
+  <sc-if value="{{ hasBand }}" hint-placeholder-val="{{ true }}">
+    <div style="margin-top:34px;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1px;background:rgba(41,41,37,.25);box-shadow:0 0 0 1px rgba(41,41,37,.25);max-width:1180px">
+      <sc-for list="{{ band }}" as="b" hint-placeholder-count="4">
+        <div style="background:#EDE6D8;padding:18px 20px">
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:46px;line-height:1;color:#6A4E1B;font-weight:500">{{ b.big }}</div>
+          <div style="margin-top:6px;font-size:13.5px;line-height:1.4;color:#3A372F">{{ b.text }}</div>
+        </div>
       </sc-for>
-    </nav>
+    </div>
   </sc-if>
 
-  <div style="display:flex;flex-wrap:wrap;gap:56px 72px;margin-top:56px;align-items:flex-start">
-
-    <!-- brass plaque -->
-    <div style="flex:2 1 340px;min-width:0;max-width:520px">
+  <!-- spotlight: the current (or most recent) role -->
+  <div style="display:flex;flex-wrap:wrap;gap:36px 56px;margin-top:34px;align-items:flex-start;max-width:1180px">
+    <div style="flex:2 1 340px;min-width:0;max-width:480px">
       <div style="padding:12px;background:linear-gradient(135deg,#D9BC7C,#9A7835 55%,#C9A862);box-shadow:0 24px 34px -20px rgba(41,41,37,.65)">
         <div style="padding:clamp(26px,3vw,40px) clamp(22px,3vw,36px) clamp(28px,3vw,40px);background:linear-gradient(180deg,#3A2A1E,#2A1E15);color:#F4F0E8">
           <div style="display:inline-block;padding:5px 10px;font:500 12px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#E9D49E;box-shadow:inset 0 0 0 1px rgba(233,212,158,.5)">{{ cur.tag }}</div>
@@ -49,7 +58,7 @@
             <div style="margin-top:22px"><img src="{{ cur.logo }}" alt="{{ cur.company }}" width="{{ cur.logoW }}" height="{{ cur.logoH }}" style="display:block;width:clamp(150px,16vw,200px);height:auto"></div>
           </sc-if>
           <sc-if value="{{ cur.noLogo }}" hint-placeholder-val="{{ false }}">
-            <div style="margin-top:22px;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(34px,3.4vw,44px);line-height:1.05;font-weight:500">{{ cur.company }}</div>
+            <div style="margin-top:22px;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(34px,3.4vw,44px);line-height:1.05;font-weight:500;overflow-wrap:anywhere">{{ cur.company }}</div>
           </sc-if>
           <div style="margin-top:12px;font-size:15.5px;line-height:1.5;color:#D9CFBB">{{ cur.org1 }}<br>{{ cur.org2 }}</div>
           <div style="margin:24px 0 0;width:52px;height:1px;background:#C9A862"></div>
@@ -60,13 +69,12 @@
       </div>
     </div>
 
-    <!-- what I do -->
-    <div style="flex:3 1 460px;min-width:0">
+    <div style="flex:3 1 420px;min-width:0">
       <p style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(26px,2.8vw,36px);line-height:1.3;font-weight:500;max-width:640px">{{ cur.summary }}</p>
       <sc-if value="{{ cur.hasDuties }}" hint-placeholder-val="{{ true }}">
-        <ol style="list-style:none;margin:36px 0 0;padding:0;border-top:1px solid rgba(41,41,37,.2)">
+        <ol style="list-style:none;margin:30px 0 0;padding:0;border-top:1px solid rgba(41,41,37,.2)">
           <sc-for list="{{ cur.duties }}" as="d" hint-placeholder-count="4">
-            <li style="display:flex;gap:22px;padding:22px 0;border-bottom:1px solid rgba(41,41,37,.2)">
+            <li style="display:flex;gap:22px;padding:20px 0;border-bottom:1px solid rgba(41,41,37,.2)">
               <span style="flex:none;width:34px;font-family:'Cormorant Garamond',Georgia,serif;font-size:30px;line-height:1;color:#6A4E1B;font-weight:500">{{ d.n }}</span>
               <div style="min-width:0">
                 <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:25px;line-height:1.1;font-weight:500">{{ d.title }}</div>
@@ -79,21 +87,8 @@
     </div>
   </div>
 
-  <!-- at a glance -->
-  <sc-if value="{{ cur.hasFacts }}" hint-placeholder-val="{{ true }}">
-    <div style="margin-top:72px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:20px;max-width:1180px">
-      <sc-for list="{{ cur.facts }}" as="f" hint-placeholder-count="3">
-        <div style="padding:26px 26px 28px;background:linear-gradient(180deg,#F6F2E8,#ECE5D5);box-shadow:inset 0 0 0 1px rgba(41,41,37,.12),0 14px 22px -18px rgba(41,41,37,.55)">
-          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:56px;line-height:1;color:#6A4E1B;font-weight:500">{{ f.big }}</div>
-          <div style="margin-top:10px;font-size:15.5px;line-height:1.5;color:#3A372F">{{ f.text }}</div>
-        </div>
-      </sc-for>
-    </div>
-  </sc-if>
-
-  <!-- film -->
   <sc-if value="{{ cur.hasFilm }}" hint-placeholder-val="{{ true }}">
-    <section aria-label="{{ cur.filmAria }}" id="lume-film" style="margin-top:80px;max-width:1180px">
+    <section aria-label="{{ cur.filmAria }}" style="margin-top:72px;max-width:1180px">
       <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 30px;border-bottom:1px solid rgba(125,95,40,.5);padding-bottom:18px">
         <h3 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(34px,4vw,48px);font-weight:500;line-height:1">{{ cur.filmLabel }}</h3>
         <div style="font-size:14px;color:#4A463E">{{ cur.filmCaption }}</div>
@@ -104,9 +99,9 @@
     </section>
   </sc-if>
 
-  <!-- engineering log -->
+  <!-- engineering log of the spotlight role -->
   <sc-if value="{{ cur.hasLog }}" hint-placeholder-val="{{ true }}">
-    <section aria-label="Engineering log" style="margin-top:80px;max-width:1180px">
+    <section aria-label="Engineering log" style="margin-top:72px;max-width:1180px">
       <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 30px;border-bottom:1px solid rgba(125,95,40,.5);padding-bottom:18px">
         <h3 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(34px,4vw,48px);font-weight:500;line-height:1">Engineering log</h3>
         <div style="font-size:14px;color:#4A463E">Technical work at {{ cur.company }}. Each line carries its status.</div>
@@ -138,50 +133,195 @@
     </section>
   </sc-if>
 
+  <!-- earlier work -->
+  <section aria-label="Earlier work" style="margin-top:72px;max-width:1180px">
+    <sc-if value="{{ earlier.has }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 30px;border-bottom:1px solid rgba(125,95,40,.5);padding-bottom:18px">
+        <h3 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(34px,4vw,48px);font-weight:500;line-height:1">Earlier work</h3>
+        <div style="font-size:14px;color:#4A463E">{{ earlier.count }}</div>
+      </div>
+
+      <!-- 1 to 4 earlier roles: small plaques -->
+      <sc-if value="{{ earlier.asPlaques }}" hint-placeholder-val="{{ false }}">
+        <div style="margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(240px,100%),1fr));gap:18px">
+          <sc-for list="{{ earlier.plaques }}" as="p" hint-placeholder-count="2">
+            <button type="button" class="xp-pl" aria-pressed="{{ p.on }}" onClick="{{ p.pick }}">
+              <span style="{{ p.face }}">
+                <span style="display:inline-block;padding:4px 9px;font:500 11px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#E9D49E;box-shadow:inset 0 0 0 1px rgba(233,212,158,.5)">Previous</span>
+                <span style="display:block;margin-top:12px;font-family:'Cormorant Garamond',Georgia,serif;font-size:26px;line-height:1.05;font-weight:500;overflow-wrap:anywhere">{{ p.company }}</span>
+                <span style="display:block;margin-top:6px;font-size:14px;line-height:1.4;color:#D9CFBB">{{ p.title }}</span>
+                <span style="display:block;margin-top:12px;padding-top:10px;border-top:1px solid rgba(201,168,98,.5);font-size:13px;line-height:1.5;color:#E9D49E">{{ p.range }} · {{ p.length }}</span>
+              </span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="margin-top:16px;padding:24px clamp(18px,3vw,32px);background:linear-gradient(180deg,#F6F2E8,#ECE5D5);box-shadow:inset 0 0 0 1px rgba(41,41,37,.12),0 14px 22px -18px rgba(41,41,37,.55)">
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;line-height:1.15;font-weight:500;overflow-wrap:anywhere">{{ earlier.sel.title }}, {{ earlier.sel.company }}</div>
+          <div style="margin-top:6px;font-size:14px;color:#6A4E1B">{{ earlier.sel.range }} · {{ earlier.sel.length }}</div>
+          <sc-if value="{{ earlier.sel.hasSummary }}" hint-placeholder-val="{{ true }}"><p style="margin:14px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(21px,2.2vw,26px);line-height:1.35;font-weight:500;max-width:640px">{{ earlier.sel.summary }}</p></sc-if>
+          <sc-if value="{{ earlier.sel.hasStack }}" hint-placeholder-val="{{ true }}">
+            <ul style="margin:16px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px">
+              <sc-for list="{{ earlier.sel.stack }}" as="t" hint-placeholder-count="3"><li style="padding:6px 11px;font:500 13px/1 'Instrument Sans',Arial,sans-serif;box-shadow:inset 0 0 0 1px rgba(41,41,37,.3)">{{ t }}</li></sc-for>
+            </ul>
+          </sc-if>
+          <sc-if value="{{ earlier.sel.hasFacts }}" hint-placeholder-val="{{ false }}">
+            <div style="margin-top:18px;display:flex;flex-wrap:wrap;gap:12px 36px">
+              <sc-for list="{{ earlier.sel.facts }}" as="f" hint-placeholder-count="1">
+                <div><div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:44px;line-height:1;color:#6A4E1B;font-weight:500">{{ f.big }}</div><div style="margin-top:4px;font-size:14px;line-height:1.4;color:#3A372F;max-width:20ch">{{ f.text }}</div></div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ earlier.sel.empty }}" hint-placeholder-val="{{ false }}"><p style="margin:14px 0 0;font-size:14.5px;color:#4A463E">No further details for this role.</p></sc-if>
+        </div>
+      </sc-if>
+
+      <!-- 5 or more earlier roles: filterable ledger -->
+      <sc-if value="{{ earlier.asLedger }}" hint-placeholder-val="{{ false }}">
+        <sc-if value="{{ earlier.hasFilter }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+            <span style="font-size:13.5px;color:#4A463E;margin-right:6px">Find work with:</span>
+            <sc-for list="{{ earlier.filters }}" as="f" hint-placeholder-count="6"><button type="button" class="xp-chip" aria-pressed="{{ f.on }}" onClick="{{ f.pick }}">{{ f.name }}</button></sc-for>
+          </div>
+        </sc-if>
+        <div style="margin-top:8px;border-top:1px solid rgba(41,41,37,.25)">
+          <sc-for list="{{ earlier.rows }}" as="r" hint-placeholder-count="4">
+            <div style="{{ r.wrap }}">
+              <button type="button" class="xp-row" aria-expanded="{{ r.open }}" onClick="{{ r.toggle }}">
+                <span class="xp-dt" style="font:500 14.5px/1.4 'Instrument Sans',Arial,sans-serif;color:#6A4E1B">{{ r.range }}<span style="display:block;color:#4A463E;font-weight:400;font-size:13.5px">{{ r.length }}</span></span>
+                <span style="min-width:0">
+                  <span style="display:block;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(23px,2.6vw,30px);line-height:1.1;font-weight:500;overflow-wrap:anywhere">{{ r.title }}, {{ r.company }}</span>
+                  <span style="display:block;margin-top:5px;font-size:14.5px;line-height:1.45;color:#4A463E">{{ r.org }}</span>
+                </span>
+                <span aria-hidden="true" style="font-size:22px;text-align:right">{{ r.sign }}</span>
+              </button>
+              <sc-if value="{{ r.open }}" hint-placeholder-val="{{ false }}">
+                <div class="xp-det">
+                  <sc-if value="{{ r.hasSummary }}" hint-placeholder-val="{{ true }}"><p style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(21px,2.2vw,26px);line-height:1.35;font-weight:500;max-width:640px">{{ r.summary }}</p></sc-if>
+                  <sc-if value="{{ r.hasStack }}" hint-placeholder-val="{{ true }}">
+                    <ul style="margin:16px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px">
+                      <sc-for list="{{ r.stack }}" as="t" hint-placeholder-count="3"><li style="padding:6px 11px;font:500 13px/1 'Instrument Sans',Arial,sans-serif;box-shadow:inset 0 0 0 1px rgba(41,41,37,.3)">{{ t }}</li></sc-for>
+                    </ul>
+                  </sc-if>
+                  <sc-if value="{{ r.hasFacts }}" hint-placeholder-val="{{ false }}">
+                    <div style="margin-top:18px;display:flex;flex-wrap:wrap;gap:12px 36px">
+                      <sc-for list="{{ r.facts }}" as="f" hint-placeholder-count="1">
+                        <div><div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:44px;line-height:1;color:#6A4E1B;font-weight:500">{{ f.big }}</div><div style="margin-top:4px;font-size:14px;line-height:1.4;color:#3A372F;max-width:20ch">{{ f.text }}</div></div>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ r.empty }}" hint-placeholder-val="{{ false }}"><p style="margin:0;font-size:14.5px;color:#4A463E">No further details for this role.</p></sc-if>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ earlier.hasMore }}" hint-placeholder-val="{{ false }}">
+          <button type="button" class="xp-chip" onClick="{{ earlier.showAll }}" style="margin-top:18px;padding:14px 18px;font-size:14px;font-weight:600;border-color:#292925">{{ earlier.moreLabel }}</button>
+        </sc-if>
+      </sc-if>
+    </sc-if>
+
+    <!-- only one role so far -->
+    <sc-if value="{{ earlier.none }}" hint-placeholder-val="{{ true }}">
+      <div style="padding:26px clamp(18px,3vw,34px);border:1px dashed rgba(41,41,37,.4)">
+        <p style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,2.4vw,28px);line-height:1.3;font-weight:500;max-width:560px">That is the whole story so far. The projects I have built are in the Workshop.</p>
+      </div>
+    </sc-if>
+  </section>
+
 </div>
 </x-dc>
 
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2600}}'>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2400}}'>
 class Component extends DCLogic {
-  constructor(props) { super(props); this.state = { i: 0 }; }
+  constructor(props) { super(props); this.state = { pick: 0, open: {}, filter: '', all: false }; }
   renderVals() {
     /* All content comes from assets/data/experience.js. See the note at the top of that file for how to add a role. */
     const roles = ((window.JRM_EXP && window.JRM_EXP.roles) || []).slice();
     const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const ym = (s) => { const [y, m] = String(s).split('-').map(Number); return { y, m }; };
-    const fmt = (s) => { const d = ym(s); return MON[d.m - 1] + ' ' + d.y; };
+    const ym = (s) => { const [y, m] = String(s).split('-').map(Number); return y * 12 + (m - 1); };
+    const fmt = (s) => { const [y, m] = String(s).split('-').map(Number); return MON[m - 1] + ' ' + y; };
     const now = new Date(), nowYM = now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
-    const span = (r) => { const a = ym(r.start), b = ym(r.end || nowYM); return Math.max(1, (b.y - a.y) * 12 + (b.m - a.m)); };
+    /* months worked, counting both the first and last month: Jan to May is 5 months */
+    const span = (r) => Math.max(1, ym(r.end || nowYM) - ym(r.start) + 1);
     const len = (n) => { const y = Math.floor(n / 12), m = n % 12, ys = y + (y === 1 ? ' yr' : ' yrs'), ms = m + (m === 1 ? ' mo' : ' mos'); return y === 0 ? ms : (m ? ys + ' ' + ms : ys); };
-    const range = (r) => fmt(r.start) + ' to ' + (r.end ? fmt(r.end) : 'present');
+    const range = (r) => (r.end && r.end === r.start) ? fmt(r.start) : fmt(r.start) + ' to ' + (r.end ? fmt(r.end) : 'present');
     const chipCol = { 'Shipped': ['#2F4021', '#E3EBD9'], 'Done': ['#2F4021', '#E3EBD9'], 'Confirmed': ['#2F4021', '#E3EBD9'], 'In progress': ['#6B4A12', '#F1E3C2'], 'Built locally': ['#6B4A12', '#F1E3C2'], 'Designed': ['#3A372F', '#E2DACA'], 'Planned': ['#3A372F', '#E2DACA'] };
-    const idx = Math.min(this.state.i, Math.max(0, roles.length - 1));
-    const r = roles[idx] || { company: '', title: '', start: nowYM };
-    const org = String(r.org || '').split(/<br\s*\/?>/i);
-    const duties = (r.duties || []).map((d, k) => ({ n: String(k + 1), title: d.title, body: d.body }));
-    const log = (r.log || []).map((g) => ({ title: g.title, items: g.items.map(([st, text]) => {
+    const s = this.state;
+    const c = roles[0] || { company: '', title: '', start: nowYM };
+    const rest = roles.slice(1);
+
+    /* the numbers band: tenure grows with history, role count appears with five or more, then the current role's own headline numbers */
+    const first = roles.length ? Math.min.apply(null, roles.map((r) => ym(r.start))) : ym(nowYM);
+    const last = roles.some((r) => !r.end) ? ym(nowYM) : Math.max.apply(null, roles.map((r) => ym(r.end || r.start)));
+    const tenure = Math.max(1, last - first + 1);
+    const band = [];
+    if (roles.length >= 3) band.push(tenure >= 24 ? { big: Math.round(tenure / 12) + '+', text: 'years of experience' } : { big: len(tenure), text: 'of experience' });
+    if (roles.length >= 5) band.push({ big: String(roles.length), text: 'roles and projects' });
+    (c.facts || []).forEach((f) => band.push({ big: f.big, text: f.text }));
+    const bandOut = band.slice(0, 4);
+
+    const org = String(c.org || '').split(/<br\s*\/?>/i);
+    const duties = (c.duties || []).map((d, k) => ({ n: String(k + 1), title: d.title, body: d.body }));
+    const log = (c.log || []).map((g) => ({ title: g.title, items: g.items.map(([st, text]) => {
       const col = chipCol[st] || chipCol['Planned'];
       return { status: st, text, chip: "flex:none;width:92px;box-sizing:border-box;text-align:center;padding:5px 0 4px;margin-top:2px;font:500 11.5px/1.2 'Instrument Sans',Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:" + col[0] + ";background:" + col[1] };
     }) }));
-    const f = r.film || null;
+    const f = c.film || null;
+
+    const detail = (r) => ({
+      title: r.title, company: r.company, range: range(r), length: len(span(r)),
+      hasSummary: !!r.summary, summary: r.summary || '',
+      hasStack: !!(r.stack && r.stack.length), stack: r.stack || [],
+      hasFacts: !!(r.facts && r.facts.length), facts: (r.facts || []).map((x) => ({ big: x.big, text: x.text })),
+      empty: !r.summary && !(r.stack && r.stack.length) && !(r.facts && r.facts.length)
+    });
+
+    const asPlaques = rest.length >= 1 && rest.length <= 4;
+    const asLedger = rest.length > 4;
+    const pickIdx = Math.min(s.pick, Math.max(0, rest.length - 1));
+    const plaques = rest.map((r, k) => ({
+      company: r.company, title: r.title, range: range(r), length: len(span(r)), on: k === pickIdx,
+      pick: () => this.setState({ pick: k }),
+      face: "display:block;height:100%;box-sizing:border-box;padding:18px;background:linear-gradient(180deg,#3A2A1E,#2A1E15);color:#F4F0E8;text-align:left;" + (k === pickIdx ? 'box-shadow:inset 0 0 0 2px #E9D49E' : '')
+    }));
+
+    /* ledger: filter chips (most used technologies), four rows until "show all" */
+    const cnt = {};
+    rest.forEach((r) => (r.stack || []).forEach((t) => { cnt[t] = (cnt[t] || 0) + 1; }));
+    const topTech = Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a]).slice(0, 7);
+    const filters = topTech.map((t) => ({ name: t, on: s.filter === t, pick: () => this.setState({ filter: s.filter === t ? '' : t }) }));
+    const shown = (s.all || s.filter) ? rest : rest.slice(0, 4);
+    const rows = shown.map((r) => {
+      const k = rest.indexOf(r), d = detail(r), dim = s.filter && (r.stack || []).indexOf(s.filter) < 0, open = !!s.open[k];
+      return Object.assign({}, d, {
+        org: r.org ? String(r.org).replace(/<br\s*\/?>/gi, ', ') : '', open, sign: open ? '−' : '+',
+        wrap: 'border-bottom:1px solid rgba(41,41,37,.25);' + (dim ? 'opacity:.32' : ''),
+        toggle: () => this.setState({ open: Object.assign({}, s.open, { [k]: !s.open[k] }) })
+      });
+    });
+
     return {
-      hasTimeline: roles.length > 1,
-      roles: roles.map((x, k) => ({
-        company: x.company, title: x.title, range: range(x) + ' · ' + len(span(x)), on: k === idx,
-        pick: () => this.setState({ i: k }),
-        style: "cursor:pointer;text-align:left;min-height:48px;padding:12px 18px;font-family:inherit;border:1px solid " + (k === idx ? '#292925' : 'rgba(41,41,37,.35)') + ";background:" + (k === idx ? '#292925' : 'transparent') + ";color:" + (k === idx ? '#F4F0E8' : '#292925')
-      })),
+      hasBand: bandOut.length > 0, band: bandOut,
       cur: {
-        tag: r.end ? 'Previous role' : 'Current role',
-        company: r.company, title: r.title, summary: r.summary || '',
-        hasLogo: !!r.logo, noLogo: !r.logo, logo: r.logo || '', logoW: r.logoW || 900, logoH: r.logoH || 372,
+        tag: c.end ? 'Most recent role' : 'Current role',
+        company: c.company, title: c.title, summary: c.summary || '',
+        hasLogo: !!c.logo, noLogo: !c.logo, logo: c.logo || '', logoW: c.logoW || 900, logoH: c.logoH || 372,
         org1: org[0] || '', org2: org[1] || '',
-        range: range(r), length: len(span(r)),
+        range: range(c), length: len(span(c)),
         hasDuties: duties.length > 0, duties,
-        hasFacts: !!(r.facts && r.facts.length), facts: r.facts || [],
         hasFilm: !!f, filmLabel: f ? f.label : '', filmCaption: f ? f.caption : '', filmSrc: f ? f.src : '', filmPoster: f ? f.poster : '', filmAria: f ? (f.aria || f.label) : '',
-        hasLog: log.length > 0 || !!(r.stack && r.stack.length), log,
-        hasStack: !!(r.stack && r.stack.length), stack: r.stack || []
+        hasLog: log.length > 0, log,
+        hasStack: !!(c.stack && c.stack.length), stack: c.stack || []
+      },
+      earlier: {
+        has: rest.length > 0, none: rest.length === 0,
+        count: rest.length + (rest.length === 1 ? ' role' : ' roles'),
+        asPlaques, asLedger, plaques, sel: rest.length ? detail(rest[pickIdx]) : detail({ title: '', company: '', start: nowYM }),
+        hasFilter: filters.length > 0, filters, rows,
+        hasMore: !s.all && !s.filter && rest.length > 4,
+        moreLabel: 'Show all ' + rest.length + ' earlier roles',
+        showAll: () => this.setState({ all: true })
       }
     };
   }
