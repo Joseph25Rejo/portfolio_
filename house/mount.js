@@ -57,7 +57,10 @@ export function mountHouse(stage, opts) {
     } else if (state.lastK !== null) { setAng(state.lastK, state.hoverK === state.lastK ? -0.09 : 0); state.lastK = null; }
     kernel.camera.position.copy(pos); kernel.camera.lookAt(look);
     /* on a tall phone the welcome card sits over the top of the hall: slide the view down so the portrait clears it */
-    const cw = canvas.clientWidth || 1, ch = canvas.clientHeight || 1, shift = cw / ch < 0.8 ? Math.round(0.15 * ch * sm(1 - Math.abs(px - rail.scrollOf(2)) / 800)) : 0;
+    const cw = canvas.clientWidth || 1, ch = canvas.clientHeight || 1;
+    /* on a tall phone the card covers the top of the hall; on a wide, short window the roof would touch the top bar's buttons, so the outside view sits a little lower */
+    let shift = cw / ch < 0.8 ? Math.round(0.15 * ch * sm(1 - Math.abs(px - rail.scrollOf(2)) / 800)) : 0;
+    if (cw > 760 && cw / ch >= 0.8) shift = Math.round(0.06 * ch * (1 - sm(r.s)));
     /* on a wide screen the name and introduction sit on a panel at the left: slide the outside view right so the house
        stands in the clear space beside it, easing back to centre as the visitor walks up to the door */
     const hs = cw > 760 ? Math.round(Math.min(340 + 0.03 * cw, 0.28 * cw) * (1 - sm(r.s))) : 0;
