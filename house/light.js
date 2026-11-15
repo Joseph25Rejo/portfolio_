@@ -1,6 +1,11 @@
 /* Baked lighting. Every static surface is shaded once, on the CPU, into vertex colours; the GPU then draws plain
    unlit triangles. A "light" is a point with a colour, an intensity and a radius. */
-export const hex = (h) => [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)];
+const hexCache = new Map(); /* the same few colour strings are parsed thousands of times while the house is built */
+export const hex = (h) => {
+  let v = hexCache.get(h);
+  if (!v) { v = [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]; hexCache.set(h, v); }
+  return v.slice(); /* callers get their own array, as before */
+};
 export const mix = (a, b, t) => [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t];
 
 const lights = [];
@@ -16,8 +21,9 @@ export const extAmb = (n) => { const m = Math.max(0, n[0] * MOON[0] + n[1] * MOO
 export function shade(alb, p, n, o) {
   let r = o.amb[0], g = o.amb[1], b = o.amb[2];
   for (let i = 0; i < lights.length; i++) {
-    const l = lights[i], dx = l.p[0] - p[0], dy = l.p[1] - p[1], dz = l.p[2] - p[2], d = Math.hypot(dx, dy, dz);
-    if (d >= l.R || d < 1e-6) continue;
+    const l = lights[i], dx = l.p[0] - p[0], dy = l.p[1] - p[1], dz = l.p[2] - p[2], d2 = dx * dx + dy * dy + dz * dz;
+    if (d2 >= l.R * l.R || d2 < 1e-12) continue; /* squared test first: most lights are out of range, and Math.hypot is slow */
+    const d = Math.sqrt(d2);
     let f = 1 - d / l.R; f *= f;
     const k = l.I * f * (0.35 + 0.65 * Math.max(0, (n[0] * dx + n[1] * dy + n[2] * dz) / d));
     r += l.col[0] * k; g += l.col[1] * k; b += l.col[2] * k;
