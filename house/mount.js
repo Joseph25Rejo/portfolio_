@@ -30,7 +30,7 @@ export function mountHouse(stage, opts) {
   const pos = new THREE.Vector3(), look = new THREE.Vector3(), tgt = new THREE.Vector3(), ctr = new THREE.Vector3();
   const leafM = new THREE.Matrix4(), ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), v = new THREE.Vector3();
   const angle = new Array(8).fill(0); /* door leaf angles we last applied */
-  const state = { px: 0, dolly: 0, openK: null, hoverK: null, signOn: true, frontAng: 0, s: 0, lastK: null, shift: 0 };
+  const state = { px: 0, dolly: 0, openK: null, hoverK: null, signOn: true, frontAng: 0, s: 0, lastK: null, shift: 0, hs: 0 };
 
   const setAng = (k, a) => { if (Math.abs(angle[k] - a) > 1e-4) { angle[k] = a; shell.setDoorAngle(k, a); } };
 
@@ -56,7 +56,10 @@ export function mountHouse(stage, opts) {
     kernel.camera.position.copy(pos); kernel.camera.lookAt(look);
     /* on a tall phone the welcome card sits over the top of the hall: slide the view down so the portrait clears it */
     const cw = canvas.clientWidth || 1, ch = canvas.clientHeight || 1, shift = cw / ch < 0.8 ? Math.round(0.15 * ch * sm(1 - Math.abs(px - rail.scrollOf(2)) / 800)) : 0;
-    if (shift !== state.shift) { state.shift = shift; if (shift) kernel.camera.setViewOffset(cw, ch, 0, -shift, cw, ch); else kernel.camera.clearViewOffset(); }
+    /* on a wide screen the name and introduction sit on a panel at the left: slide the outside view right so the house
+       stands in the clear space beside it, easing back to centre as the visitor walks up to the door */
+    const hs = cw > 760 ? Math.round(Math.min(340 + 0.03 * cw, 0.28 * cw) * (1 - sm(r.s))) : 0;
+    if (shift !== state.shift || hs !== state.hs) { state.shift = shift; state.hs = hs; if (shift || hs) kernel.camera.setViewOffset(cw, ch, -hs, -shift, cw, ch); else kernel.camera.clearViewOffset(); }
     /* the front door swings open as the visitor walks in; the sign hangs on it */
     const fa = 1.5 * sm((r.s - 1) / 0.75);
     if (fa !== state.frontAng) { state.frontAng = fa; shell.setDoorAngle(7, -fa); }
