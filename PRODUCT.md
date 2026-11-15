@@ -32,7 +32,7 @@ The owner works from Bengaluru and keeps older portfolio versions (Portfolio-1 t
 - Contact form is meant to send through EmailJS with fields name, email, optional phone and message, and sending, success and error states. In the current prototype, sending is simulated.
 - Library data is meant to come from the Medium feed and the GitHub events and contributions APIs, including private contributions. The current room holds placeholder slots.
 - Workshop projects: QuarksFinance, Hatch, ParkNGo and ORION. Cover screenshots and architecture diagrams are in `assets/projects/`.
-- Names and terms to keep: "Lume CXM" (Block 8 Solutions Pvt. Ltd.), "Founding Engineer Intern", the room names above.
+- Names and terms to keep: "Lume CXM" (Block 8 Solutions Pvt. Ltd.), "Founding Engineer", the room names above.
 - Undecided: final framework and hosting; the Instagram handle; the publication's journal name.
 
 ## Brand Commitments

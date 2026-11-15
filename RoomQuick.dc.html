@@ -47,7 +47,7 @@ body{margin:0}
     <!-- who, and the three things a recruiter came for -->
     <header class="qv-side" style="flex:2 1 340px;min-width:0;max-width:460px">
       <h1 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(48px,6vw,84px);line-height:.95;font-weight:500;letter-spacing:-.01em">Joseph<br>Rejo Mathew</h1>
-      <p style="margin:20px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,2.2vw,28px);line-height:1.25;font-weight:500;color:#6A4E1B">Full-stack developer. Founding Engineer Intern at Lume.</p>
+      <p style="margin:20px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,2.2vw,28px);line-height:1.25;font-weight:500;color:#6A4E1B">Full-stack developer. Founding Engineer at Lume.</p>
       <p style="margin:10px 0 0;font-size:16px;line-height:1.5;font-weight:600;color:#292925">Open to internships and full-time roles.</p>
       <p style="margin:18px 0 0;font-size:16.5px;line-height:1.6;color:#3A372F;max-width:440px">I build products end to end and ship them: a hackathon-winning platform, and guest apps running at three resorts.</p>
       <p style="margin:16px 0 0;font-size:15.5px;line-height:1.55;color:#2F2D28"><strong style="font-weight:600">Strongest in:</strong> React, Next.js and Node.js.</p>
@@ -77,7 +77,26 @@ body{margin:0}
 
     <main style="flex:3 1 520px;min-width:0">
 
-      <section aria-labelledby="qv-work">
+      <section aria-labelledby="qv-stack">
+        <h2 id="qv-stack">What I work with</h2>
+        <dl style="margin-top:18px;border-top:1px solid rgba(41,41,37,.3)">
+          <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:2px 28px;padding:16px 0;border-bottom:1px solid rgba(41,41,37,.2)">
+              <dt>{{ g.label }}</dt>
+              <dd>{{ g.items }}</dd>
+            </div>
+          </sc-for>
+        </dl>
+      </section>
+      <section aria-labelledby="qv-lume" style="margin-top:64px">
+        <h2 id="qv-lume">Proof of work</h2>
+        <div style="margin-top:18px;padding:26px 0;border-top:1px solid rgba(41,41,37,.3);border-bottom:1px solid rgba(41,41,37,.2)">
+          <h3>Lume CXM, Founding Engineer</h3>
+          <p style="margin:8px 0 0;font-size:15px;color:#4A463E">Block 8 Solutions Pvt. Ltd., Bengaluru. Jun 2026 to present.</p>
+          <p style="margin:14px 0 0;font-size:16px;line-height:1.6;color:#2F2D28;max-width:62ch">Fully branded guest web apps for premium Indian resorts. The product runs in production across 3 resort properties. I converted 30+ Figma screens to React, with one deployment per property on Railway, the guest app on Vercel, and analytics in PostHog.</p>
+        </div>
+      </section>
+      <section aria-labelledby="qv-work" style="margin-top:64px">
         <h2 id="qv-work">What I have built</h2>
         <div style="margin-top:18px;border-top:1px solid rgba(41,41,37,.3)">
           <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
@@ -104,17 +123,6 @@ body{margin:0}
           </sc-for>
         </div>
       </section>
-
-      <section aria-labelledby="qv-lume" style="margin-top:64px">
-        <h2 id="qv-lume">Where it runs</h2>
-        <div style="margin-top:18px;padding:26px 0;border-top:1px solid rgba(41,41,37,.3);border-bottom:1px solid rgba(41,41,37,.2)">
-          <h3>Lume CXM, Founding Engineer Intern</h3>
-          <p style="margin:8px 0 0;font-size:15px;color:#4A463E">Block 8 Solutions Pvt. Ltd., Bengaluru. Jun 2026 to present.</p>
-          <p style="margin:14px 0 0;font-size:16px;line-height:1.6;color:#2F2D28;max-width:62ch">Fully branded guest web apps for premium Indian resorts. The product runs in production across 3 resort properties. I converted 30+ Figma screens to React, with one deployment per property on Railway, the guest app on Vercel, and analytics in PostHog.</p>
-          <p style="margin:12px 0 0;font-size:15px"><a href="https://www.lume-cxm.com/" target="_blank" rel="noopener">lume-cxm.com ↗</a></p>
-        </div>
-      </section>
-
       <section aria-labelledby="qv-proof" style="margin-top:64px">
         <h2 id="qv-proof">Recognition</h2>
         <ul style="list-style:none;margin:18px 0 0;padding:0;border-top:1px solid rgba(41,41,37,.3)">
@@ -129,19 +137,6 @@ body{margin:0}
           </sc-for>
         </ul>
       </section>
-
-      <section aria-labelledby="qv-stack" style="margin-top:64px">
-        <h2 id="qv-stack">What I work with</h2>
-        <dl style="margin-top:18px;border-top:1px solid rgba(41,41,37,.3)">
-          <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
-            <div style="display:grid;grid-template-columns:minmax(0,1fr);gap:2px 28px;padding:16px 0;border-bottom:1px solid rgba(41,41,37,.2)">
-              <dt>{{ g.label }}</dt>
-              <dd>{{ g.items }}</dd>
-            </div>
-          </sc-for>
-        </dl>
-      </section>
-
       <section aria-labelledby="qv-end" style="margin-top:72px;padding:clamp(26px,4vw,44px);background:linear-gradient(180deg,#34332D,#242320);color:#F4F0E8;box-shadow:0 26px 34px -20px rgba(41,41,37,.7)">
         <h2 id="qv-end" style="color:#F4F0E8">Hiring, or have something to build?</h2>
         <p style="margin:12px 0 0;font-size:16px;line-height:1.6;color:#DDD3BF;max-width:52ch">Send a note, or take the résumé and read it later. I read everything.</p>

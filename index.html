@@ -345,7 +345,7 @@ class Component extends DCLogic {
     return [
       { num: '00', title: 'The Entrance', line: 'About. The person behind the work, and how I got here.', btn: 'Meet Joseph' },
       { num: '01', title: 'The Workshop', line: 'Projects. QuarksFinance, Hatch, ParkNGo and ORION, each shown with its stack, architecture and links.', btn: 'See the projects' },
-      { num: '02', title: 'The Experience', line: 'Experience. Founding engineer intern at Lume, building guest apps for premium Indian resorts.', btn: 'Read the experience' },
+      { num: '02', title: 'The Experience', line: 'Experience. Founding engineer at Lume, building guest apps for premium Indian resorts.', btn: 'Read the experience' },
       { num: '03', title: 'The Study', line: 'Skills. What I use now, what I am learning, and the rest of the toolbox.', btn: 'See the skills' },
       { num: '04', title: 'The Library', line: 'Writing and code. Medium articles beside my GitHub activity.', btn: 'Read the writing' },
       { num: '05', title: 'The Gallery', line: 'Achievements, a publication and a patent application.', btn: 'See the proof' },
@@ -601,6 +601,107 @@ class Component extends DCLogic {
     if (!kind) return;
     e.preventDefault(); e.stopPropagation(); open(kind, h, title);
   }, true);
+})();
+</script>
+<script>
+/* A short first-visit tour: Quick view first (with a way straight into it), then the house, then the floors.
+   Shown once per browser; skippable at any step (Escape too). `?tour=1` shows it again. */
+(function () {
+  var KEY = 'jrm-tour-v1', force = /[?&]tour=1/.test(location.search), seen = false;
+  try { seen = localStorage.getItem(KEY) === '1'; } catch (_) {}
+  if (!force && (seen || /^#(quick|entrance|workshop|experience|study|library|gallery|landing)/.test(location.hash))) return;
+  var css = document.createElement('style');
+  css.textContent = '.jt-ov{position:fixed;inset:0;z-index:2147482000;touch-action:none}'
+    + '.jt-spot{position:fixed;z-index:2147482001;pointer-events:none;border-radius:3px;box-shadow:0 0 0 9999px rgba(12,9,5,.68),0 0 0 2px #D9BC7C,0 0 26px 4px rgba(217,188,124,.45);transition:left .35s ease,top .35s ease,width .35s ease,height .35s ease}'
+    + '.jt-card{position:fixed;z-index:2147482002;width:min(344px,calc(100vw - 32px));box-sizing:border-box;background:#F4F0E8;color:#292925;padding:20px 22px 14px;box-shadow:0 18px 50px rgba(0,0,0,.5);font-family:"Instrument Sans","Helvetica Neue",Arial,sans-serif}'
+    + '.jt-n{font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:#6A4E1B;font-weight:600}'
+    + '.jt-card h2{margin:6px 0 0;font:500 28px/1.1 "Cormorant Garamond",Georgia,serif;color:#292925}'
+    + '.jt-card p{margin:10px 0 0;font-size:15px;line-height:1.55;color:#3A372F}'
+    + '.jt-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}'
+    + '.jt-b{min-height:44px;padding:0 18px;display:inline-flex;align-items:center;gap:8px;font:600 14.5px/1 "Instrument Sans",Arial,sans-serif;color:#292925;background:transparent;border:1px solid #292925;cursor:pointer}'
+    + '.jt-b.jt-solid{background:#292925;color:#F4F0E8}'
+    + '.jt-b:hover{background:#6A4E1B;border-color:#6A4E1B;color:#F4F0E8}'
+    + '.jt-b:focus-visible,.jt-skip:focus-visible{outline:3px solid #B28F4E;outline-offset:2px}'
+    + '.jt-skip{display:block;margin:6px -6px 0 auto;min-height:40px;padding:0 6px;background:none;border:0;font:500 13.5px/1 "Instrument Sans",Arial,sans-serif;color:#4A463E;text-decoration:underline;text-underline-offset:3px;cursor:pointer}'
+    + '@media (prefers-reduced-motion:reduce){.jt-spot{transition:none}}';
+  document.head.appendChild(css);
+
+  var $ = function (s) { return document.querySelector(s); };
+  var shown = function (el) { if (!el) return null; var r = el.getBoundingClientRect(); return r.width > 4 && r.height > 4 && getComputedStyle(el).visibility !== 'hidden' ? el : null; };
+  var steps = [
+    { el: function () { return shown($('#hs-quick-btn')); }, title: 'Short on time?', body: 'Quick view is a 30-second overview: who I am, what I have built and my résumé, all on one page.',
+      acts: [{ t: 'Open Quick view', solid: true, go: 'quick' }, { t: 'Show me around', go: 'next' }] },
+    { el: function () { return shown($('.hs-ctas .hs-btn:not(.hs-btn-solid)')); }, title: 'Or climb the house', body: 'Scroll, or press this, to walk in through the front door. Each door on the way opens a room: projects, experience, skills and more.',
+      acts: [{ t: 'Next', solid: true, go: 'next' }, { t: 'Back', go: 'back' }] },
+    { el: function () { return shown($('.hs-rail')) || shown($('.hs-bar')) || shown($('.hs-dir')); }, title: 'Jump to any floor', body: 'Use the floors here, or the Directory at the top, to go straight to a room whenever you like.',
+      acts: [{ t: 'Start exploring', solid: true, go: 'done' }, { t: 'Back', go: 'back' }] }
+  ];
+  var ov, spot, card, idx = 0, dir = 1, opener = null;
+
+  function mark() { try { localStorage.setItem(KEY, '1'); } catch (_) {} }
+  function finish(openQuick) {
+    mark(); window.removeEventListener('resize', place); document.removeEventListener('keydown', key, true);
+    [ov, spot, card].forEach(function (n) { if (n && n.parentNode) n.parentNode.removeChild(n); });
+    ov = spot = card = null;
+    var q = $('#hs-quick-btn');
+    if (openQuick) { if (q) q.click(); } else if (opener && opener.focus) { try { opener.focus({ preventScroll: true }); } catch (_) {} }
+  }
+  function key(e) {
+    if (!card) return;
+    if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); finish(false); return; }
+    if (e.key === 'Tab') {
+      var f = card.querySelectorAll('button'), a = f[0], z = f[f.length - 1];
+      if (!card.contains(document.activeElement)) { e.preventDefault(); a.focus(); }
+      else if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); }
+      else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+    }
+  }
+  function place() {
+    if (!card) return;
+    var el = steps[idx].el(); if (!el) return;
+    var r = el.getBoundingClientRect(), p = 8, vw = innerWidth, vh = innerHeight;
+    spot.style.left = (r.left - p) + 'px'; spot.style.top = (r.top - p) + 'px'; spot.style.width = (r.width + 2 * p) + 'px'; spot.style.height = (r.height + 2 * p) + 'px';
+    var cw = card.offsetWidth, ch = card.offsetHeight, left, top;
+    if (r.left > vw * 0.6 && r.width < 160 && r.height > 100 && r.left - cw - 18 >= 12) { left = r.left - cw - 18; top = Math.max(12, Math.min(r.top, vh - ch - 12)); } /* beside the floor rail */
+    else {
+      left = Math.max(16, Math.min(r.left - p, vw - cw - 16));
+      top = r.top - p - ch - 14 >= 12 ? r.top - p - ch - 14 : Math.min(vh - ch - 12, r.bottom + p + 14);
+    }
+    card.style.left = left + 'px'; card.style.top = top + 'px'; card.style.visibility = 'visible';
+  }
+  function show(i) {
+    var s = steps[i], el = s && s.el();
+    while (s && !el) { i += dir; s = steps[i]; el = s && s.el(); }
+    if (!s) { finish(false); return; }
+    idx = i;
+    card.style.visibility = 'hidden';
+    card.innerHTML = '<div class="jt-n">' + (i + 1) + ' of ' + steps.length + '</div><h2 id="jt-t">' + s.title + '</h2><p>' + s.body + '</p><div class="jt-row"></div><button type="button" class="jt-skip">Skip tour</button>';
+    var row = card.querySelector('.jt-row');
+    s.acts.forEach(function (a) {
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'jt-b' + (a.solid ? ' jt-solid' : ''); b.textContent = a.t;
+      if (a.go === 'quick') b.appendChild(document.createTextNode(' →'));
+      b.addEventListener('click', function () { if (a.go === 'quick') finish(true); else if (a.go === 'done') finish(false); else if (a.go === 'back') { dir = -1; show(idx - 1); } else { dir = 1; show(idx + 1); } });
+      row.appendChild(b);
+    });
+    card.querySelector('.jt-skip').addEventListener('click', function () { finish(false); });
+    place();
+    var first = card.querySelector('.jt-b'); if (first) first.focus({ preventScroll: true });
+  }
+  function start() {
+    var hero = $('#hs-hero'), q = shown($('#hs-quick-btn'));
+    if (!q || !hero || hero.style.display === 'none' || /^#quick/.test(location.hash)) return false;
+    opener = document.activeElement;
+    ov = document.createElement('div'); ov.className = 'jt-ov';
+    spot = document.createElement('div'); spot.className = 'jt-spot'; spot.setAttribute('aria-hidden', 'true');
+    card = document.createElement('div'); card.className = 'jt-card'; card.setAttribute('role', 'dialog'); card.setAttribute('aria-modal', 'true'); card.setAttribute('aria-labelledby', 'jt-t'); card.style.visibility = 'hidden';
+    document.body.appendChild(ov); document.body.appendChild(spot); document.body.appendChild(card);
+    window.addEventListener('resize', place); document.addEventListener('keydown', key, true);
+    show(0); return true;
+  }
+  /* after the page has settled, once the hero is on screen */
+  var tries = 0;
+  function wait() { if (start()) return; if (++tries < 20) setTimeout(wait, 500); }
+  if (document.readyState === 'complete') setTimeout(wait, 1200); else window.addEventListener('load', function () { setTimeout(wait, 1200); }, { once: true });
 })();
 </script>
 </body>
