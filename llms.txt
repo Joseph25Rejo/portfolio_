@@ -1,0 +1,26 @@
+# Joseph Rejo Mathew
+
+> Portfolio of Joseph Rejo Mathew: full-stack developer and AI/ML student at RV College of Engineering, Bengaluru. Founding Engineer at Lume CXM. Open to internships and full-time roles. The site is an interactive 3D house and needs JavaScript; the links below give the same content in plain form.
+
+Core stack: Next.js, Node.js, MongoDB and Cloudflare, with strong Java and SQL.
+
+## Site
+
+- [Portfolio home](https://josephrm.pages.dev/): Interactive 3D house with rooms for experience, projects, study, writing and contact. A plain-HTML fallback is included in the page source.
+- [Résumé (PDF)](https://josephrm.pages.dev/assets/JOSEPH_FINAL_RESUME_2026.pdf): Current résumé.
+
+## Projects
+
+- [Hatch](https://github.com/AdityaKaushik295/Hatch): Hackathon management platform that won WhiteHack 1.0. Next.js, TypeScript, Flask, MongoDB, Firebase.
+- [QuarksFinance](https://github.com/Joseph25Rejo/QuarksFinance): Algorithmic stock trading platform with backtesting, live signals and sentiment.
+- [ParkNGo](https://github.com/Joseph25Rejo/ParknGo-appln): Smart parking with ML-driven dynamic pricing.
+
+## Profiles
+
+- [GitHub](https://github.com/Joseph25Rejo): Source code and projects.
+- [LinkedIn](https://www.linkedin.com/in/joseph-r-m-12514229b): Professional profile.
+- [Medium](https://medium.com/@joseph25rejo): Articles.
+
+## Optional
+
+- [Sitemap](https://josephrm.pages.dev/sitemap.xml)
