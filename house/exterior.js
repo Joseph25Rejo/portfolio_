@@ -10,7 +10,6 @@ const GY = -60, WALL = 30, FW = 2 * APO * Math.tan(9 * D) + 1.5;
 const C = hex;
 const sinz = (a) => Math.sin(a * D), cosz = (a) => Math.cos(a * D);
 const UP = [0, 1, 0], DOWN = [0, -1, 0];
-const BG = [20, 27, 51]; /* the colour of the ground disc beyond the lawn (sky.js), so the lawn can melt into it */
 
 /* smooth value noise on the ground plane, for patches in the lawn and for varying the planting */
 const fr = (x) => x - Math.floor(x);
@@ -140,21 +139,44 @@ export function buildExterior(scene, B, H, ex) {
     treeList.push({ a, r, s, kind: kind < 0.45 ? 0 : kind < 0.78 ? 1 : 2, x: r * sinz(a), z: r * cosz(a) });
   }
 
-  /* ---------- the lawn: patchy greens, soft mowing stripes by the house, and a slow fade into the dark ground ---------- */
+  /* ---------- the ground: a lawn by the house that gives way, ring by ring, to fields, lakes and rolling hills out to the horizon ---------- */
+  const wet = (x, z, rr) => (1 - sstep(0.28, 0.34, vn(x + 500, z - 300, 1500))) * sstep(3300, 4000, rr); /* 0..1: how much of this spot is lake */
+  const th = (x, z) => { /* terrain height above the lawn: flat near the house and the front approach, hills further out, flat lakes */
+    const rr = Math.hypot(x, z); if (rr < 3100) return 0;
+    const front = 0.25 + 0.75 * sstep(30, 100, Math.abs(dAz(Math.atan2(x, z) / D)));
+    return sstep(3100, 6500, rr) * front * (vn(x, z, 1700) * 260 + vn(x, z, 650) * 90) * (1 - wet(x, z, rr));
+  };
   const lawn = (p, n) => {
     const x = p[0], z = p[2], rr = Math.hypot(x, z), f = fbm(x, z);
     let sh = 1; for (let i = 0; i < treeList.length; i++) { const tr = treeList[i], d = Math.hypot(x - tr.x, z - tr.z), R = 210 * tr.s; if (d < R) sh = Math.min(sh, 1 - 0.42 * (1 - d / R) * (1 - d / R) * 1.6); }
     let a = mix(C('#24472f'), C('#386443'), f);
     a = mix(a, C('#55602f'), sstep(0.6, 0.85, vn(x + 400, z - 300, 230)) * 0.5); /* dry, yellowing patches */
     a = mix(a, C('#1a3024'), sstep(0.65, 0.9, vn(x - 900, z + 120, 380)) * 0.5); /* damp shade */
+    const far = sstep(1900, 3300, rr);
+    if (far > 0) { /* beyond the garden: fields of different greens and ochres, with cool shaded folds between them */
+      let fld = mix(C('#2a4a33'), C('#4a5a2e'), vn(x + 90, z - 40, 520));
+      fld = mix(fld, C('#1f3d40'), sstep(0.55, 0.8, vn(x - 300, z + 700, 900)) * 0.7);
+      fld = mix(fld, C('#5a5a34'), sstep(0.72, 0.9, vn(x + 1200, z + 300, 640)) * 0.6);
+      a = mix(a, fld, far).map((v) => v * (1 + 0.3 * far)); /* a touch brighter out here, so the land reads under the fog */
+      const wm = wet(x, z, rr);
+      if (wm > 0) { const s = Math.max(0, x / Math.max(1, rr)), sheen = s * s * (0.6 + 0.4 * vn(x, z, 120)); a = mix(a, mix(C('#17264c'), C('#4b66a8'), Math.min(1, sheen * 1.4)), Math.min(1, wm * 1.6)); }
+    }
     const l = -x * cosz(az) + z * sinz(az), k = (1 + 0.06 * Math.sin(l * Math.PI / 140) * (1 - sstep(900, 1700, rr))) * grain(p, 0.12) * Math.max(0.5, sh);
-    return mix(shade([a[0] * k, a[1] * k, a[2] * k], p, n, extAmb(n)), BG, sstep(1700, 2650, rr));
+    return shade([a[0] * k, a[1] * k, a[2] * k], p, n, extAmb(n));
   };
   { /* one call, so every ring shares a cell count and the seams meet exactly */
     const ra = R0 + 6, rb = 2700, cell = 230, nr = Math.ceil((rb - ra) / cell), na = Math.ceil(2 * Math.PI * rb / cell);
     for (let ri = 0; ri < nr; ri++) for (let i = 0; i < na; i++) {
       const r0 = ra + (rb - ra) * ri / nr, r1 = ra + (rb - ra) * (ri + 1) / nr, p0 = 360 * i / na, p1 = 360 * (i + 1) / na;
       B.quad(polarPt(p0, r0, GY + 0.2), polarPt(p1, r0, GY + 0.2), polarPt(p1, r1, GY + 0.2), polarPt(p0, r1, GY + 0.2), lawn, 4, 4, UP);
+    }
+  }
+  { /* the land beyond: rings that widen with distance, lifted by the terrain height; fog (3500..9000) does the atmosphere */
+    const RIN = 2700, ROUT = 8800, NR = 18, NA = 148, ratio = Math.pow(ROUT / RIN, 1 / NR);
+    const P = (a, r) => { const x = r * sinz(a), z = r * cosz(a); return [x, GY + 0.2 + th(x, z), z]; };
+    for (let ri = 0; ri < NR; ri++) {
+      const r0 = RIN * Math.pow(ratio, ri), r1 = r0 * ratio;
+      for (let i = 0; i < NA; i++) { const p0 = 360 * i / NA, p1 = 360 * (i + 1) / NA; B.quad(P(p0, r0), P(p1, r0), P(p1, r1), P(p0, r1), lawn, 2, 2, UP); }
     }
   }
 
@@ -260,7 +282,7 @@ export function buildExterior(scene, B, H, ex) {
   const bark = ext(C('#3A2B1F'), 0.12);
   const leaf = (t) => ext(mix(C('#18301f'), C('#2c5a38'), t), 0.18);
   const tree = (a, r, kind, s) => {
-    const x = r * sinz(a), z = r * cosz(a);
+    const x = r * sinz(a), z = r * cosz(a), GY = -60 + th(x, z); /* stand on the terrain */
     if (kind === 0) {
       frustum(x, z, GY, GY + 270 * s, 19 * s, 10 * s, 6, bark);
       const y0 = GY + 360 * s;
@@ -278,6 +300,17 @@ export function buildExterior(scene, B, H, ex) {
     }
   };
   treeList.forEach((tr) => tree(tr.a, tr.r, tr.kind, tr.s));
+  /* far woods on the hills, in clumps, larger with distance so they still read from the establishing shot */
+  { let fs = 5; const frng = () => (fs = (fs * 16807) % 2147483647) / 2147483647, woods = [];
+    for (let i = 0; i < 520 && woods.length < 120; i++) {
+      const a = frng() * 360, r = 2900 + frng() * 4200, x = r * sinz(a), z = r * cosz(a);
+      const rad = x * sinz(az) + z * cosz(az), lat = -x * cosz(az) + z * sinz(az);
+      if (rad > 2600 && rad < 6400 && Math.abs(lat) < 1500) continue; /* keep the approach, and the establishing camera, clear */
+      if (vn(x + 1300, z + 200, 1000) < 0.5 || wet(x, z, r) > 0.05) continue;
+      if (woods.some((w) => Math.hypot(w.x - x, w.z - z) < 170)) continue;
+      woods.push({ a, r, x, z, kind: frng() < 0.62 ? 1 : 0, s: Math.min(1.9, 1.2 + r / 5000) });
+    }
+    woods.forEach((w) => tree(w.a, w.r, w.kind, w.s)); }
 
   /* lamp posts: dark iron, bright lamp head */
   ex.lamps.forEach((p) => {
