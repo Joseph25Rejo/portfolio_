@@ -37,7 +37,7 @@ body{margin:0}
   <!-- primary stack -->
   <section aria-labelledby="st-primary" style="margin-top:56px;max-width:1180px">
     <h3 id="st-primary" style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(32px,3.6vw,44px);line-height:1.15;font-weight:500">The stack I build with</h3>
-    <p style="margin:14px 0 0;font-size:18px;line-height:1.6;color:#3A372F;max-width:640px">Most of my projects use the same three layers: Next.js for the interface, Node.js with Express.js or Flask for the server, and MongoDB or SQLite for the data.</p>
+    <p style="margin:14px 0 0;font-size:18px;line-height:1.6;color:#3A372F;max-width:640px">My core stack is Next.js for the interface, Node.js for the server, MongoDB for the data and Cloudflare for the edge. Java and SQL are the languages I know most deeply.</p>
 
     <div style="margin-top:36px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:36px 44px">
       <sc-for list="{{ layers }}" as="l" hint-placeholder-count="3">
@@ -93,11 +93,12 @@ class Component extends DCLogic {
       layers: [
         { layer: 'Interface', main: 'Next.js', alt: 'with React, and React Native for mobile', used: 'QuarksFinance and Hatch (Next.js), ParkNGo (React Native).' },
         { layer: 'Server', main: 'Node.js', alt: 'with Express.js, or Flask in Python', used: 'ParkNGo (Express.js), QuarksFinance and Hatch (Flask).' },
-        { layer: 'Data', main: 'MongoDB', alt: 'or SQLite for lighter projects', used: 'Hatch, ParkNGo and ORION (MongoDB), QuarksFinance (SQLite).' }
+        { layer: 'Data', main: 'MongoDB', alt: 'or SQLite for lighter projects', used: 'Hatch, ParkNGo and ORION (MongoDB), QuarksFinance (SQLite).' },
+        { layer: 'Edge and hosting', main: 'Cloudflare', alt: 'with Vercel, Railway and AWS alongside', used: 'this portfolio and my deployed projects.' }
       ],
       strong: [
-        { name: 'Java', line: 'Including Spring Boot for backend services.' },
-        { name: 'SQL', line: 'Relational data, queries and SQLite.' },
+        { name: 'Java', line: 'Strong working knowledge, including Spring Boot for backend services.' },
+        { name: 'SQL', line: 'Strong with relational data, queries and SQLite.' },
         { name: 'Figma', line: 'Turned 30+ Figma screens into React at Lume.' },
         { name: 'Git', line: 'Version control across every project.' }
       ],
@@ -106,7 +107,7 @@ class Component extends DCLogic {
         { label: 'Backend and web', items: ['Node.js', 'Express.js', 'Flask', 'FastAPI', 'Spring Boot', 'JWT authentication', 'RBAC'] },
         { label: 'Frameworks and libraries', items: ['React', 'Next.js', 'React Native'] },
         { label: 'Databases', items: ['SQL', 'MongoDB', 'SQLite', 'Firebase'] },
-        { label: 'Cloud and tools', items: ['AWS', 'Railway', 'Vercel', 'Git', 'MATLAB', 'Figma'] }
+        { label: 'Cloud and tools', items: ['Cloudflare', 'AWS', 'Railway', 'Vercel', 'Git', 'MATLAB', 'Figma'] }
       ]
     };
   }

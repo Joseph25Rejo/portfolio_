@@ -51,8 +51,8 @@ body{margin:0}
       <p style="margin:20px 0 0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(22px,2.2vw,28px);line-height:1.25;font-weight:500;color:#6A4E1B">Full-stack developer. Founding Engineer at Lume.</p>
       <p style="margin:10px 0 0;font-size:16px;line-height:1.5;font-weight:600;color:#292925">Open to internships and full-time roles.</p>
       <p style="margin:18px 0 0;font-size:16.5px;line-height:1.6;color:#3A372F;max-width:440px">I build products end to end and ship them: a hackathon-winning platform, and guest apps running at three resorts.</p>
-      <p style="margin:16px 0 0;font-size:15.5px;line-height:1.55;color:#2F2D28"><strong style="font-weight:600">Strongest in:</strong> React, Next.js and Node.js.</p>
-      <p style="margin:10px 0 0;font-size:15.5px;line-height:1.55;color:#2F2D28"><strong style="font-weight:600">Also:</strong> Flask, FastAPI, MongoDB</p>
+      <p style="margin:16px 0 0;font-size:15.5px;line-height:1.55;color:#2F2D28"><strong style="font-weight:600">Core stack:</strong> Next.js, Node.js, MongoDB and Cloudflare.</p>
+      <p style="margin:10px 0 0;font-size:15.5px;line-height:1.55;color:#2F2D28"><strong style="font-weight:600">Strong in:</strong> Java and SQL. <strong style="font-weight:600">Also:</strong> React, Flask, FastAPI</p>
       <div style="margin:22px 0 0;padding:14px 0 0;border-top:1px solid rgba(41,41,37,.25)">
         <p style="margin:0 0 8px;font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;line-height:1.2;font-weight:500">Start with these three</p>
         <ul style="margin:0;padding:0;list-style:none;display:grid;gap:8px;font-size:15.5px;line-height:1.5;color:#3A372F">
@@ -178,11 +178,12 @@ class Component extends DCLogic {
       { title: 'Publication', when: 'Jan 2025', body: 'AI-Driven Pathogen Profiling in Scientific Literature using NLP.', href: 'https://doi.org/10.37896/sr12.1/006', label: 'DOI 10.37896/sr12.1/006' }
     ].map((r) => Object.assign({ hasLink: !!r.href }, r));
     const groups = [
-      { label: 'Languages', items: 'Python, Java, C, JavaScript, TypeScript, HTML, CSS' },
+      { label: 'Core stack', items: 'Next.js, Node.js, MongoDB, Cloudflare' },
+      { label: 'Languages', items: 'Java, SQL, Python, C, JavaScript, TypeScript, HTML, CSS' },
       { label: 'Backend and web', items: 'Node.js, Express.js, Flask, FastAPI, Spring Boot, JWT authentication, RBAC' },
       { label: 'Frameworks and libraries', items: 'React, Next.js, React Native' },
       { label: 'Databases', items: 'SQL, MongoDB, SQLite, Firebase' },
-      { label: 'Cloud and tools', items: 'AWS, Railway, Vercel, Git, MATLAB, Figma' }
+      { label: 'Cloud and tools', items: 'Cloudflare, AWS, Railway, Vercel, Git, MATLAB, Figma' }
     ];
     /* work history comes from assets/data/experience.js */
     const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
