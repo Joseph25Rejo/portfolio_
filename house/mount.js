@@ -6,6 +6,7 @@ import { createKernel, hasWebGL } from './kernel.js';
 import { createRail } from './rail.js';
 import { buildShell } from './shell.js';
 import { buildSky } from './sky.js';
+import { buildAmbient } from './ambient.js';
 import { createSign } from './sign.js';
 import { buildKeyframes, DOORS, DOOR, D, APO } from './layout.js';
 
@@ -19,9 +20,10 @@ export function mountHouse(stage, opts) {
   let lost = false;
   const kernel = createKernel(stage, { onLost: () => { lost = true; if (opts.onLost) opts.onLost(); } });
   kernel.reduce = reduce;
-  buildSky(kernel.scene);
+  const sky = buildSky(kernel.scene, { reduce });
   const shell = buildShell(kernel.scene, kernel);
   shell.onChange = kernel.invalidate;
+  const ambient = buildAmbient(kernel, shell.exterior, { reduce });
   const rail = createRail(buildKeyframes());
   const sign = createSign(kernel, kernel.scene, { reduce, onQuick: opts.onQuick, resumeHref: opts.resumeHref });
   sign.startHint();
@@ -71,6 +73,13 @@ export function mountHouse(stage, opts) {
   kernel.addTick((now, dt) => {
     shell.leafMatrix(7, leafM);
     return sign.tick(now, dt, leafM, state.signOn && state.s < 1.4 && !lost);
+  });
+  /* the night outside moves only while the visitor can see it (not once they are in the hall), and never with reduced motion */
+  kernel.addTick((now, dt) => {
+    if (reduce || lost || state.s > 1.6) return false;
+    const t = now / 1000;
+    sky.tick(t, dt, kernel.renderer.getPixelRatio()); ambient.tick(t, dt); shell.exterior.flicker(t);
+    return 2;
   });
   kernel.addTick((now, dt) => shell.hall.tick(now, dt));
   kernel.addTick((now) => shell.chandelier.tick(now));

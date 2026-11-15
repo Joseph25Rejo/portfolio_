@@ -36,6 +36,12 @@ export function exteriorLights() {
   [[1000, -170], [1000, 170], [1600, -170], [1600, 170]].forEach(([rad, lat]) => {
     const p = at(lat, 270, rad); addLight(p, [1, 0.8, 0.5], 1.3, 520); lamps.push(p); glows.push(p);
   });
+  /* warm light leaking out of the glass walls onto the ground round the tower, and cool moonlight pooling on the path */
+  [0, 45, 90, 135, 180, 225, 270, 315].forEach((a) => {
+    if (Math.abs(dAz(a)) < 30) return;
+    addLight([(APO + WALL + 70) * sinz(a), -20, (APO + WALL + 70) * cosz(a)], [1, 0.72, 0.42], 0.5, 480);
+  });
+  [1350, 1850, 2350].forEach((rad) => addLight(at(0, 170, rad), [0.5, 0.64, 1], 0.5, 520));
   /* knee-high path lights beyond the lavender: a small warm pool each, no halo */
   const bollards = [];
   [1250, 1390, 1530, 1700, 1840].forEach((rad) => [-178, 178].forEach((lat) => {
@@ -125,13 +131,23 @@ export function buildExterior(scene, B, H, ex) {
   slab(az, -52, 52, 0, 2.5, R0 + 70, R0 + 120, ext(C('#4a2f26'), 0.2), 'otlr');
   slab(az, -44, 44, 2.5, 3.2, R0 + 78, R0 + 112, ext(C('#6b4a38'), 0.2), 't');
 
+  /* trees are placed first (own random stream) so the lawn can darken under them */
+  let ts = 77; const trng = () => (ts = (ts * 16807) % 2147483647) / 2147483647;
+  const treeList = [];
+  for (let k = 0; k < 20; k++) {
+    const a = k * 18 + (trng() - 0.5) * 12; if (Math.abs(dAz(a)) < 8) continue;
+    const kind = trng(), r = 1900 + trng() * 800, s = 0.8 + trng() * 0.55;
+    treeList.push({ a, r, s, kind: kind < 0.45 ? 0 : kind < 0.78 ? 1 : 2, x: r * sinz(a), z: r * cosz(a) });
+  }
+
   /* ---------- the lawn: patchy greens, soft mowing stripes by the house, and a slow fade into the dark ground ---------- */
   const lawn = (p, n) => {
     const x = p[0], z = p[2], rr = Math.hypot(x, z), f = fbm(x, z);
+    let sh = 1; for (let i = 0; i < treeList.length; i++) { const tr = treeList[i], d = Math.hypot(x - tr.x, z - tr.z), R = 210 * tr.s; if (d < R) sh = Math.min(sh, 1 - 0.42 * (1 - d / R) * (1 - d / R) * 1.6); }
     let a = mix(C('#24472f'), C('#386443'), f);
     a = mix(a, C('#55602f'), sstep(0.6, 0.85, vn(x + 400, z - 300, 230)) * 0.5); /* dry, yellowing patches */
     a = mix(a, C('#1a3024'), sstep(0.65, 0.9, vn(x - 900, z + 120, 380)) * 0.5); /* damp shade */
-    const l = -x * cosz(az) + z * sinz(az), k = (1 + 0.06 * Math.sin(l * Math.PI / 140) * (1 - sstep(900, 1700, rr))) * grain(p, 0.12);
+    const l = -x * cosz(az) + z * sinz(az), k = (1 + 0.06 * Math.sin(l * Math.PI / 140) * (1 - sstep(900, 1700, rr))) * grain(p, 0.12) * Math.max(0.5, sh);
     return mix(shade([a[0] * k, a[1] * k, a[2] * k], p, n, extAmb(n)), BG, sstep(1700, 2650, rr));
   };
   { /* one call, so every ring shares a cell count and the seams meet exactly */
@@ -261,11 +277,7 @@ export function buildExterior(scene, B, H, ex) {
       for (let i = 0; i < 4; i++) blob(x + (rnd() - 0.5) * 16, GY + (270 + i * 125) * s, z + (rnd() - 0.5) * 16, (66 - i * 8) * s, 118 * s, (66 - i * 8) * s, 8, 6, leaf(0.2 + rnd() * 0.6));
     }
   };
-  for (let k = 0; k < 20; k++) {
-    const a = k * 18 + (rnd() - 0.5) * 12; if (Math.abs(dAz(a)) < 8) continue;
-    const kind = rnd(), r = 1900 + rnd() * 800;
-    tree(a, r, kind < 0.45 ? 0 : kind < 0.78 ? 1 : 2, 0.8 + rnd() * 0.55);
-  }
+  treeList.forEach((tr) => tree(tr.a, tr.r, tr.kind, tr.s));
 
   /* lamp posts: dark iron, bright lamp head */
   ex.lamps.forEach((p) => {
@@ -288,8 +300,18 @@ export function buildExterior(scene, B, H, ex) {
   /* glows for lanterns and lamps: one Points draw */
   const gc = document.createElement('canvas'); gc.width = gc.height = 64; const gx = gc.getContext('2d'), gg = gx.createRadialGradient(32, 32, 0, 32, 32, 32);
   gg.addColorStop(0, 'rgba(255,240,200,1)'); gg.addColorStop(0.25, 'rgba(255,208,130,.5)'); gg.addColorStop(1, 'rgba(255,200,120,0)'); gx.fillStyle = gg; gx.fillRect(0, 0, 64, 64);
-  const gp = new THREE.BufferGeometry(); gp.setAttribute('position', new THREE.Float32BufferAttribute(ex.glows.flat(), 3));
-  const points = new THREE.Points(gp, new THREE.PointsMaterial({ map: new THREE.CanvasTexture(gc), size: 520, sizeAttenuation: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, color: 0xffc678, fog: false }));
-  points.frustumCulled = false; scene.add(points);
-  return { points };
+  /* two draws, so the two porch lanterns can flicker like flames while the lamp posts only breathe */
+  const gtex = new THREE.CanvasTexture(gc);
+  const glowPts = (list) => {
+    const gp = new THREE.BufferGeometry(); gp.setAttribute('position', new THREE.Float32BufferAttribute(list.flat(), 3));
+    const pts = new THREE.Points(gp, new THREE.PointsMaterial({ map: gtex, size: 520, sizeAttenuation: true, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, color: 0xffc678, fog: false }));
+    pts.frustumCulled = false; scene.add(pts); return pts;
+  };
+  const lanternGlow = glowPts(ex.glows.slice(0, 2)), points = glowPts(ex.glows.slice(2));
+  const flicker = (t) => {
+    lanternGlow.material.size = 520 * (0.95 + 0.035 * Math.sin(t * 11.3) + 0.025 * Math.sin(t * 5.1 + 1.3) + 0.02 * Math.sin(t * 23.7 + 0.4));
+    lanternGlow.material.opacity = 0.9 + 0.07 * Math.sin(t * 8.9 + 2.0) + 0.03 * Math.sin(t * 19.1);
+    points.material.size = 520 * (0.985 + 0.015 * Math.sin(t * 1.3)); points.material.opacity = 0.96 + 0.04 * Math.sin(t * 0.9 + 1.0);
+  };
+  return { points, lanternGlow, flicker, trees: treeList };
 }
