@@ -28,7 +28,7 @@ The owner works from Bengaluru and keeps older portfolio versions (Portfolio-1 t
 
 ## Capabilities and Constraints
 - Seven rooms: About (education, current role, three skill areas), Workshop (four projects with overview, architecture and demo tabs), Experience (Lume), Study (skills on shelves), Library (Medium articles and GitHub activity, loaded live), Gallery (awards, a publication, a patent application), Contact (form, links, résumé).
-- Résumé is a PDF at `assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf`, downloaded as `Joseph_Rejo_Mathew_Resume.pdf`.
+- Résumé is a PDF at `assets/JOSEPH_FINAL_RESUME_2026.pdf`, downloaded as `Joseph_Rejo_Mathew_Resume.pdf`.
 - Contact form is meant to send through EmailJS with fields name, email, optional phone and message, and sending, success and error states. In the current prototype, sending is simulated.
 - Library data is meant to come from the Medium feed and the GitHub events and contributions APIs, including private contributions. The current room holds placeholder slots.
 - Workshop projects: QuarksFinance, Hatch, ParkNGo and ORION. Cover screenshots and architecture diagrams are in `assets/projects/`.

@@ -30,7 +30,7 @@ const info = { px: 0, total: rail.total, stop: null, stopIndex: -1, look };
 const toast = document.getElementById('toast');
 const openQuick = () => { window.dispatchEvent(new CustomEvent('house:quick')); if (toast) { toast.textContent = 'Quick view opens here in the finished site'; toast.hidden = false; clearTimeout(openQuick.t); openQuick.t = setTimeout(() => { toast.hidden = true; }, 2600); } };
 const quickBtn = document.getElementById('quick'); if (quickBtn) quickBtn.addEventListener('click', openQuick);
-const sign = createSign(kernel, kernel.scene, { reduce, onQuick: openQuick, resumeHref: './assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf' });
+const sign = createSign(kernel, kernel.scene, { reduce, onQuick: openQuick, resumeHref: './assets/JOSEPH_FINAL_RESUME_2026.pdf' });
 sign.startHint();
 const sm = (x) => { x = Math.max(0, Math.min(1, x)); return x * x * (3 - 2 * x); };
 const leafM = new THREE.Matrix4();

@@ -246,7 +246,7 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
             <div class="hs-ctas" style="margin-top:34px;display:flex;align-items:center;gap:18px;flex-wrap:wrap">
               <button type="button" id="hs-quick-btn" class="hs-btn hs-btn-solid" onClick="{{ openQuick }}"><span>Quick view</span><span aria-hidden="true">→</span></button>
               <button type="button" class="hs-btn" onClick="{{ begin }}"><span>Walk the house</span><span class="hs-nudge" aria-hidden="true" style="display:inline-block;font-size:18px;line-height:1">↓</span></button>
-              <span class="hs-sans" style="font-size:13px;color:#4A463E;flex-basis:100%">A 30-second overview, or scroll to climb the house. <a class="hs-qlink" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf" style="text-decoration:none;white-space:nowrap">Résumé (PDF)</a></span>
+              <span class="hs-sans" style="font-size:13px;color:#4A463E;flex-basis:100%">A 30-second overview, or scroll to climb the house. <a class="hs-qlink" href="./assets/JOSEPH_FINAL_RESUME_2026.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf" style="text-decoration:none;white-space:nowrap">Résumé (PDF)</a></span>
             </div>
           </div>
         </div>
@@ -266,7 +266,7 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
           </div>
           <p class="hs-sans hs-capline" style="margin:14px 0 0;font-size:15.5px;line-height:1.55;color:#3A372F">{{ cap.line }}</p>
           <sc-if value="{{ cap.last }}" hint-placeholder-val="{{ false }}">
-            <p class="hs-sans hs-links" style="margin:14px 0 0;font-size:14.5px;line-height:1.9;color:#3A372F"><a class="hs-link" href="mailto:joseph25rejo@gmail.com">joseph25rejo@gmail.com</a><br><a class="hs-link" href="https://www.linkedin.com/in/joseph-r-m-12514229b" target="_blank" rel="noopener">LinkedIn</a> &nbsp;·&nbsp; <a class="hs-link" href="https://github.com/Joseph25Rejo" target="_blank" rel="noopener">GitHub</a> &nbsp;·&nbsp; <a class="hs-link" href="https://medium.com/@joseph25rejo" target="_blank" rel="noopener">Medium</a> &nbsp;·&nbsp; <a class="hs-link" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf">Résumé (PDF)</a></p>
+            <p class="hs-sans hs-links" style="margin:14px 0 0;font-size:14.5px;line-height:1.9;color:#3A372F"><a class="hs-link" href="mailto:joseph25rejo@gmail.com">joseph25rejo@gmail.com</a><br><a class="hs-link" href="https://www.linkedin.com/in/joseph-r-m-12514229b" target="_blank" rel="noopener">LinkedIn</a> &nbsp;·&nbsp; <a class="hs-link" href="https://github.com/Joseph25Rejo" target="_blank" rel="noopener">GitHub</a> &nbsp;·&nbsp; <a class="hs-link" href="https://medium.com/@joseph25rejo" target="_blank" rel="noopener">Medium</a> &nbsp;·&nbsp; <a class="hs-link" href="./assets/JOSEPH_FINAL_RESUME_2026.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf">Résumé (PDF)</a></p>
           </sc-if>
           <div class="hs-capbtn" style="margin-top:22px"><button type="button" class="hs-btn" onClick="{{ capOpen }}" tabindex="{{ capTab }}"><span>{{ cap.btn }}</span><span aria-hidden="true">→</span></button></div>
         </div>
@@ -288,7 +288,7 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
         <!-- Directory -->
         <div class="hs-dir" style="z-index:8;display:flex;gap:10px;align-items:flex-start">
           <button type="button" class="hs-btn hs-btn-solid hs-dir-quick" onClick="{{ openQuick }}"><span>Quick view</span><span aria-hidden="true">→</span></button>
-          <a class="hs-btn hs-dir-resume" href="./assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf" style="text-decoration:none"><span>Résumé</span><span aria-hidden="true">↓</span></a>
+          <a class="hs-btn hs-dir-resume" href="./assets/JOSEPH_FINAL_RESUME_2026.pdf" target="_blank" rel="noopener" download="Joseph_Rejo_Mathew_Resume.pdf" style="text-decoration:none"><span>Résumé</span><span aria-hidden="true">↓</span></a>
           <button type="button" class="hs-btn" aria-expanded="{{ dirOpen }}" onClick="{{ toggleDir }}"><span>Directory</span></button>
           <sc-if value="{{ dirOpen }}" hint-placeholder-val="{{ false }}">
             <div style="position:absolute;top:54px;right:0;width:min(300px,calc(100vw - 32px));box-sizing:border-box;background:rgba(244,240,232,.97);border:1px solid rgba(41,41,37,.18);padding:10px 8px">
@@ -425,7 +425,7 @@ class Component extends DCLogic {
     if (!st) return;
     import('./house/mount.js').then((m) => {
       if (!this._alive) return;
-      const ctl = m.mountHouse(st, { reduce: this._reduce, resumeHref: './assets/e347ca2a9ec4bb8d9925776a0b9444c4.pdf', onQuick: () => this.openQuick(), onDoor: (k) => this.activate(k), onLost: () => this.fallbackPoster() });
+      const ctl = m.mountHouse(st, { reduce: this._reduce, resumeHref: './assets/JOSEPH_FINAL_RESUME_2026.pdf', onQuick: () => this.openQuick(), onDoor: (k) => this.activate(k), onLost: () => this.fallbackPoster() });
       if (!ctl) { this.fallbackPoster(); return; }
       this._gl = ctl; window.__houseCtl = ctl; this._d0 = ctl.doorPx(0); this._hearth = ctl.hearthPx(); this._total = ctl.total;
       const tr = document.querySelector('.hs-track'); if (tr) tr.style.height = 'calc(100dvh + ' + ctl.total + 'px)';
@@ -547,7 +547,7 @@ class Component extends DCLogic {
 <script>
 /* Previews: résumé, patent PDF and architecture diagrams open in a viewer on the page instead of a new tab. */
 (function () {
-  var RES = 'e347ca2a9ec4bb8d9925776a0b9444c4.pdf', NAME = 'Joseph_Rejo_Mathew_Resume.pdf', box = null, prev = null;
+  var RES = 'JOSEPH_FINAL_RESUME_2026.pdf', NAME = 'Joseph_Rejo_Mathew_Resume.pdf', box = null, prev = null;
   var css = document.createElement('style');
   css.textContent = '#rv{position:fixed;inset:0;z-index:2147483000;display:flex;align-items:center;justify-content:center;background:rgba(30,26,20,.72);padding:3vh 3vw;font-family:"Instrument Sans","Helvetica Neue",Arial,sans-serif}'
     + '#rv .rv-p{display:flex;flex-direction:column;width:min(920px,100%);height:100%;background:#F4F0E8;box-shadow:0 20px 60px rgba(0,0,0,.45)}'
