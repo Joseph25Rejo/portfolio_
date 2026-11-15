@@ -28,7 +28,8 @@
 <link rel="icon" href="./brand/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="./brand/favicon.ico" sizes="48x48">
 <link rel="apple-touch-icon" href="./brand/apple-touch-icon.png">
-<link rel="preload" href="./assets/house-poster.webp" as="image" fetchpriority="high">
+<link rel="preload" href="./assets/house-poster.webp" as="image" media="(min-width:761px)" fetchpriority="high">
+<link rel="preload" href="./assets/house-poster-m.webp" as="image" media="(max-width:760px)" fetchpriority="high">
 <style>
 @font-face {
   font-family: 'Cormorant Garamond';
@@ -216,6 +217,8 @@ body{margin:0;background:#120F0A;-webkit-text-size-adjust:100%;-webkit-tap-highl
   .hs-cap{width:min(420px,calc(100% - 32px));left:16px;right:auto}
 }
 @media (max-width:760px){
+  /* the still poster (no WebGL) has a portrait version for phones */
+  #hs-stage{background-image:url(./assets/house-poster-m.webp) !important}
 }
 @media (pointer:coarse){.hs-btn{min-height:44px}.hs-link{padding:6px 0;display:inline-block}}
 </style>
