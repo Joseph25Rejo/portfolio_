@@ -562,6 +562,7 @@ class Component extends DCLogic {
     + '#rv .rv-b:focus-visible{outline:3px solid #B28F4E;outline-offset:2px}'
     + '#rv iframe{flex:1;width:100%;border:0;background:#fff}'
     + '#rv .rv-i{flex:1;overflow:auto;background:#fff;display:flex;align-items:flex-start;justify-content:center;padding:12px}#rv .rv-i img{max-width:100%;height:auto;display:block}'
+    + '#rv.rv-vid .rv-p{width:min(1100px,100%);height:auto;max-height:100%;background:#120F0A}#rv.rv-vid .rv-h{background:#F4F0E8}#rv video{display:block;width:100%;max-height:calc(94vh - 70px);background:#000}'
     + '#rv .rv-f{padding:10px 14px;font-size:13px;color:#4A463E}#rv .rv-f a{color:#292925}';
   document.head.appendChild(css);
   function close() { if (!box) return; box.remove(); box = null; document.removeEventListener('keydown', key, true); if (prev && prev.focus) prev.focus(); }
@@ -573,9 +574,9 @@ class Component extends DCLogic {
   function open(kind, url, title) {
     if (box) return; prev = document.activeElement;
     var clean = url.split('#')[0], isRes = clean.indexOf(RES) > -1, esc = function (t) { return String(t).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); };
-    box = document.createElement('div'); box.id = 'rv'; box.className = kind === 'img' ? 'rv-img' : ''; box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', title);
+    box = document.createElement('div'); box.id = 'rv'; box.className = kind === 'img' ? 'rv-img' : kind === 'video' ? 'rv-vid' : ''; box.setAttribute('role', 'dialog'); box.setAttribute('aria-modal', 'true'); box.setAttribute('aria-label', title);
     var act = isRes ? '<a class="rv-b" href="' + esc(clean) + '" download="' + NAME + '">Download PDF ↓</a>' : '<a class="rv-b" href="' + esc(url) + '" target="_blank" rel="noopener">Open in new tab ↗</a>';
-    var body = kind === 'img' ? '<div class="rv-i"><img src="' + esc(url) + '" alt="' + esc(title) + '"></div>' : '<iframe src="' + esc(url) + (url.indexOf('#') > -1 ? '' : '#view=FitH') + '" title="' + esc(title) + '"></iframe><div class="rv-f">Preview not showing? <a href="' + esc(url) + '" target="_blank" rel="noopener">Open it in a new tab</a>.</div>';
+    var body = kind === 'video' ? '<video src="' + esc(url) + '" poster="./assets/lume/before-after-poster.webp" controls autoplay playsinline></video>' : kind === 'img' ? '<div class="rv-i"><img src="' + esc(url) + '" alt="' + esc(title) + '"></div>' : '<iframe src="' + esc(url) + (url.indexOf('#') > -1 ? '' : '#view=FitH') + '" title="' + esc(title) + '"></iframe><div class="rv-f">Preview not showing? <a href="' + esc(url) + '" target="_blank" rel="noopener">Open it in a new tab</a>.</div>';
     box.innerHTML = '<div class="rv-p"><div class="rv-h"><span class="rv-t">' + esc(title) + '</span>' + act + '<button type="button" class="rv-b rv-x">Close</button></div>' + body + '</div>';
     box.addEventListener('click', function (e) { if (e.target === box || e.target.classList.contains('rv-x')) close(); });
     document.body.appendChild(box); document.addEventListener('keydown', key, true);
@@ -597,6 +598,7 @@ class Component extends DCLogic {
     var h = a.getAttribute('href') || '', kind = null, title = '';
     if (h.indexOf(RES) > -1) { kind = 'pdf'; title = 'Résumé · Joseph Rejo Mathew'; }
     else if (/Patent_ORION\.pdf/.test(h)) { kind = 'pdf'; title = 'ORION patent, India No. 202641030238'; }
+    else if (/Lume-before-after\.mp4$/.test(h)) { kind = 'video'; title = 'Lume, before and after'; }
     else if (/-arch\.png$/.test(h)) { kind = 'img'; title = (/orion/i.test(h) ? 'ORION' : /parkngo/i.test(h) ? 'ParkNGo' : /hatch/i.test(h) ? 'Hatch' : 'QuarksFinance') + ' architecture'; }
     if (!kind) return;
     e.preventDefault(); e.stopPropagation(); open(kind, h, title);

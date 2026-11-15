@@ -68,13 +68,13 @@
   </div>
 
   <!-- product film -->
-  <section aria-label="Lume product film" style="margin-top:80px;max-width:1180px">
+  <section aria-label="Lume before and after film" id="lume-film" style="margin-top:80px;max-width:1180px">
     <div style="display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:10px 30px;border-bottom:1px solid rgba(125,95,40,.5);padding-bottom:18px">
-      <h3 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(34px,4vw,48px);font-weight:500;line-height:1">Lume in motion</h3>
-      <div style="font-size:14px;color:#4A463E">The guest app, in 26 seconds.</div>
+      <h3 style="margin:0;font-family:'Cormorant Garamond',Georgia,serif;font-size:clamp(34px,4vw,48px);font-weight:500;line-height:1">Before and after</h3>
+      <div style="font-size:14px;color:#4A463E">The rebuild, in 49 seconds.</div>
     </div>
     <div style="margin-top:26px;aspect-ratio:16/9;position:relative;background:#120F0A;box-shadow:0 24px 34px -22px rgba(41,41,37,.7)">
-      <video src="./assets/videos/Lume-web.mp4" poster="./assets/lume/lume-poster.webp" controls="" playsinline="" preload="metadata" aria-label="Lume guest app product film" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;background:#120F0A"></video>
+      <video src="./assets/videos/Lume-before-after.mp4" poster="./assets/lume/before-after-poster.webp" controls="" playsinline="" preload="metadata" aria-label="Lume before and after rebuild film" style="position:absolute;left:0;top:0;width:100%;height:100%;object-fit:contain;background:#120F0A"></video>
     </div>
   </section>
 
@@ -116,55 +116,57 @@ class Component extends DCLogic {
   renderVals() {
     return {
       duties: [
-        { n: '1', title: 'Guest apps, end to end', body: 'Engineered fully branded guest web applications for premium Indian resorts, supporting the guest journey from pre-arrival through checkout.' },
-        { n: '2', title: 'Frontend from scratch', body: 'Translated Figma designs into production-ready web interfaces and implemented the core product experience.' },
-        { n: '3', title: 'Deployment and infrastructure', body: 'Deployed the platform on Railway and hardened the backend with private networking. The application runs in production across 3 resort properties.' },
+        { n: '1', title: 'Guest apps, end to end', body: 'Rebuilt the guest app as a token-gated React and TypeScript app from Figma, with live data and stay-phase routing, from pre-arrival through checkout.' },
+        { n: '2', title: 'A dashboard for staff', body: 'Built the staff dashboard on Next.js: 15 hubs, role-based access, live previews, booking verification, analytics with Excel export, and a comms hub over Resend.' },
+        { n: '3', title: 'Deployment and infrastructure', body: 'Moved the backend onto Railway's private network behind the dashboard, with an httpOnly cookie and access tiers. One deployment per client, running across 3 resort properties.' },
         { n: '4', title: 'Leading the work', body: 'Led project and development activities, driving technical implementation and coordinating the product development lifecycle.' }
       ],
-      stack: ['Vite', 'React', 'Node.js', 'Express', 'MongoDB Atlas', 'Railway', 'Vercel', 'Cloudinary', 'Resend', 'GitHub Actions', 'Oracle Opera Cloud (OHIP)', 'PostHog / HogQL', 'Postman', 'Figma'],
+      stack: ['React', 'TypeScript', 'Vite', 'Next.js', 'Node.js', 'Express', 'MongoDB Atlas', 'Railway', 'Vercel', 'Cloudflare R2', 'Resend', 'Razorpay', 'OpenAI', 'Oracle Opera Cloud (OHIP)', 'PostHog / HogQL', 'OpenAPI', 'Postman', 'Figma'],
       log: [
         { title: 'Frontend and design handoff', items: [
           ['Shipped', 'Converted 30+ Figma screens into production React code, replacing the template-based designs across the guest experience.'],
-          ['Shipped', 'Guest and property frontends run as Vite React single-page apps, with no server-side rendering.'],
+          ['Shipped', 'Guest app rebuilt as React, TypeScript and Vite: token-gated, with stay-phase routing, four tabs and live data. Staff dashboard rebuilt on Next.js 14 with 15 hubs.'],
           ['In progress', 'Figma-to-Claude Code review step, so handed-off screens are checked before they reach development.']
         ]},
         { title: 'Deployment and environments', items: [
-          ['Shipped', 'Built the deployment environment. Guest app on Vercel, property app and Node.js backend on Railway.'],
+          ['Shipped', 'Built the deployment environment. Dashboard and Node.js backend on Railway, guest app on Vercel. Moving the guest app to Railway is next.'],
           ['Shipped', 'One codebase, one Railway deployment per property. A property differs only by its environment variables, so moving from UAT to production is a variable change.'],
-          ['Shipped', 'Backend hardened with Railway private networking.']
+          ['Shipped', 'Backend moved onto Railway private networking, reachable only through the dashboard. Guest uploads moved from Cloudinary to Cloudflare R2, one bucket per client.']
         ]},
         { title: 'Authentication and security', items: [
-          ['Built locally', 'Express mini-server in front of the property app: serves the static build, proxies /api/* and attaches the auth cookie server-side.'],
-          ['Built locally', 'Moved auth from a localStorage JWT to an httpOnly cookie, rewiring the auth context, API client and app shell.'],
-          ['Planned', 'Same treatment for the guest app, token expiry, rate limiting and a tighter CORS policy.'],
+          ['Shipped', 'Dashboard proxies /api/* server-side and attaches the auth cookie, so the browser never sees the backend.'],
+          ['Shipped', 'Moved auth from a localStorage JWT to an httpOnly cookie, with Admin, GM and Staff access tiers and fail-fast config per deployment.'],
+          ['Planned', 'Rate limiting, token expiry and a tighter CORS policy.'],
           ['Confirmed', 'MongoDB Atlas encryption at rest (AES-256), documented as client-facing proof.']
         ]},
         { title: 'PMS integration (Oracle Opera Cloud)', items: [
-          ['Done', 'Mapped 15 Opera API domains against the product roadmap: reservations, guest profiles, folio and charge posting, room assignment, housekeeping and more.'],
-          ['In progress', 'Postman collection of every required endpoint, before any integration code. The PMS stays the source of truth; Lume keeps a synced copy keyed by the PMS booking ID.'],
-          ['Planned', 'Per-property hotel ID as the one deployment variable.']
+          ['Done', 'Mapped 15 Opera API domains against the product roadmap, then built a read-only UAT Postman collection of 11 requests with documented findings.'],
+          ['In progress', 'Polling design for the integration. The PMS stays the source of truth; Lume keeps a synced copy keyed by the booking ID.'],
+          ['Planned', 'Run the poller and per-property hotel ID as the one deployment variable.']
         ]},
         { title: 'Email and automation', items: [
           ['Designed', 'Automated check-in emails: a Railway Cron job scans reservations daily and sends 10-day, 3-day and checkout messages through Resend.'],
           ['Designed', 'Staff-facing template editor on the property app, with live preview and test-send before any automated send goes out.']
         ]},
         { title: 'Analytics and reliability', items: [
+          ['Shipped', 'Backend: one Booking ID per stay, 29 models, about 194 route handlers, and AI routing of guest requests to departments with strict JSON output.'],
+          ['Shipped', 'Documentation: OpenAPI spec of 182 operations, a Postman collection, and a self-verifying seed script that runs in about 20 seconds, plus onboard and offboard scripts.'],
           ['Shipped', 'Guest analytics pipeline on PostHog HogQL, with exclusion filters for internal users, anonymous devices and token-URL identifiers, delivered as versioned reports.'],
           ['Shipped', 'Funnel analysis that surfaced a silent submit failure in online check-in, and a drop-off between treatment selection and confirmed spa bookings.'],
           ['Done', 'Diagnosed a production incident where a mis-wired repository served the wrong app to live guests.']
         ]},
         { title: 'Quality and infrastructure roadmap', items: [
           ['Designed', 'CI/CD on GitHub Actions across dev, staging and production, with Vitest for backend logic and Playwright for component, API and end-to-end tests.'],
-          ['Planned', 'Cloudinary to Cloudflare R2 and Images, Railway frontend consolidation, and a Postgres split from MongoDB as the client count grows.']
+          ['Planned', 'Guest app to Railway, onboarding rollout, automated tests, and retiring the legacy booking-create endpoint.']
         ]}
       ].map((g) => ({ title: g.title, items: g.items.map(([st, text]) => {
         const col = { 'Shipped': ['#2F4021', '#E3EBD9'], 'Done': ['#2F4021', '#E3EBD9'], 'Confirmed': ['#2F4021', '#E3EBD9'], 'In progress': ['#6B4A12', '#F1E3C2'], 'Built locally': ['#6B4A12', '#F1E3C2'], 'Designed': ['#3A372F', '#E2DACA'], 'Planned': ['#3A372F', '#E2DACA'] }[st];
         return { status: st, text, chip: "flex:none;width:92px;box-sizing:border-box;text-align:center;padding:5px 0 4px;margin-top:2px;font:500 11.5px/1.2 'Instrument Sans',Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:" + col[0] + ";background:" + col[1] };
       }) })),
       facts: [
+        { big: '15', text: 'hubs in the staff dashboard, rebuilt from scratch' },
         { big: '3', text: 'resort properties running the application in production' },
-        { big: '1st', text: 'engineer at a bootstrapped hospitality-tech startup' },
-        { big: '0 to 1', text: 'frontend built from scratch, from Figma designs to production' }
+        { big: '182', text: 'API operations documented in OpenAPI' }
       ]
     };
   }
