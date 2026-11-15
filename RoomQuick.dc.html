@@ -6,6 +6,7 @@
 <script src="./vendor/react.js"></script>
 <script src="./vendor/react-dom.js"></script>
 <script src="./support.js"></script>
+<script src="./assets/data/experience.js"></script>
 </head>
 <body>
 <x-dc>
@@ -92,12 +93,16 @@ body{margin:0}
       </section>
       <section aria-labelledby="qv-lume" style="margin-top:64px">
         <h2 id="qv-lume">Proof of work</h2>
-        <div style="margin-top:18px;padding:26px 0;border-top:1px solid rgba(41,41,37,.3);border-bottom:1px solid rgba(41,41,37,.2)">
-          <h3>Lume CXM, Founding Engineer</h3>
-          <p style="margin:8px 0 0;font-size:15px;color:#4A463E">Block 8 Solutions Pvt. Ltd., Bengaluru. Jun 2026 to present.</p>
-          <p style="margin:14px 0 0;font-size:16px;line-height:1.6;color:#2F2D28;max-width:62ch">Fully branded guest web apps for premium Indian resorts, running across 3 properties. I rebuilt the guest app from Figma in React and TypeScript, rebuilt the staff dashboard on Next.js (15 hubs, role-based access), moved the backend onto a private network, and documented 182 API operations. One deployment per property on Railway, the guest app on Vercel, analytics in PostHog.</p>
-          <div style="margin-top:18px"><a class="qv-btn" href="./assets/videos/Lume-before-after.mp4"><span>Watch the before and after</span><span aria-hidden="true">▶</span></a></div>
-        </div>
+        <sc-for list="{{ work }}" as="w" hint-placeholder-count="1">
+          <div style="margin-top:18px;padding:26px 0;border-top:1px solid rgba(41,41,37,.3);border-bottom:1px solid rgba(41,41,37,.2)">
+            <h3>{{ w.company }}, {{ w.title }}</h3>
+            <p style="margin:8px 0 0;font-size:15px;color:#4A463E">{{ w.meta }}</p>
+            <p style="margin:14px 0 0;font-size:16px;line-height:1.6;color:#2F2D28;max-width:62ch">{{ w.text }}</p>
+            <sc-if value="{{ w.hasFilm }}" hint-placeholder-val="{{ true }}">
+              <div style="margin-top:18px"><a class="qv-btn" href="{{ w.filmSrc }}"><span>{{ w.filmCta }}</span><span aria-hidden="true">▶</span></a></div>
+            </sc-if>
+          </div>
+        </sc-for>
       </section>
       <section aria-labelledby="qv-work" style="margin-top:64px">
         <h2 id="qv-work">What I have built</h2>
@@ -179,7 +184,16 @@ class Component extends DCLogic {
       { label: 'Databases', items: 'SQL, MongoDB, SQLite, Firebase' },
       { label: 'Cloud and tools', items: 'AWS, Railway, Vercel, Git, MATLAB, Figma' }
     ];
-    return { projects, proof, groups };
+    /* work history comes from assets/data/experience.js */
+    const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const fmt = (v) => { const [y, m] = String(v).split('-').map(Number); return MON[m - 1] + ' ' + y; };
+    const work = ((window.JRM_EXP && window.JRM_EXP.roles) || []).map((r) => ({
+      company: r.company, title: r.title,
+      meta: (r.org ? String(r.org).replace(/<br\s*\/?>/gi, ', ') + '. ' : '') + fmt(r.start) + ' to ' + (r.end ? fmt(r.end) : 'present') + '.',
+      text: r.quick || r.short || r.summary || '',
+      hasFilm: !!r.film, filmSrc: r.film ? r.film.src : '', filmCta: r.film ? (r.film.cta || r.film.label) : ''
+    }));
+    return { projects, proof, groups, work };
   }
 }
 </script>

@@ -6,6 +6,7 @@
 <script src="./vendor/react.js"></script>
 <script src="./vendor/react-dom.js"></script>
 <script src="./support.js"></script>
+<script src="./assets/data/experience.js"></script>
 </head>
 <body>
 <x-dc>
@@ -37,7 +38,7 @@
       </div>
       <div style="padding:0 0 22px;border-top:1px solid rgba(41,41,37,.2);padding-top:18px">
         <dt style="font:500 13px/1 'Instrument Sans',Arial,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#6A4E1B">Now</dt>
-        <dd style="margin:12px 0 0;font-size:16.5px;line-height:1.5"><strong style="font-weight:600">Founding Engineer, Lume CXM</strong><br><span style="color:#4A463E">Block 8 Solutions Pvt. Ltd., Bengaluru · Jun 2026 to present</span></dd>
+        <dd style="margin:12px 0 0;font-size:16.5px;line-height:1.5"><strong style="font-weight:600">{{ now.title }}, {{ now.company }}</strong><br><span style="color:#4A463E">{{ now.meta }}</span></dd>
       </div>
     </dl>
   </div>
@@ -67,7 +68,12 @@
 <script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1240}}'>
 class Component extends DCLogic {
   renderVals() {
+    const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const fmt = (v) => { const [y, m] = String(v).split('-').map(Number); return MON[m - 1] + ' ' + y; };
+    const r = ((window.JRM_EXP && window.JRM_EXP.roles) || [])[0] || { company: '', title: '', start: '2000-01' };
+    const now = { company: r.company, title: r.title, meta: (r.org ? String(r.org).replace(/<br\s*\/?>/gi, ', ') + ' · ' : '') + fmt(r.start) + ' to ' + (r.end ? fmt(r.end) : 'present') };
     return {
+      now,
       alcoves: [
         { n: 'I', title: 'Ships to production', body: 'At Lume I turned 30+ Figma screens into React and deployed them across 3 resort properties, on Railway and Vercel with PostHog analytics.' },
         { n: 'II', title: 'Delivers under pressure', body: 'Winner of WhiteHack 1.0 with Hatch, finalist at the Mindscape Hackathon, and top five at Ctrl + Alt + Compete.' },
